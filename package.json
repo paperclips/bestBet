@@ -1,0 +1,27 @@
+{
+  "name": "paperclips",
+  "version": "1.0.0",
+  "description": "App that finds restaurants you'll love",
+  "main": "app.js",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "express": "^4.13.4",
+    "http": "0.0.0",
+    "q": "^1.4.1",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paperclips/paperclips.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paperclips/paperclips/issues"
+  },
+  "homepage": "https://github.com/paperclips/paperclips#readme"
+}
