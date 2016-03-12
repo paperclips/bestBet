@@ -1,0 +1,185 @@
+-- ---
+-- Globals
+-- ---
+
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET FOREIGN_KEY_CHECKS=0;
+
+-- ---
+-- Table 'Users'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Users`;
+    
+CREATE TABLE `Users` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `userName` VARCHAR NULL DEFAULT NULL,
+  `name` VARCHAR NULL DEFAULT NULL,
+  `email` VARCHAR NULL DEFAULT NULL,
+  `salt` VARCHAR(10) NULL DEFAULT NULL,
+  `password` VARCHAR NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Establishments'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Establishments`;
+    
+CREATE TABLE `Establishments` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR NULL DEFAULT NULL,
+  `imageUrl` VARCHAR NULL DEFAULT NULL,
+  `yelpUrl` VARCHAR NULL DEFAULT NULL,
+  `yelpId` INTEGER NULL DEFAULT NULL,
+  `yelpRating` DECIMAL NULL DEFAULT NULL,
+  `yelpReviewCount` INTEGER NULL DEFAULT NULL,
+  `genreId` INTEGER NULL DEFAULT NULL,
+  `zoneLat` INTEGER NULL DEFAULT NULL,
+  `zoneLon` INTEGER NULL DEFAULT NULL,
+  `latitude` DECIMAL NULL DEFAULT NULL,
+  `longitude` DECIMAL NULL DEFAULT NULL,
+  `address` VARCHAR NULL DEFAULT NULL,
+  `phoneNumber` VARCHAR NULL DEFAULT NULL,
+  `industryId` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Traits'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Traits`;
+    
+CREATE TABLE `Traits` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` INTEGER NULL DEFAULT NULL,
+  `timeSensitive` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Votes'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Votes`;
+    
+CREATE TABLE `Votes` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `establishmentId` INTEGER NULL DEFAULT NULL,
+  `traitId` INTEGER NULL DEFAULT NULL,
+  `userId` INTEGER NULL DEFAULT NULL,
+  `voteValue` BINARY NULL DEFAULT NULL,
+  `time` DATETIME NULL DEFAULT NULL,
+  `zoneLat` INTEGER NULL DEFAULT NULL,
+  `zoneLon` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Users_Traits'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Users_Traits`;
+    
+CREATE TABLE `Users_Traits` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `userId` INTEGER NULL DEFAULT NULL,
+  `traitId` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Genres'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Genres`;
+    
+CREATE TABLE `Genres` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR NULL DEFAULT NULL,
+  `industryId` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'YelpCategories_Genres'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `YelpCategories_Genres`;
+    
+CREATE TABLE `YelpCategories_Genres` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `yelpCategory` VARCHAR NOT NULL,
+  `genreId` INTEGER NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Table 'Industries'
+-- 
+-- ---
+
+DROP TABLE IF EXISTS `Industries`;
+    
+CREATE TABLE `Industries` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `name` VARCHAR NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Foreign Keys 
+-- ---
+
+ALTER TABLE `Establishments` ADD FOREIGN KEY (genreId) REFERENCES `Genres` (`id`);
+ALTER TABLE `Establishments` ADD FOREIGN KEY (industryId) REFERENCES `Industries` (`id`);
+ALTER TABLE `Votes` ADD FOREIGN KEY (establishmentId) REFERENCES `Establishments` (`id`);
+ALTER TABLE `Votes` ADD FOREIGN KEY (traitId) REFERENCES `Traits` (`id`);
+ALTER TABLE `Votes` ADD FOREIGN KEY (userId) REFERENCES `Users` (`id`);
+ALTER TABLE `Users_Traits` ADD FOREIGN KEY (userId) REFERENCES `Users` (`id`);
+ALTER TABLE `Users_Traits` ADD FOREIGN KEY (traitId) REFERENCES `Traits` (`id`);
+ALTER TABLE `Genres` ADD FOREIGN KEY (industryId) REFERENCES `Industries` (`id`);
+ALTER TABLE `YelpCategories_Genres` ADD FOREIGN KEY (genreId) REFERENCES `Genres` (`id`);
+
+-- ---
+-- Table Properties
+-- ---
+
+-- ALTER TABLE `Users` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Establishments` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Traits` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Votes` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Users_Traits` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Genres` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `YelpCategories_Genres` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `Industries` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO `Users` (`id`,`userName`,`name`,`email`,`salt`,`password`) VALUES
+-- ('','','','','','');
+-- INSERT INTO `Establishments` (`id`,`name`,`imageUrl`,`yelpUrl`,`yelpId`,`yelpRating`,`yelpReviewCount`,`genreId`,`zoneLat`,`zoneLon`,`latitude`,`longitude`,`address`,`phoneNumber`,`industryId`) VALUES
+-- ('','','','','','','','','','','','','','','');
+-- INSERT INTO `Traits` (`id`,`name`,`timeSensitive`) VALUES
+-- ('','','');
+-- INSERT INTO `Votes` (`id`,`establishmentId`,`traitId`,`userId`,`voteValue`,`time`,`zoneLat`,`zoneLon`) VALUES
+-- ('','','','','','','','');
+-- INSERT INTO `Users_Traits` (`id`,`userId`,`traitId`) VALUES
+-- ('','','');
+-- INSERT INTO `Genres` (`id`,`name`,`industryId`) VALUES
+-- ('','','');
+-- INSERT INTO `YelpCategories_Genres` (`id`,`yelpCategory`,`genreId`) VALUES
+-- ('','','');
+-- INSERT INTO `Industries` (`id`,`name`) VALUES
+-- ('','');
