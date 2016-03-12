@@ -12,34 +12,30 @@
     // user signs in
     // body is user name password, location
       // if user exists && password is correct
-      // SIGN_USER_IN_FUNC:
-        // CREATE JWOT
-        // GET_RELEVANT_DATA_FUNC:
-          // add user's SOCKETID to zoneHandler matrix
-          // LOAD establishment data (from establishment table in DB) for appropriate zones
-          // LOAD vote data (from vote table in DB) for appropriate establishments
-          // send back JWOT and relevant establishment data and relevant vote data
+        // SIGN_USER_IN_FUNC:
+          // CREATE JWOT
+          // calls zoneHandler_service_FUNC
+            // zoneHandler service DELETES socketId from old zone, adds socketId to new zone
+          // <calls> GET_RELEVANT_DATA_FUNC:
+            // LOAD establishment data (from establishment table in DB) for appropriate zones
+            // LOAD vote data (from vote table in DB) for appropriate establishments
+            // send back JWOT and relevant establishment data and relevant vote data
 
 // socket listeners
 
   // user moves to a new zone
     // listener recieves new zone # (and knows socketId)
     // user controller
-      // calls zoneHandler service
+      // calls zoneHandler_service_FUNC
         // zoneHandler service DELETES socketId from old zone, adds socketId to new zone
-        // add user's SOCKETID to zoneHandler matrix
-        // GET_RELEVANT_DATA_FUNC:
-          // LOAD establishment data (from establishment table in DB) for appropriate zones
-          // LOAD vote data (from vote table in DB) for appropriate establishments
-          // send back JWOT and relevant establishment data and relevant vote data
+      // GET_RELEVANT_DATA_FUNC:
+        // LOAD establishment data (from establishment table in DB) for appropriate zones
+        // LOAD vote data (from vote table in DB) for appropriate establishments
+        // send back JWOT and relevant establishment data and relevant vote data
 
   // user changes their default traits
     // listener recieves userId and newTraits...
     // we remove any from the Users_Traits join table... and add any new to that table
-    // <call> GET_RELEVANT_DATA_FUNC:
-      // LOAD establishment data (from establishment table in DB) for appropriate zones
-      // LOAD vote data (from vote table in DB) for appropriate establishments
-      // send back JWOT and relevant establishment data and relevant vote data
 
   // user changes current trait combination
     // nothing happens server side, this is handled on the client side
