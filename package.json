@@ -14,8 +14,6 @@
   },
   "devDependencies": {},
   "scripts": {
-    "installall": "brew install postgres && npm install && bower install",
-    "install": "npm install && bower install"
   },
   "repository": {
     "type": "git",
