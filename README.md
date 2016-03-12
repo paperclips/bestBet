@@ -1,16 +1,22 @@
 # untitled restaurant app deal
 
-> Pithy project description
+> **Find restaurants around you based on the criteria you care most about _right now._**
+
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Pavel
+  - __Scrum Master__: Jackie
+  - __Development Team Members__: Brian
 
 ## Table of Contents
 
-1. [Usage](#Usage)
+1. [FEATURES](#Features)
+1. [ARCHITECTURE](#architecture)
+    1. [Tech Stack](#tech-stack)
+    1. [Client Architecture](#client-architecture)
+    1. [Server Architecture](#server-architecture)
+    1. [Database Design](#database-design)
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
@@ -18,17 +24,41 @@
 1. [Team](#team)
 1. [Contributing](#contributing)
 
-## Usage
+## Features
 
 > Some usage instructions
+
+## Architecture
+
+### Tech Stack
+
+> tech stack info
+
+### System Overview
+
+> system (client, server, all that, in a pretty picture)
+
+### Client Architecture
+
+> Client
+
+### Server Architecture
+
+> The server is designed with Node.js using sockets.
+
+### Database Design
+
+> DB
+
 
 ## Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
 - Postgresql 9.1.x
-- etc
-- etc
+- Express
+- bcrypt
+- q
+- socket.io
 
 ## Development
 
@@ -44,7 +74,7 @@ bower install
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://waffle.io/paperclips/paperclips)
 
 
 ## Contributing
