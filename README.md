@@ -71,6 +71,12 @@ From within the root directory:
 - npm install
 - bower install
 
+Create a postgres database using command line:
+1) postgres -D /usr/local/var/postgres
+2) createdb paperclipsdb
+3) 
+
+
 ### Roadmap
 
 View the project roadmap [here](https://waffle.io/paperclips/paperclips)

@@ -1,5 +1,6 @@
 // establishment schema
-var db = require('../config/db');
+var Sequelize = require('sequelize');
+var sequelize = require('../config/db');
 
 var Users = sequelize.define('Users', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -40,7 +41,7 @@ var Votes = sequelize.define('Votes', {
     traitId: {type: Sequelize.INTEGER, notNull: true},
     userId: {type: Sequelize.INTEGER, notNull: true},
     voteValue: {type: Sequelize.BOOLEAN, notNull: true},
-    time: {type: Sequelize.DATETIME, notNull: true},
+    time: {type: Sequelize.DATE, notNull: true},
     zoneLat: {type: Sequelize.INTEGER, notNull: true},
     zoneLon: {type: Sequelize.INTEGER, notNull: true}
   }, { timestamps: false });
@@ -73,9 +74,9 @@ Establishments.hasOne(Industries, { foreignKey: 'industryId' });
 Votes.hasOne(Establishments, { foreignKey: 'establishmentId' });
 Votes.hasOne(Traits, { foreignKey: 'traitId' });
 Votes.hasOne(Users, { foreignKey: 'userId' });
-Users.hasMany(Traits, { through: 'Users_Traits', foreignKey: 'userId' });
-Traits.hasMany(Users, { through: 'Users_Traits', foreignKey: 'traitId' });
-Genres.hasOne(Industry, { foreignKey: 'industryId' });
+Users.belongsToMany(Traits, { through: 'Users_Traits', foreignKey: 'userId' });
+Traits.belongsToMany(Users, { through: 'Users_Traits', foreignKey: 'traitId' });
+Genres.hasOne(Industries, { foreignKey: 'industryId' });
 YelpCategories_Genres.hasOne(Genres, { foreignKey: 'genreId' });
 
 module.exports = {
