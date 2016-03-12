@@ -5,9 +5,9 @@
 
 ## Team
 
-  - __Product Owner__: Pavel
-  - __Scrum Master__: Jackie
-  - __Development Team Members__: Brian
+- Product Owner: Pavel Parshakov
+- Scrum Master: Jackie Liu
+- Development Team Members: Pavel Parshakov, Jackie Liu, Brian Ronaghan
 
 ## Table of Contents
 
@@ -59,6 +59,7 @@
 - bcrypt
 - q
 - socket.io
+- sequelize
 
 ## Development
 
@@ -66,11 +67,9 @@
 
 From within the root directory:
 
-```sh
-sudo npm install -g bower
-npm install
-bower install
-```
+- brew install postgres (if not already installed)
+- npm install
+- bower install
 
 ### Roadmap
 
