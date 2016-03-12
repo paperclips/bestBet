@@ -65,17 +65,37 @@
 
 ### Installing Dependencies
 
-From within the root directory:
+  1. If you don't already have Postgres, install it: `brew install postgres`
+  2. In the terminal, run:
 
-- brew install postgres (if not already installed)
-- npm install
-- bower install
+```
+        > initdb paperclipsdb 
+        > pg_ctl -D paperclipsdb -l logfile start
+        > createdb paperclipsdb
+```
 
-Create a postgres database using command line:
-1) postgres -D /usr/local/var/postgres
-2) createdb paperclipsdb
-3) 
+  3. Run the psql command line tool to create a role:
 
+```
+        > psql paperclipsdb
+        $ CREATE ROLE postgres WITH superuser;
+        $ ALTER ROLE postgres WITH login;
+        $ \q
+```
+
+  4. Install other dependencies and start the server: `npm start`
+
+
+### To start your local database
+
+```
+  > pg_ctl -D paperclipsdb -l logfile start
+```
+
+### Access/Update your local database via terminal
+
+```
+  > psql paperclipsdb
 
 ### Roadmap
 
