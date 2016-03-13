@@ -2,8 +2,7 @@
 var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
-var db             = require('./config/db');
-//var schemas        = require('./config/schemas');
+//var models         = require('./config/db');
 
 //Connect when ready
 //require('./config/socketRoutes.js')(app);
@@ -15,5 +14,9 @@ app.use(bodyParser.json());
 
 app.listen(port);
 console.log('Server listening on port ' + port);
+
+// This module populates establishment data. 
+// Uncomment code in populateEstablishments to upload data to the database
+var populateEstablishements = require('./establishments/populateEstablishments');
 
 exports = module.exports = app;
