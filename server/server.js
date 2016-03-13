@@ -8,12 +8,12 @@ var db             = require('./config/db');
 //Connect when ready
 //require('./config/socketRoutes.js')(app);
 
-var port = process.env.PORT || 3000; 
+var port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.listen(port);            
+app.listen(port);
 console.log('Server listening on port ' + port);
-   
-exports = module.exports = app; 
+
+exports = module.exports = app;
