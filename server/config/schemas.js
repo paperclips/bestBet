@@ -1,8 +1,8 @@
 // establishment schema
 var Sequelize = require('sequelize');
-var sequelize = require('../config/db');
+var db = require('../config/db');
 
-var Users = sequelize.define('Users', {
+var Users = db.define('Users', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     userName: {type: Sequelize.STRING, unique: true, notNull: true},
     name: {type: Sequelize.STRING, notNull: true},
@@ -11,7 +11,7 @@ var Users = sequelize.define('Users', {
     password: {type: Sequelize.STRING, notNull: true},
   }, { timestamps: false });
 
-var Establishments = sequelize.define('Establishments', {
+var Establishments = db.define('Establishments', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: {type: Sequelize.STRING, notNull: true},
     imageUrl: {type: Sequelize.STRING},
@@ -29,13 +29,13 @@ var Establishments = sequelize.define('Establishments', {
     industryId: {type: Sequelize.INTEGER},
   }, { timestamps: false });
 
-var Traits = sequelize.define('Traits', {
+var Traits = db.define('Traits', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: {type: Sequelize.STRING, notNull: true},
     timeSensitive: {type: Sequelize.BOOLEAN, notNull: true}
   }, { timestamps: false });
 
-var Votes = sequelize.define('Votes', {
+var Votes = db.define('Votes', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     establishmentId: {type: Sequelize.INTEGER, notNull: true},
     traitId: {type: Sequelize.INTEGER, notNull: true},
@@ -46,25 +46,25 @@ var Votes = sequelize.define('Votes', {
     zoneLon: {type: Sequelize.INTEGER, notNull: true}
   }, { timestamps: false });
 
-var Users_Traits = sequelize.define('Users_Traits', {
+var Users_Traits = db.define('Users_Traits', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     traitId: {type: Sequelize.INTEGER, notNull: true},
     userId: {type: Sequelize.INTEGER, notNull: true},
   }, { timestamps: false });
 
-var Genres = sequelize.define('Genres', {
+var Genres = db.define('Genres', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: {type: Sequelize.STRING, notNull: true},
     industryId: {type: Sequelize.INTEGER}
   }, { timestamps: false });
 
-var YelpCategories_Genres = sequelize.define('YelpCategories_Genres', {
+var YelpCategories_Genres = db.define('YelpCategories_Genres', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     yelpCategory: {type: Sequelize.STRING, notNull: true},
     genreId: {type: Sequelize.INTEGER, notNull: true}
   }, { timestamps: false });
 
-var Industries = sequelize.define('Industries', {
+var Industries = db.define('Industries', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     name: {type: Sequelize.STRING, notNull: true},
   }, { timestamps: false });

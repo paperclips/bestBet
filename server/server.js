@@ -3,7 +3,7 @@ var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
 var db             = require('./config/db');
-//var db             = require('./config/schemas');
+//var schemas        = require('./config/schemas');
 
 //Connect when ready
 //require('./config/socketRoutes.js')(app);
