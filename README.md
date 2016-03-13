@@ -68,20 +68,20 @@
   1. If you don't already have Postgres, install it: `brew install postgres`
   2. In the terminal, run:
 
-```
-        > initdb paperclipsdb 
-        > pg_ctl -D paperclipsdb -l logfile start
-        > createdb paperclipsdb
-```
+  ```
+    > initdb paperclipsdb 
+    > pg_ctl -D paperclipsdb -l logfile start
+    > createdb paperclipsdb
+  ```
 
   3. Run the psql command line tool to create a role:
 
-```
-        > psql paperclipsdb
-        $ CREATE ROLE postgres WITH superuser;
-        $ ALTER ROLE postgres WITH login;
-        $ \q
-```
+  ```
+    > psql paperclipsdb
+    $ CREATE ROLE postgres WITH superuser;
+    $ ALTER ROLE postgres WITH login;
+    $ \q
+  ```
 
   4. Install other dependencies and start the server: `npm start`
 
@@ -94,14 +94,10 @@
 
 ### Access/Update your local database via terminal
 
-```
+  ```
   > psql paperclipsdb
+  ```
 
 ### Roadmap
 
 View the project roadmap [here](https://waffle.io/paperclips/paperclips)
-
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
