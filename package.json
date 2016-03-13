@@ -12,7 +12,8 @@
     "pg": "^4.5.1",
     "q": "^1.4.1",
     "sequelize": "^3.19.3",
-    "socket.io": "^1.4.5"
+    "socket.io": "^1.4.5",
+    "yelp": "^1.0.1"
   },
   "devDependencies": {},
   "scripts": {
