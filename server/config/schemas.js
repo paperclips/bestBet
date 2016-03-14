@@ -7,7 +7,7 @@ module.exports = function(Sequelize, db){
       name: {type: Sequelize.STRING, notNull: true},
       email: {type: Sequelize.STRING, unique: true, notNull: true},
       salt: {type: Sequelize.STRING, notNull: true},
-      password: {type: Sequelize.STRING, notNull: true},
+      password: {type: Sequelize.STRING, notNull: true}
     }, { timestamps: false });
 
   var Establishments = db.define('Establishments', {
@@ -16,16 +16,15 @@ module.exports = function(Sequelize, db){
       imageUrl: {type: Sequelize.STRING},
       yelpUrl: {type: Sequelize.STRING},
       yelpId: {type: Sequelize.STRING},
+      yelpCategory: {type: Sequelize.STRING},
       yelpRating: {type: Sequelize.FLOAT},
       yelpReviewCount: {type: Sequelize.INTEGER},
-      genreId: {type: Sequelize.INTEGER},
-      zoneLat: {type: Sequelize.INTEGER},
-      zoneLon: {type: Sequelize.INTEGER},
       latitude: {type: Sequelize.FLOAT},
       longitude: {type: Sequelize.FLOAT},
       address: {type: Sequelize.STRING},
       phoneNumber: {type: Sequelize.STRING},
       industryId: {type: Sequelize.INTEGER},
+      zoneNumber: {type: Sequelize.INTEGER}
     }, { timestamps: false });
 
   var Traits = db.define('Traits', {
@@ -41,25 +40,25 @@ module.exports = function(Sequelize, db){
       userId: {type: Sequelize.INTEGER, notNull: true},
       voteValue: {type: Sequelize.BOOLEAN, notNull: true},
       time: {type: Sequelize.DATE, notNull: true},
-      zoneLat: {type: Sequelize.INTEGER, notNull: true},
-      zoneLon: {type: Sequelize.INTEGER, notNull: true}
+      zoneNumber: {type: Sequelize.INTEGER, notNull: true}
     }, { timestamps: false });
 
   var Users_Traits = db.define('Users_Traits', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
       traitId: {type: Sequelize.INTEGER, notNull: true},
       userId: {type: Sequelize.INTEGER, notNull: true},
+      industryId: {type: Sequelize.INTEGER}
     }, { timestamps: false });
 
   var Genres = db.define('Genres', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
       name: {type: Sequelize.STRING, notNull: true},
-      industryId: {type: Sequelize.INTEGER}
+      industryId: {type: Sequelize.INTEGER, notNull: true}
     }, { timestamps: false });
 
   var YelpCategories_Genres = db.define('YelpCategories_Genres', {
-      id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      yelpCategory: {type: Sequelize.STRING, notNull: true},
+      //id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+      yelpCategory: {type: Sequelize.STRING, primaryKey: true, notNull: true},
       genreId: {type: Sequelize.INTEGER, notNull: true}
     }, { timestamps: false });
 
@@ -73,13 +72,15 @@ module.exports = function(Sequelize, db){
   hasOne creates foreignKey on the target
   */
 
-  Establishments.belongsTo(Genres, { foreignKey: 'genreId' });
+  //Establishments.belongsTo(Genres, { foreignKey: 'genreId' });
+  //Establishments.belongsTo(YelpCategories_Genres, { foreignKey: 'yelpCategory' });
   Establishments.belongsTo(Industries, { foreignKey: 'industryId' });
   Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
   Users.belongsToMany(Traits, { through: 'Users_Traits', foreignKey: 'userId' });
-  Traits.belongsToMany(Users, { through: 'Users_Traits', foreignKey: 'traitId' });
+  Users_Traits.belongsTo(Industries, { foreignKey: 'industryId' });
+  Genres.belongsTo(Industries, { foreignKey: 'industryId' });
   Genres.belongsTo(Industries, { foreignKey: 'industryId' });
   YelpCategories_Genres.belongsTo(Genres, { foreignKey: 'genreId' });
 

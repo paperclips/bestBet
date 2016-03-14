@@ -17,6 +17,6 @@ console.log('Server listening on port ' + port);
 
 // This module populates establishment data. 
 // Uncomment code in populateEstablishments to upload data to the database
-var populateEstablishements = require('./establishments/populateEstablishments');
+// var populateEstablishements = require('./establishments/populateEstablishments');
 
 exports = module.exports = app;
