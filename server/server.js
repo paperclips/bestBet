@@ -15,8 +15,11 @@ app.use(bodyParser.json());
 app.listen(port);
 console.log('Server listening on port ' + port);
 
-// This module populates establishment data. 
+// This module populates establishment data.
 // Uncomment code in populateEstablishments to upload data to the database
-// var populateEstablishements = require('./establishments/populateEstablishments');
+var populateEstablishements = require('./establishments/populateEstablishments');
+var populateUsers = require('./users/populateUsers');
+var populateVotes = require('./votes/populateVotes');
+
 
 exports = module.exports = app;
