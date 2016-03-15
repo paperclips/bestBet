@@ -2,7 +2,7 @@
 
 /*
 This code
-1) Creates "35 fake users" record with
+1) Creates "50 fake users" records
 2) Give users default traits
 // for now everyone is in the same zone
 */

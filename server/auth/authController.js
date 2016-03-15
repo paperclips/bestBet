@@ -23,7 +23,7 @@ function signin (req, res) {
           var token = jwt.encode(user, 'secret');
           res.json({token: token});
           // sets user zones needed and sends the data back to the user
-          userCtrl.setUserZone(null, req.bodyzone);
+          userCtrl.setUserZone(null, req.body.zone);
         });
     } else if (result === false){
       res.redirect('/signin');

@@ -23,7 +23,7 @@ var getSurroundingZones = function (zoneNumber) {
   var zoneArr = [];
   for (var x = -1; x <=1; x++) {
     for (var y = -1; y <=1; y++) {
-      var zone = zoneNumber + x * NUM_OF_COLS + y;
+      var zone = zoneNumber + y * 1000 + x;
       if(isAZone(zone)) {
         zoneArr.push(zone);
       }
@@ -33,7 +33,10 @@ var getSurroundingZones = function (zoneNumber) {
 };
 
 var isAZone = function (zoneNumber) {
-  if(zoneNumber >= 0 && zoneNumber % 1000 < 22 && (NUM_OF_ROWS-1)*1000+(NUM_OF_COLS) && zoneNumber < (NUM_OF_ROWS-1)*1000+(NUM_OF_COLS) && (zoneNumber+1) % 1000 > 0) {
+  if(zoneNumber >= 0 &&
+    zoneNumber % 1000 < NUM_OF_COLS &&
+    zoneNumber < (NUM_OF_ROWS-1)*1000+(NUM_OF_COLS) &&
+    (zoneNumber+1) % 1000 > 0) {
     return true;
   } else {
     return false;

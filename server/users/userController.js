@@ -42,12 +42,11 @@ var sendData = function (socket, zones) {
 };
 // changes the user's stored default traits in the DB -- doesn't send anything back
 function changeDefaultTraits (user) {
-  userQueries.updateUserInfo(user.userName, user.traits);
+  userQueries.updateUserInfo(user.id, user.traits);
   // note - the client will also reset them locally, and we WON'T send these back to the client
   // the client will only reference them on next login
 };
 module.exports = {
   setUserZone: setUserZone,
-  sendSurroundingEstablishments: sendEstablishments,
   changeDefaultTraits: changeDefaultTraits
 };

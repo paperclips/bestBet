@@ -33,15 +33,5 @@ var createFakeVotes = function (numPerUser) {
     });
 
 };
-// var populateEstablishements = require('./establishments/populateEstablishments');
-// var populateUsers = require('./users/populateUsers');
 
 createFakeVotes(10);
-// votes.create({
-//   establishmentId: voteId,
-//   traitId: vote.traitId,
-//   userId: vote.userId,
-//   voteValue: vote.value,
-//   time: vote.time,
-//   zone: vote.zone
-// })

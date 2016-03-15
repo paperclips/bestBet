@@ -6,35 +6,50 @@ var users_traits = models.Users_Traits;
 var jwt = require( 'jwt-simple' );
 var Q = require('q');
 var bcrypt = require('bcrypt');
+
+
+// helpers:
+var getAllUsers = function () {
+  return users.findAll({});
+};
+
+// var hashPass = function(pass, null, null){
+//   var cipher = Q.Promise(bcrypt.hash);
+//   return cipher();
+// };
+
 // add user
 var addUser = function (userDetails) {
   // CREATE USER IF DOESN'T EXIST
   // console.log(userDetails);
-  hashPass(userDetails.password)
-    .then(function (hashed){
-      users
-        .findOrCreate({where:{
-          userName:userDetails.userName},
-          defaults:{name: userDetails.name,
-          email: userDetails.email,
-          salt: '1',
-          password: 'fun'
-        }})
-        .spread(function(user, created){
-          if (!created) {
-            // response.send("account already exists, should redirect to login");
-          } else {
-              // add userDefaults to user_traits
-              updateUserInfo(user.id, userDetails.traits)
-                .then(function (user) {
-                  return user;
-                });
-          }
-        })
-        .catch(function(err){
-          console.error(err);
-        });
-      }); // closes hash
+  // // var salt = 'dsffwer';
+  // // bcrypt.hash(userDetails.password, 22, 10, function(err, result) {
+  //   console.log(result);
+    users
+      .findOrCreate({where:{
+        userName:userDetails.userName},
+        defaults:{name: userDetails.name,
+        email: userDetails.email,
+        salt: 'dsffwer',
+        password: userDetails.password
+      }})
+      .spread(function(user, created){
+        if (!created) {
+          // response.send("account already exists, should redirect to login");
+        } else {
+            // add userDefaults to user_traits
+            updateUserInfo(user.id, userDetails.traits)
+              .then(function (user) {
+                return user;
+              });
+        }
+      })
+      .catch(function(err){
+        console.error(err);
+      });
+  // }); // closes hash
+  // console.log(cipher);
+  // cipher()
 };
 // get if attempted password is correct for userName ...
 var checkPass = function (userName, attPass) {
@@ -85,18 +100,6 @@ var updateUserInfo = function (userId, newTraits) {
         });
       }
   });
-};
-
-var getAllUsers = function () {
-  return users.findAll({});
-};
-
-
-
-// functions used only here:
-var hashPass = function(pass){
-  var cipher = Q.Promise(bcrypt.hash);
-  return cipher;
 };
 
 module.exports = {
