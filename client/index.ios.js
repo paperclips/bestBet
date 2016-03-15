@@ -60,34 +60,17 @@
 // AppRegistry.registerComponent('client', () => client);
 
 
-import React, { StyleSheet, Text, View, Component } from 'react-native'
+var React = require('react-native');
+var {
+  AppRegistry,
+  } = React;
 
-import MapView from 'react-native-maps'
+var App = require('./App');
 
-export default class MapsView extends Component {
+var AirMapsExplorer = React.createClass({
   render() {
-    return (
-      <View style={styles.container}>
-        <MapView
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        ></MapView>
-      </View>
-    )
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+    return <App />
   },
-  map: {
-    flex: 1,
-  },
-})
+});
 
-AppRegistry.registerComponent('AirMap', () => AirMap);
+AppRegistry.registerComponent('AirMapsExplorer', () => AirMapsExplorer);

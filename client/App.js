@@ -6,17 +6,17 @@ var {
   ScrollView,
   Text,
 } = React;
-var DisplayLatLng = require('./examples/DisplayLatLng');
-var ViewsAsMarkers = require('./examples/ViewsAsMarkers');
-var EventListener = require('./examples/EventListener');
-var MarkerTypes = require('./examples/MarkerTypes');
-var DraggableMarkers = require('./examples/DraggableMarkers');
-var PolygonCreator = require('./examples/PolygonCreator');
-var AnimatedViews = require('./examples/AnimatedViews');
-var AnimatedMarkers = require('./examples/AnimatedMarkers');
-var Callouts = require('./examples/Callouts');
-var Overlays = require('./examples/Overlays');
-var DefaultMarkers = require('./examples/DefaultMarkers');
+var DisplayLatLng = require('./example/examples/DisplayLatLng');
+var ViewsAsMarkers = require('./example/examples/ViewsAsMarkers');
+var EventListener = require('./example/examples/EventListener');
+var MarkerTypes = require('./example/examples/MarkerTypes');
+var DraggableMarkers = require('./example/examples/DraggableMarkers');
+var PolygonCreator = require('./example/examples/PolygonCreator');
+var AnimatedViews = require('./example/examples/AnimatedViews');
+var AnimatedMarkers = require('./example/examples/AnimatedMarkers');
+var Callouts = require('./example/examples/Callouts');
+var Overlays = require('./example/examples/Overlays');
+var DefaultMarkers = require('./example/examples/DefaultMarkers');
 
 
 var App = React.createClass({
