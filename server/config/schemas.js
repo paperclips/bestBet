@@ -79,6 +79,8 @@ module.exports = function(Sequelize, db){
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
   Users.belongsToMany(Traits, { through: 'Users_Traits', foreignKey: 'userId' });
+  Traits.belongsToMany(Users, { through: 'Users_Traits', foreignKey: 'traitId' });
+
   Users_Traits.belongsTo(Industries, { foreignKey: 'industryId' });
   Genres.belongsTo(Industries, { foreignKey: 'industryId' });
   Genres.belongsTo(Industries, { foreignKey: 'industryId' });
@@ -95,4 +97,3 @@ module.exports = function(Sequelize, db){
     Industries: Industries
   };
 };
-

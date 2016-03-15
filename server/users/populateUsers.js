@@ -10,7 +10,6 @@ This code
 var db        = require('../config/db');
 var userQueries = require('./userQueries.js');
 
-
 var firstNames = ['joe','bob','jon','al','kim','joan','julie','bee','ann','beth'];
 var lastNames = ['a','b','c','d','e','f','g','h','i','j'];
 var createFakeUsers = function(num) {
@@ -23,9 +22,10 @@ var createFakeUsers = function(num) {
     theUser.email = '@'+x;
     theUser.salt = 1;
     theUser.password = '1';
+    theUser.traits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)];
     y--;
     userQueries.addUser(theUser);
   }
 };
 
-createFakeUsers(35);
+createFakeUsers(50);

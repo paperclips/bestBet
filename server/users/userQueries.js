@@ -1,6 +1,8 @@
 // user queries
 var models = require('../config/db.js');
 var users = models.Users;
+var users_traits = models.Users_Traits;
+
 var jwt = require( 'jwt-simple' );
 var Q = require('q');
 var bcrypt = require('bcrypt');
@@ -20,12 +22,10 @@ var addUser = function (userDetails) {
         }})
         .spread(function(user, created){
           if (!created) {
-            console.log("already exists");
             // response.send("account already exists, should redirect to login");
           } else {
-            console.log("in else?");
               // add userDefaults to user_traits
-              updateUserInfo(newUser.id, userDetails.traits)
+              updateUserInfo(user.id, userDetails.traits)
                 .then(function (user) {
                   return user;
                 });
@@ -36,7 +36,7 @@ var addUser = function (userDetails) {
         });
       }); // closes hash
 };
-// get if attampted password is correct for userName ...
+// get if attempted password is correct for userName ...
 var checkPass = function (userName, attPass) {
   return function() {
     users.findOne({where: {userName: userName}}).then(function(user) {
@@ -61,26 +61,40 @@ var getUserInfo = function (userName) {
       return user;
     });
 };
-
+// TODO: fix the damn thing
 var updateUserInfo = function (userId, newTraits) {
-  user_traits.findAll(
+
+  console.log(users_traits.findAll());
+  users_traits.findAll(
     {where:{userId:userId}})
-      .then(function(traits){
-        traits.forEach(function(trait, index){
-          user_traits.update(
+    .then(function(userTraits){
+      if(userTraits.length === 0) {
+        console.log('new user traits ', newTraits);
+        newTraits.forEach(function(trait, index){
+          users_traits.create(
+            {
+              traitId:newTraits[index],
+              userId:userId,
+              industryId:1
+            });
+        });
+      } else {
+        console.log("traits ",userTraits);
+        newTraits.forEach(function(trait, index){
+          users_traits.update(
             {traitId:newTraits[index]},
             {where:{id:trait.id}
+          });
         });
-      });
-    });
-  };
+      }
+  });
+};
 
 var getAllUsers = function () {
-  users.findAll()
-    .then(function(users){
-      return users;
-    });
+  return users.findAll({});
 };
+
+
 
 // functions used only here:
 var hashPass = function(pass){

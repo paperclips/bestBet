@@ -5,19 +5,19 @@ var votes = models.Votes;
 // add vote
 var addVote = function (vote) {
   votes.create({
-    establishmentId: voteId,
+    establishmentId: vote.establishmentId,
     traitId: vote.traitId,
     userId: vote.userId,
-    voteValue: vote.value,
+    voteValue: vote.voteValue,
     time: vote.time,
-    zone: vote.zone
+    zoneNumber: vote.zone
   })
   .then(function (vote){
     return;
-    })
-    .catch(function(err){
-      error.log(err);
-    });
+  })
+  .catch(function(err){
+    console.error(err);
+  });
 };
 // get all votes in a set of zones
 var getVotesInZones = function (zones) {
@@ -29,7 +29,7 @@ var getVotesInZones = function (zones) {
 
 module.exports = {
   addVote: addVote,
-  getVotesInZone: getVotesInZone
+  getVotesInZones: getVotesInZones
 };
 //
 // var Votes = db.define('Votes', {
