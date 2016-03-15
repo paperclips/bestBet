@@ -1,7 +1,7 @@
-package com.client;
+package com.airmapsexplorer;
 
-import com.facebook.react.ReactActivity;
 import com.AirMaps.AirPackage;
+import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
@@ -16,7 +16,7 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "client";
+        return "AirMapsExplorer";
     }
 
     /**
