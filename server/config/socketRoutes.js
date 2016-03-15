@@ -1,11 +1,11 @@
 // requirements
+var app       = require('../server.js');
 var http      = require('http').Server(app);
 var io        = require('socket.io')(http);
 
 var userCtrl  = require('../users/userController.js');
 var voteCtrl  = require('../votes/voteController.js');
 var authCtrl  = require('../auth/authController.js');
-var app       = require('../server.js')();
 
 // auth routes (only thing we're using routes for is auth)
 

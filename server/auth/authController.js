@@ -21,7 +21,7 @@ function signin (req, res) {
       userQueries.getUserInfo(userName)
         .then(function (userDetails) {
           var token = jwt.encode(user, 'secret');
-          response.json({token: token});
+          res.json({token: token});
           // sets user zones needed and sends the data back to the user
           userCtrl.setUserZone(null, req.bodyzone);
         });

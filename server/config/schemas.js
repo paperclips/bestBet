@@ -83,7 +83,6 @@ module.exports = function(Sequelize, db){
 
   Users_Traits.belongsTo(Industries, { foreignKey: 'industryId' });
   Genres.belongsTo(Industries, { foreignKey: 'industryId' });
-  Genres.belongsTo(Industries, { foreignKey: 'industryId' });
   YelpCategories_Genres.belongsTo(Genres, { foreignKey: 'genreId' });
 
   return {

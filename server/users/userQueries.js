@@ -63,13 +63,11 @@ var getUserInfo = function (userName) {
 };
 // TODO: fix the damn thing
 var updateUserInfo = function (userId, newTraits) {
-
   console.log(users_traits.findAll());
   users_traits.findAll(
     {where:{userId:userId}})
     .then(function(userTraits){
       if(userTraits.length === 0) {
-        console.log('new user traits ', newTraits);
         newTraits.forEach(function(trait, index){
           users_traits.create(
             {
@@ -79,7 +77,6 @@ var updateUserInfo = function (userId, newTraits) {
             });
         });
       } else {
-        console.log("traits ",userTraits);
         newTraits.forEach(function(trait, index){
           users_traits.update(
             {traitId:newTraits[index]},

@@ -9,7 +9,8 @@ var setUserZone = function (socket, userOldZone, userNewZone) {
   var zones = [];
   // if the user has just logged in, we need to get all 9 relevant zones
   if(userOldZone === null) {
-    zones = zoneHandler.getSurroundingZones(userNewZone);
+    zones[1] = zoneHandler.getSurroundingZones(userNewZone);
+    zones[0] = [];
   } else {// if there was an old zone though, we only need to send a certain group of new ones
     zones = zoneHandler.getNewZonesOnMove(userOldZone, userNewZone);
   }
