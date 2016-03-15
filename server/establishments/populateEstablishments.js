@@ -32,6 +32,7 @@ var popTraits = function () {
   });
 };
 popTraits();
+
 // Save 20 restaurants into Establishments
 var yelp = new Yelp({
   consumer_key: 'FW8Mc7pREwM4wb6tDXCqQQ',
@@ -75,16 +76,33 @@ zipcodes.forEach(function(zipcode){
 
 
 
-// // Function that determines user zones and calculates what data to request from the server
+//Function that determines user zones and calculates what data to request from the server
+var damnZoneCalculator = function(userLat,userLong){
+  var westLimit = -122.517591, //Westernmost longitude of SF
+      eastLimit = -122.356817, //Easternmost longitude of SF
+      northLimit = 37.827747, //Northernmost latitude of SF
+      southLimit = 37.700643, //Southernmost latitude of SF
+      zoneVertical = 0.7, //Vertical size of the zone in miles
+      zoneHorizontal = 0.4, //Horizontal size of the zone in miles
+      verticalLength = 8.78, //Total vertical length of SF
+      horizontalLength = 8.79; //Total horizontal length of SF
 
- // // var notZoneCalculator = function(lat,long){
- // //  var leftLimit = -122.517591,
- // //      rightLimit = -122.356817,
- // //      topLimit = 37.827747,
- // //      bottomLimit = 37.700643;
- // //};
+  var verticalZones = Math.ceil(verticalLength / zoneVertical); //13 vertical zones
+  var horizontalZones = Math.ceil(horizontalZones / zoneHorizontal); //22 horizontal zones
+
+  var verticalStep = (northLimit - southLimit) / verticalZones;
+  var horizontalStep = (eastLimit - westLimit) / horizontalZones;
+
+  var userX = Math.floor((userLat - westLimit) / horizontalStep);
+  var userY = Math.floor((userLong - southLimit) / verticalStep);
+  
+  if(userX < 0 || userY < 0){
+    return undefined; //User is outside San Francisco
+  }
+
+  var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
+  return zoneNumber;
+};
 
 
-// // SQUARE:
-// // Lat from 37.700643 to 37.827747;
-// // Long from -122.517591 to -122.356817
+console.log(damnZoneCalculator());
