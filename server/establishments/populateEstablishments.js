@@ -77,32 +77,31 @@ zipcodes.forEach(function(zipcode){
 
 
 //Function that determines user zones and calculates what data to request from the server
-var damnZoneCalculator = function(userLat,userLong){
-  var westLimit = -122.517591, //Westernmost longitude of SF
-      eastLimit = -122.356817, //Easternmost longitude of SF
-      northLimit = 37.827747, //Northernmost latitude of SF
+var zoneCalculator = function(userLat,userLong){
+  var northLimit = 37.827747, //Northernmost latitude of SF
       southLimit = 37.700643, //Southernmost latitude of SF
+      westLimit = -122.517591, //Westernmost longitude of SF
+      eastLimit = -122.356817, //Easternmost longitude of SF
       zoneVertical = 0.7, //Vertical size of the zone in miles
       zoneHorizontal = 0.4, //Horizontal size of the zone in miles
       verticalLength = 8.78, //Total vertical length of SF
       horizontalLength = 8.79; //Total horizontal length of SF
 
   var verticalZones = Math.ceil(verticalLength / zoneVertical); //13 vertical zones
-  var horizontalZones = Math.ceil(horizontalZones / zoneHorizontal); //22 horizontal zones
+  var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal); //22 horizontal zones
 
   var verticalStep = (northLimit - southLimit) / verticalZones;
   var horizontalStep = (eastLimit - westLimit) / horizontalZones;
 
-  var userX = Math.floor((userLat - westLimit) / horizontalStep);
-  var userY = Math.floor((userLong - southLimit) / verticalStep);
+
+  var userX = Math.round((userLong - westLimit) / horizontalStep);
+  var userY = Math.round((userLat - southLimit) / verticalStep);
   
-  if(userX < 0 || userY < 0){
+  if(userX<0 || userX > horizontalZones || userY<0 || userY > verticalZones){
+    console.log('User is outside San Francisco');
     return undefined; //User is outside San Francisco
   }
 
   var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
   return zoneNumber;
 };
-
-
-console.log(damnZoneCalculator());
