@@ -75,7 +75,6 @@ zipcodes.forEach(function(zipcode){
 })
 
 
-
 //Function that determines user zones and calculates what data to request from the server
 var zoneCalculator = function(userLat,userLong){
   var northLimit = 37.827747, //Northernmost latitude of SF
@@ -87,21 +86,40 @@ var zoneCalculator = function(userLat,userLong){
       verticalLength = 8.78, //Total vertical length of SF
       horizontalLength = 8.79; //Total horizontal length of SF
 
-  var verticalZones = Math.ceil(verticalLength / zoneVertical); //13 vertical zones
-  var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal); //22 horizontal zones
-
-  var verticalStep = (northLimit - southLimit) / verticalZones;
-  var horizontalStep = (eastLimit - westLimit) / horizontalZones;
-
-
-  var userX = Math.round((userLong - westLimit) / horizontalStep);
-  var userY = Math.round((userLat - southLimit) / verticalStep);
-  
-  if(userX<0 || userX > horizontalZones || userY<0 || userY > verticalZones){
+  if(userLat < southLimit || userLat > northLimit || userLong < westLimit || userLong > eastLimit){
     console.log('User is outside San Francisco');
     return undefined; //User is outside San Francisco
   }
 
+  var verticalZones = Math.ceil(verticalLength / zoneVertical)-1; //13 vertical zones, zero indexed (0 to 12)
+  var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal)-1; //22 horizontal zones, zero indexed (0 to 21)
+
+  var verticalStep = (southLimit - northLimit) / verticalZones;
+  var horizontalStep = (westLimit - eastLimit) / horizontalZones;
+
+  //Zones are numbered from top-left to bottom-right
+  var userX = Math.floor(Math.abs((userLong - eastLimit) / horizontalStep));
+  var userY = Math.floor(Math.abs((userLat - northLimit) / verticalStep));
+  
   var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
   return zoneNumber;
 };
+
+
+//// Test function for zoneCalculator
+// var northLimit = 37.827747, //Northernmost latitude of SF
+//     southLimit = 37.700643, //Southernmost latitude of SF
+//     westLimit = -122.517591, //Westernmost longitude of SF
+//     eastLimit = -122.356817;
+
+// var mult = 0;
+// var mult2 = 0;
+// var k=1;
+// while(k+1){
+//   k = zoneCalculator(northLimit+(southLimit-northLimit)/12*mult,eastLimit+(westLimit-eastLimit)/21*mult2);
+//   console.log(k)
+//   if(k <= 12000){
+//     mult++;
+//   }
+//   mult2++;
+// };
