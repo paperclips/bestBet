@@ -12,6 +12,7 @@ var db = require('../config/db');
 
 var Industries = db.Industries;
 var Establishments = db.Establishments;
+var Traits = db.Traits;
 
 // Add Restaurant industry
 Industries.findOrCreate({where: {name: 'Restaurants'}})
@@ -22,7 +23,15 @@ Industries.findOrCreate({where: {name: 'Restaurants'}})
     console.log(created)
   });
 
+var traitNames = ['Good Food', 'Good Drinks', 'Good Deal', 'Not Noisy', 'Not Crowded', 'No Wait','Good Service','Upscale', 'Veggie Friendly'];
+var traitSensitivities = [false, false, false, true, true, true, true, false, false];
 
+var popTraits = function () {
+  traitNames.forEach(function(trait, index){
+    Traits.findOrCreate({where:{name:trait,timeSensitive:traitSensitivities[index]}});
+  });
+};
+popTraits();
 // Save 20 restaurants into Establishments
 var yelp = new Yelp({
   consumer_key: 'FW8Mc7pREwM4wb6tDXCqQQ',
@@ -79,11 +88,3 @@ zipcodes.forEach(function(zipcode){
 // // SQUARE:
 // // Lat from 37.700643 to 37.827747;
 // // Long from -122.517591 to -122.356817
-
-
-
-
-
-
-
-

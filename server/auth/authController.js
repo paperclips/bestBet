@@ -1,15 +1,40 @@
 // auth controller
+var voteQueries = require('../votes/voteQueries.js');
+var userQueries = require('../user/userQueries.js');
+var zoneHandler = require('../services/zoneHandler.js');
+var jwt = require( 'jwt-simple' );
+var userCtrl = require('../users/userController.js');
 
 function signup (req, res) {
-
+  userQueries.addUser(req.body.user)
+    .then(user){
+      // get the zoneNumber based on the user's lat and long
+      // sets user zones needed and sends the data back to the user
+      userCtrl.setUserZone(null, req.body.zone);
+    });
 };
 
 function signin (req, res) {
-
+  userQueries.checkPass(req.body.userName, req.body.attPass)
+  .then(function (result){
+    if(result === true) {
+      userQueries.getUserInfo(userName)
+        .then(function (userDetails) {
+          var token = jwt.encode(user, 'secret');
+          res.json({token: token});
+          // sets user zones needed and sends the data back to the user
+          userCtrl.setUserZone(null, req.body.zone);
+        });
+    } else if (result === false){
+      res.redirect('/signin');
+    } else {
+      res.redirect('/signup');
+    }
+  });
 };
 
 function signout (req, res) {
-
+  // destroy token deal
 };
 
 module.exports = {
