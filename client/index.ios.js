@@ -2,51 +2,75 @@
  * Sample React Native App
  * https://github.com/facebook/react-native
  */
-'use strict';
-import React, {
+// 'use strict';
+// import React, {
+//   AppRegistry,
+//   Component,
+//   StyleSheet,
+//   Text,
+//   View
+// } from 'react-native';
+
+// class client extends Component {
+//   render() {
+//       return <App />
+//   }
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     backgroundColor: '#F5FCFF',
+//   },
+//   welcome: {
+//     fontSize: 20,
+//     textAlign: 'center',
+//     margin: 10,
+//   },
+//   instructions: {
+//     textAlign: 'center',
+//     color: '#333333',
+//     marginBottom: 5,
+//   },
+// });
+
+//AppRegistry.registerComponent('client', () => client);
+
+
+// var React = require('react-native');
+// var {
+//   AppRegistry,
+//   Component,
+//   StyleSheet,
+//   Text,
+//   View
+//   } = React;
+
+// var App = require('./App');
+
+// class client extends Component {
+//   render() {
+//       return <App />
+//   }
+// }
+
+// AppRegistry.registerComponent('AirMapsExplorer', () => AirMapsExplorer);
+// AppRegistry.registerComponent('client', () => client);
+
+
+var React = require('react-native');
+var {
   AppRegistry,
-  Component,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+  } = React;
 
-class client extends Component {
+var App = require('./App');
+
+var AirMapsExplorer = React.createClass({
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+    return <App />
   },
 });
 
-AppRegistry.registerComponent('client', () => client);
+AppRegistry.registerComponent('AirMapsExplorer', () => AirMapsExplorer);
