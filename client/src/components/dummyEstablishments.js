@@ -8144,7 +8144,7 @@ var convertToCoordinate = function (data) {
   });
 };
 var converted = convertToCoordinate(dummyData);
-
+//.slice(0,50)
 module.exports = {
   dummyData: converted
 };

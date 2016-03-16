@@ -10,15 +10,18 @@ var {
 
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
-// console.log(restaurants);
+
+var RestaurantMarker = require('./restaurantMarker.js');
+
+
 var styles = require('../assets/styles.js').mapStyles;
 
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE = 37.7805;
+const LONGITUDE = -122.4152;
+const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var DisplayLatLng = React.createClass({
@@ -55,6 +58,12 @@ var DisplayLatLng = React.createClass({
     };
   },
 
+  inView (coords) {
+    return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
+      && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
+      )
+  },
+
   render() {
     return (
       <View style={styles.container}>
@@ -67,7 +76,8 @@ var DisplayLatLng = React.createClass({
         >
         {this.state.establishments.map((establishment) => (
           <MapView.Marker coordinate={establishment.coordinate}>
-          </MapView.Marker>
+            <RestaurantMarker/>
+          </MapView.Marker> 
         ))}
         </MapView>
         <View style={[styles.bubble, styles.latlng]}>

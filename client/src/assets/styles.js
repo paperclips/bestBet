@@ -77,7 +77,48 @@ var appStyles = StyleSheet.create({
  },
 });
 
+var markerStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
+  },
+  bubble: {
+    flex: 0,
+    height:7,
+    width:7,
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    backgroundColor: 'blue',
+    borderRadius: 3.5,
+  },
+  dollar: {
+    color: '#FFFFFF',
+    fontSize: 10,
+  },
+  amount: {
+    color: '#FFFFFF',
+    fontSize: 13,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderWidth: 4,
+    borderColor: 'transparent',
+    borderTopColor: 'black',
+    alignSelf: 'center',
+    marginTop: -9,
+  },
+  arrowBorder: {
+    backgroundColor: 'transparent',
+    borderWidth: 4,
+    borderColor: 'transparent',
+    borderTopColor: '#D23F44',
+    alignSelf: 'center',
+    marginTop: -0.5,
+  },
+});
+
 module.exports = {
   appStyles: appStyles,
-  mapStyles: mapStyles
+  mapStyles: mapStyles,
+  markerStyles: markerStyles
 };
