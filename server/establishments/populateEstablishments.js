@@ -41,8 +41,9 @@ var yelp = new Yelp({
   token_secret: 'YcJRVQiAt4m9unwCH_VK1JhLAjo'
 });
 
-var zipcodes = [94102];//, 94102,94103, 94104, 94105, 94107, 94108, 94109, 94110, 94111, 94112, 94114, 94115, 94116, 94117, 94118, 94121, 94122, 94123, 94124, 94127, 94129, 94130, 94131, 94132, 94133, 94134, 94158];
-var offsets = [0];//20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,420,440,460,480,500,520,540,560,580,600,620,640,660,680,700,720,740,760,780,800,820,840,860,880,900,920,940,960,980];
+var zipcodes = [94107];//, 94102,94103, 94104, 94105, 94107, 94108, 94109, 94110, 94111, 94112, 94114, 94115, 94116, 94117, 94118, 94121, 94122, 94123, 94124, 94127, 94129, 94130, 94131, 94132, 94133, 94134, 94158];
+var offsets = [0];
+//20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,420,440,460,480,500,520,540,560,580,600,620,640,660,680,700,720,740,760,780,800,820,840,860,880,900,920,940,960,980];
 
 zipcodes.forEach(function(zipcode){
   offsets.forEach(function(offset){
@@ -67,7 +68,15 @@ zipcodes.forEach(function(zipcode){
                                        }
                                       });
         })
-      })
+      }) // add create dummy object of rests
+      // .then(function(items){
+      //   Establishments.findAll()
+      //     .then(function(objects){
+      //       objects.forEach(function(object){
+      //         console.log(object.dataValues);
+      //       });
+      //     });
+      // })
       .catch(function (err) {
         console.error(err);
       });
@@ -100,7 +109,7 @@ var zoneCalculator = function(userLat,userLong){
   //Zones are numbered from top-left to bottom-right
   var userX = Math.floor(Math.abs((userLong - eastLimit) / horizontalStep));
   var userY = Math.floor(Math.abs((userLat - northLimit) / verticalStep));
-  
+
   var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
   return zoneNumber;
 };
