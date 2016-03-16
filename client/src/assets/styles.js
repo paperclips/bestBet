@@ -78,6 +78,6 @@ var appStyles = StyleSheet.create({
 });
 
 module.exports = {
-  app: app,
-  map: map
+  appStyles: appStyles,
+  mapStyles: mapStyles
 };
