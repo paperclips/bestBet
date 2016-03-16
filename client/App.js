@@ -1,7 +1,6 @@
 var React = require('react-native');
 var {
   View,
-  StyleSheet,
   TouchableOpacity,
   ScrollView,
   Text,
@@ -11,7 +10,7 @@ var token = true;
 
 var DisplayLatLng = require('./src/components/map.js');
 
-var styles = require('./src/assets/styles.js').app;
+var styles = require('./src/assets/styles.js').appStyles;
 
 var App = React.createClass({
 

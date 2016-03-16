@@ -1,10 +1,8 @@
 // EACH STYLE SHEET represents the styles for that particular component
 var React = require('react-native');
-var {
-  StyleSheet,
-} = React;
+var {StyleSheet} = React;
 
-var map = StyleSheet.create({
+var mapStyles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,
@@ -44,7 +42,7 @@ var map = StyleSheet.create({
   },
 });
 
-var app = StyleSheet.create({
+var appStyles = StyleSheet.create({
  container: {
    position: 'absolute',
    top: 0,

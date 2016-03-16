@@ -1,6 +1,5 @@
 var React = require('react-native');
 var {
-  StyleSheet,
   PropTypes,
   View,
   Text,
@@ -10,7 +9,7 @@ var {
 
 var MapView = require('react-native-maps');
 
-var styles = require('../assets/styles.js').map;
+var styles = require('../assets/styles.js').mapStyles;
 
 var { width, height } = Dimensions.get('window');
 
