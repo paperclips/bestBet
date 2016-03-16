@@ -8139,7 +8139,10 @@ var dummyData = [{ id: 1,
 
 var convertToCoordinate = function (data) {
   return data.map(function (record){
+    // add coordinate, b/c react-native-maps wants lat and long in an object
     record.coordinate = {latitude: record.latitude, longitude: record.longitude};
+    // dummy rating based on yelp
+    record.ourRating = record.yelpRating*(20-(Math.random()*15));
     return record;
   });
 };

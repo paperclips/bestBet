@@ -18,7 +18,7 @@ var RestaurantMarker = React.createClass({
   },
   render() {
     return (
-      <View style={styles.container}>
+      <View ref="m1"style={styles.container}>
         <View style={styles.bubble}>
         </View>
       </View>

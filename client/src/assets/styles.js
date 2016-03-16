@@ -84,8 +84,8 @@ var markerStyles = StyleSheet.create({
   },
   bubble: {
     flex: 0,
-    height:7,
-    width:7,
+    height:12,
+    width:12,
     flexDirection: 'row',
     alignSelf: 'flex-start',
     backgroundColor: 'blue',
