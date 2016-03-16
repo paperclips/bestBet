@@ -7,8 +7,10 @@ var {
   TouchableOpacity,
 } = React;
 
-var MapView = require('react-native-maps');
 
+var MapView = require('react-native-maps');
+var restaurants = require('./dummyEstablishments.js').dummyData;
+// console.log(restaurants);
 var styles = require('../assets/styles.js').mapStyles;
 
 var { width, height } = Dimensions.get('window');
@@ -28,6 +30,15 @@ var DisplayLatLng = React.createClass({
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
+      me: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE
+      },
+      you: {
+        latitude: LATITUDE + .01,
+        longitude: LONGITUDE + .02
+      },
+      establishments: restaurants
     };
   },
 
@@ -62,6 +73,22 @@ var DisplayLatLng = React.createClass({
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
+        <MapView.Marker coordinate={this.state.me}> 
+          </MapView.Marker>
+             <MapView.Marker coordinate={this.state.you}> 
+          </MapView.Marker>
+        <MapView.Marker coordinate={this.state.establishments[0].coordinate}> 
+          </MapView.Marker>
+             <MapView.Marker coordinate={this.state.establishments[1].coordinate}> 
+          </MapView.Marker>
+          <MapView.Marker coordinate={this.state.establishments[2].coordinate}> 
+          </MapView.Marker>
+        {this.state.establishments.forEach((establishment) =>
+          <View>
+          <MapView.Marker coordinate={establishment.coordinate}> 
+          </MapView.Marker>
+          </View>
+        )}
         </MapView>
         <View style={[styles.bubble, styles.latlng]}>
           <Text style={{ textAlign: 'center'}}>
@@ -82,3 +109,6 @@ var DisplayLatLng = React.createClass({
 });
 
 module.exports = DisplayLatLng;
+
+
+var dummyRestaurants = [];
