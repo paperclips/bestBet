@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js  --recursive",
-    "test:watch": "npm run test -- --watch"
+    "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
     "immutable": "^3.7.6",
