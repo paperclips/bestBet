@@ -19,8 +19,8 @@ var styles = require('../assets/styles.js').mapStyles;
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.7805;
-const LONGITUDE = -122.4152;
+const LATITUDE = 37.7832096;
+const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 

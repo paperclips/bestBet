@@ -20,7 +20,6 @@ var RestaurantMarker = React.createClass({
     return (
       <View style={styles.container}>
         <View style={styles.bubble}>
-          <Text style={styles.dollar}></Text>
         </View>
       </View>
     );
