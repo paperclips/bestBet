@@ -30,14 +30,6 @@ var DisplayLatLng = React.createClass({
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      me: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE
-      },
-      you: {
-        latitude: LATITUDE + .01,
-        longitude: LONGITUDE + .02
-      },
       establishments: restaurants
     };
   },
@@ -73,22 +65,10 @@ var DisplayLatLng = React.createClass({
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
-        <MapView.Marker coordinate={this.state.me}> 
+        {this.state.establishments.map((establishment) => (
+          <MapView.Marker coordinate={establishment.coordinate}>
           </MapView.Marker>
-             <MapView.Marker coordinate={this.state.you}> 
-          </MapView.Marker>
-        <MapView.Marker coordinate={this.state.establishments[0].coordinate}> 
-          </MapView.Marker>
-             <MapView.Marker coordinate={this.state.establishments[1].coordinate}> 
-          </MapView.Marker>
-          <MapView.Marker coordinate={this.state.establishments[2].coordinate}> 
-          </MapView.Marker>
-        {this.state.establishments.forEach((establishment) =>
-          <View>
-          <MapView.Marker coordinate={establishment.coordinate}> 
-          </MapView.Marker>
-          </View>
-        )}
+        ))}
         </MapView>
         <View style={[styles.bubble, styles.latlng]}>
           <Text style={{ textAlign: 'center'}}>
