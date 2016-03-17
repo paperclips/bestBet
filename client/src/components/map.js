@@ -5,25 +5,26 @@ var {
   Text,
   Dimensions,
   TouchableOpacity,
+  StyleSheet,
+  ScrollView,
   Image
 } = React;
 
-
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
-var RestaurantMarker = require('./restaurantMarker.js');
+var RestaurantMarkerView = require('./restaurantMarker.js');
 var InfoCallout = require('./infoCallout');
-
+var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
 
 var styles = require('../assets/styles.js').mapStyles;
 
 var { width, height } = Dimensions.get('window');
-
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.7832096;
 const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
 
 var DisplayLatLng = React.createClass({
   getInitialState() {
@@ -34,7 +35,7 @@ var DisplayLatLng = React.createClass({
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-
+      zone: zoneCalculator(37.7832096, -122.4091516),
       establishments: restaurants,
     };
   },
@@ -48,6 +49,11 @@ var DisplayLatLng = React.createClass({
 
   onRegionChange(region) {
     this.setState({ region });
+    this.setState({ zone: this.calcZone()});
+  },
+  calcZone() {
+    var curRegion = this.state.region;
+    return zoneCalculator(curRegion.latitude, curRegion.longitude);
   },
 
   jumpRandom() {
@@ -72,7 +78,6 @@ var DisplayLatLng = React.createClass({
       && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
       )
   },
-
   render() {
     return (
       <View style={styles.container}>
@@ -84,31 +89,26 @@ var DisplayLatLng = React.createClass({
           onRegionChange={this.onRegionChange}
         >
         {this.state.establishments.map((establishment) => (
-          <MapView.Marker
-            ref="m1"
+          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}>
+            <RestaurantMarkerView 
+              ref="m1"
               coordinate={establishment.coordinate}
-              calloutOffset={{ x: -8, y: 28 }}
-              calloutAnchor={{ x: 0.5, y: 0.4 }}> 
-                <MapView.Callout tooltip>
-                    <InfoCallout tooltip>
-                      <Text style={{ color: '#fff' }}>Score:{establishment.ourRating.toPrecision(2)}</Text>
-                    </InfoCallout>
-                </MapView.Callout>
-          </MapView.Marker> 
-        ))}
+              calloutOffset={{ x: 0, y: 0 }}
+              calloutAnchor={{ x: 0, y: 0}}
+            >
+            </RestaurantMarkerView>
+            <MapView.Callout tooltip>
+              <InfoCallout>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>ZN: {establishment.zoneNumber} SC:{establishment.ourRating.toPrecision(2)}</Text>
+              </InfoCallout>
+              </MapView.Callout>
+            </MapView.Marker>
+          ))}
         </MapView>
         <View style={[styles.bubble, styles.latlng]}>
           <Text style={{ textAlign: 'center'}}>
-            {`${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}`}
+            {`${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
           </Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this.jumpRandom} style={[styles.bubble, styles.button]}>
-            <Text>Jump</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.animateRandom} style={[styles.bubble, styles.button]}>
-            <Text>Animate</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
@@ -116,24 +116,3 @@ var DisplayLatLng = React.createClass({
 });
 
 module.exports = DisplayLatLng;
-
-//               <RestaurantMarker>
-//              </RestaurantMarker>
-
-
-var dummyRestaurants = [];
-
-
-// <MapView.Marker
-//             ref="m3"
-//             coordinate={markers[2].coordinate}
-//             calloutOffset={{ x: -8, y: 28 }}
-//             calloutAnchor={{ x: 0.5, y: 0.4 }}
-//           >
-//             <MapView.Callout tooltip>
-//               <CustomCallout>
-//                 <Text style={{ color: '#fff' }}>This is a custom callout bubble view</Text>
-//               </CustomCallout>
-//             </MapView.Callout>
-//           </MapView.Marker>
-//         </MapView>
