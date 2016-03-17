@@ -106,7 +106,7 @@ var DisplayLatLng = React.createClass({
             </RestaurantMarkerView>
             <MapView.Callout tooltip>
               <InfoCallout>
-                <Text style={{ color: 'black' }}>Score:{establishment.ourRating.toPrecision(2)}</Text>
+                <Text style={{ color: 'black' }}>ZN: {establishment.zoneNumber} Sc:{establishment.ourRating.toPrecision(4)}</Text>
               </InfoCallout>
               </MapView.Callout>
             </MapView.Marker>
