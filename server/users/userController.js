@@ -37,11 +37,9 @@ var sendData = function (socket, zones) {
           socket.broadcast.to(id).emit('newData', {establishments:zoneEstabs,votes: zoneVotes});
           });
         });
-    });
-
 };
 // changes the user's stored default traits in the DB -- doesn't send anything back
-function changeDefaultTraits (user) {
+var changeDefaultTraits = function (user) {
   userQueries.updateUserInfo(user.id, user.traits);
   // note - the client will also reset them locally, and we WON'T send these back to the client
   // the client will only reference them on next login

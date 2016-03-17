@@ -1,22 +1,32 @@
-// requirements
-var app       = require('../server.js');
-var http      = require('http').Server(app);
-var io        = require('socket.io')(http);
+//Express server
+var express    = require('express');
+var app        = express();
+var bodyParser = require('body-parser');
+var http       = require('http').Server(app);
+var io         = require('socket.io')(http);
 
-var userCtrl  = require('../users/userController.js');
-var voteCtrl  = require('../votes/voteController.js');
-var authCtrl  = require('../auth/authController.js');
+var userCtrl   = require('../users/userController.js');
+var voteCtrl   = require('../votes/voteController.js');
+var authCtrl   = require('../auth/authController.js');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // auth routes (only thing we're using routes for is auth)
-
 app.post('/api/signup', authCtrl.signup );
 app.post('/api/signin', authCtrl.signin );
 app.post('/api/signout', authCtrl.signout);
 
 // socket listeners
 io.on( 'connection' , function(socket){
-  console.log('connection estab' );
-  // WHEN user moves to a new zone:
+  console.log('user connected' );
+
+  socket.emit('state', 'Somebody connected. Emit state');
+  socket.on('helloWorld', function() {
+    console.log('CCCCCConeccted!!!!');
+  });
+
+
   socket.on('userMoved', function(userDetails) {
     // listener recieves new zone # in userDetails(and knows socketId)
     console.log('a user moved ', userDetails);
@@ -41,6 +51,8 @@ io.on( 'connection' , function(socket){
   });
 
 });
+
+exports = module.exports = app;
 
 // NOTES on client-side events we don't need to listen for and why:
 

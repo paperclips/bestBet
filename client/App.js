@@ -10,9 +10,8 @@ var {
 
 var DisplayLatLng = require('./src/components/map.js');
 var Signup = require('./src/components/signup.js');
-
 var styles = require('./src/assets/styles.js').appStyles;
-//var Login = require('./src/component/login.js');
+
 var App = React.createClass({
 
   getInitialState: function() {

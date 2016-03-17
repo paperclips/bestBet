@@ -12,5 +12,5 @@ var getEstabsInZones = function(zones) {
 };
 
 module.exports = {
-  getEstabs: getEstablishments
+  getEstabs: getEstabsInZones
 };
