@@ -69,14 +69,19 @@ zipcodes.forEach(function(zipcode){
                                       });
         })
       }) // add create dummy object of rests
-      // .then(function(items){
-      //   Establishments.findAll()
-      //     .then(function(objects){
-      //       objects.forEach(function(object){
-      //         console.log(object.dataValues);
-      //       });
-      //     });
-      // })
+      .then(function(items){
+        Establishments.findAll()
+          .then(function(objects){
+            var results = objects.map(function(object){
+              var obj = object.dataValues; 
+              obj.coordinate = {latitude: object.latitude, longitude: object.longitude};
+              obj.ourRating = object.yelpRating*(20-(Math.random()*15));
+              obj.zoneNumber = zoneCalculator(object.latitude, object.longitude);
+              return obj;
+            });
+            console.log(results)
+          });
+      })
       .catch(function (err) {
         console.error(err);
       });

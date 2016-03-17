@@ -10,14 +10,14 @@ var {
 var infoCallout = React.createClass({
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
+      <View style={styles.container}>
         <View style={styles.bubble}>
           <View style={styles.amount}>
             {this.props.children}
           </View>
         </View>
-        <View style={styles.arrowBorder} />
-        <View style={styles.arrow} />
+         <View style={styles.arrow} />
+
       </View>
     );
   },
@@ -29,15 +29,13 @@ var styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   bubble: {
-    width: 140,
+    width: 120,
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    backgroundColor: '#4da2ab',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    backgroundColor: 'pink',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
     borderRadius: 6,
-    borderColor: '#007a87',
-    borderWidth: 0.5,
   },
   dollar: {
 
@@ -51,9 +49,9 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 16,
     borderColor: 'transparent',
-    borderTopColor: '#4da2ab',
+    borderTopColor: 'pink',
     alignSelf: 'center',
-    marginTop: -32,
+    marginTop: 6,
   },
   arrowBorder: {
     backgroundColor: 'transparent',
@@ -61,7 +59,7 @@ var styles = StyleSheet.create({
     borderColor: 'transparent',
     borderTopColor: '#007a87',
     alignSelf: 'center',
-    marginTop: -0.5,
+    marginTop: 0.5,
   },
 });
 
