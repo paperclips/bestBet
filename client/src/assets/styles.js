@@ -40,6 +40,14 @@ var mapStyles = StyleSheet.create({
     marginVertical: 20,
     backgroundColor: 'transparent',
   },
+  //   eventList: {
+  //   position: 'absolute',
+  //   top: height / 4,
+  //   left: 0,
+  //   right: 0,
+  //   bottom: 0,
+  // },
+
 });
 
 var appStyles = StyleSheet.create({
@@ -84,12 +92,12 @@ var markerStyles = StyleSheet.create({
   },
   bubble: {
     flex: 0,
-    height:12,
-    width:12,
+    height:10,
+    width:10,
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    backgroundColor: 'blue',
-    borderRadius: 3.5,
+    backgroundColor: 'red',
+    borderRadius: 5,
   },
   dollar: {
     color: '#FFFFFF',
