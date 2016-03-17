@@ -40,13 +40,6 @@ var mapStyles = StyleSheet.create({
     marginVertical: 20,
     backgroundColor: 'transparent',
   },
-  //   eventList: {
-  //   position: 'absolute',
-  //   top: height / 4,
-  //   left: 0,
-  //   right: 0,
-  //   bottom: 0,
-  // },
 
 });
 
@@ -76,7 +69,7 @@ var appStyles = StyleSheet.create({
    position: 'absolute',
    top: 20,
    left: 12,
-   backgroundColor: 'rgba(255,255,255,0.4)',
+   backgroundColor: 'rgba(255,255,255,0.6)',
    padding: 12,
    borderRadius: 20,
    width: 80,
@@ -90,14 +83,14 @@ var markerStyles = StyleSheet.create({
     flexDirection: 'column',
     alignSelf: 'flex-start',
   },
-  bubble: {
+  dot: {
     flex: 0,
-    height:10,
-    width:10,
+    height:12,
+    width:12,
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    backgroundColor: 'red',
-    borderRadius: 5,
+    backgroundColor: 'blue',
+    borderRadius: 6,
   },
   dollar: {
     color: '#FFFFFF',
@@ -121,12 +114,50 @@ var markerStyles = StyleSheet.create({
     borderColor: 'transparent',
     borderTopColor: '#D23F44',
     alignSelf: 'center',
-    marginTop: -0.5,
+    marginTop: 0,
+  },
+});
+
+var calloutStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    alignSelf: 'flex-start'
+  },
+  bubble: {
+    flexDirection: 'row',
+    alignSelf: 'auto',
+    backgroundColor: 'green',
+    opacity:.6,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 30,
+  },
+  dollar: {
+
+    //color: '#FFFFFF',
+    //fontSize: 10,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderWidth: 16,
+    borderColor: 'transparent',
+    borderTopColor: 'green',
+    alignSelf: 'flex-start',
+    marginTop: 1,
+  },
+  arrowBorder: {
+    backgroundColor: 'transparent',
+    borderWidth: 16,
+    borderColor: 'transparent',
+    borderTopColor: '#007a87',
+    alignSelf: 'center',
+    marginTop: 0.5,
   },
 });
 
 module.exports = {
   appStyles: appStyles,
   mapStyles: mapStyles,
-  markerStyles: markerStyles
+  markerStyles: markerStyles,
+  calloutStyles, calloutStyles
 };

@@ -93,13 +93,13 @@ var DisplayLatLng = React.createClass({
             <RestaurantMarkerView 
               ref="m1"
               coordinate={establishment.coordinate}
-              calloutOffset={{ x: 15, y: 0 }}
+              calloutOffset={{ x: 0, y: 0 }}
               calloutAnchor={{ x: 0, y: 0}}
             >
             </RestaurantMarkerView>
             <MapView.Callout tooltip>
               <InfoCallout>
-                <Text style={{ color: 'black' }}>ZN: {establishment.zoneNumber} Sc:{establishment.ourRating.toPrecision(4)}</Text>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>ZN: {establishment.zoneNumber} SC:{establishment.ourRating.toPrecision(2)}</Text>
               </InfoCallout>
               </MapView.Callout>
             </MapView.Marker>

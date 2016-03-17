@@ -240,7 +240,7 @@ var RestaurantMarkerView = React.createClass({
         ref="marker"
         {...this.props}
 >
-        <View style={styles.bubble}>
+        <View style={styles.dot}>
         </View>
       </AIRMapMarker>
     );
