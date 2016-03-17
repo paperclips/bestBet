@@ -13,7 +13,7 @@ var styles = require('../assets/styles.js').markerStyles;
 
 var { width, height } = Dimensions.get('window');
 
-var RestaurantMarkerView = React.createClass({
+var RestaurantRatingView = React.createClass({
 
   viewConfig: {
     uiViewClassName: 'AIRMapMarker',
@@ -244,9 +244,12 @@ var RestaurantMarkerView = React.createClass({
     );
   },
 });
-var AIRMapMarker = requireNativeComponent('AIRMapMarker', RestaurantMarkerView);
+var AIRMapMarker = requireNativeComponent('AIRMapMarker', RestaurantRatingView);
 
-module.exports = RestaurantMarkerView;
+module.exports = {
+  RestaurantRatingView: RestaurantRatingView
+};
+
 
 // <AIRMapMarker
 //         ref="marker"

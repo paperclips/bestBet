@@ -1,20 +1,16 @@
-// rest marker view
-
 var React = require('react-native');
 var {
+  StyleSheet,
   View,
   Text,
-  Dimensions,
-  requireNativeComponent,
-  PropTypes,
+    requireNativeComponent,
+    PropTypes
 } = React;
 
 var styles = require('../assets/styles.js').markerStyles;
 
-var { width, height } = Dimensions.get('window');
-
-var RestaurantMarkerView = React.createClass({
-
+var simpleRating = React.createClass({
+  
   viewConfig: {
     uiViewClassName: 'AIRMapMarker',
     validAttributes: {
@@ -232,26 +228,18 @@ var RestaurantMarkerView = React.createClass({
    _onPress: function(e) {
     this.props.onPress && this.props.onPress(e);
   },
-
   render() {
     return (
-      <AIRMapMarker style={styles.container}
+          <AIRMapMarker style={styles.container}
         onPress={this._onPress}
         ref="marker"
         {...this.props}>
-          <View style={styles.dot}/>
+          <View style={styles.rating}/>
       </AIRMapMarker>
     );
   },
 });
-var AIRMapMarker = requireNativeComponent('AIRMapMarker', RestaurantMarkerView);
+var AIRMapMarker = requireNativeComponent('AIRMapMarker', simpleRating);
 
-module.exports = RestaurantMarkerView;
 
-// <AIRMapMarker
-//         ref="marker"
-//         {...this.props}
-//         image={image}
-//         style={[styles.marker, this.props.style]}
-//         onPress={this._onPress}
-//       />
+module.exports = simpleRating;

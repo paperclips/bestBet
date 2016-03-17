@@ -20,11 +20,7 @@ var zoneCalculator = function(userLat,userLong){
   //Zones are numbered from top-left to bottom-right
   var userX = Math.floor(Math.abs((userLong - eastLimit) / horizontalStep));
   var userY = Math.floor(Math.abs((userLat - northLimit) / verticalStep));
-  console.log("usx ", userX);
-  console.log("usy ",userY);
-
   var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
-  console.log(zoneNumber);
   return zoneNumber;
 };
 

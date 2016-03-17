@@ -13,6 +13,8 @@ var {
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
+var RestaurantRatingView = require('./simpleRating.js');
+
 var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
 
@@ -90,12 +92,24 @@ var DisplayLatLng = React.createClass({
         >
         {this.state.establishments.map((establishment) => (
           <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}>
+            <RestaurantRatingView 
+              coordinate={establishment.coordinate}
+              ref="m1"
+              style={{
+                backgroundColor: 'red',
+                height:24,
+                width:24,
+                opacity:.3,
+                borderRadius: 12
+              }}>
+            </RestaurantRatingView>
+
             <RestaurantMarkerView 
               ref="m1"
               coordinate={establishment.coordinate}
               calloutOffset={{ x: 0, y: 0 }}
               calloutAnchor={{ x: 0, y: 0}}
-            >
+            > 
             </RestaurantMarkerView>
             <MapView.Callout tooltip>
               <InfoCallout>

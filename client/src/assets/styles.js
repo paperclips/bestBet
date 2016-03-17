@@ -124,8 +124,24 @@ var markerStyles = StyleSheet.create({
     width:12,
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    backgroundColor: 'blue',
+    backgroundColor: 'black',
     borderRadius: 6,
+  },
+  rating: {
+    flex: 0,
+    backgroundColor: 'red',
+    height:24,
+    width:24,
+    opacity:.3,
+    borderRadius: 12,
+    alignSelf: 'flex-start',
+  },
+  score: {
+    backgroundColor: 'red',
+    height:24,
+    width:24,
+    opacity:.3,
+    borderRadius: 12
   },
   dollar: {
     color: '#FFFFFF',
