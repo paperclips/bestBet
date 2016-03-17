@@ -1,70 +1,80 @@
 var React = require('react-native');
 var {
-  View,
-  TouchableOpacity,
-  ScrollView,
+  AppRegistry,
+  StyleSheet,
   Text,
+  View,
+  TouchableHighlight
 } = React;
 
-var token = true;
-
 var DisplayLatLng = require('./src/components/map.js');
-var Login = require('./src/components/login.js')
-var styles = require('./src/assets/styles.js').appStyles;
+var Signup = require('./src/components/signup.js');
 
+var styles = require('./src/assets/styles.js').appStyles;
+//var Login = require('./src/component/login.js');
 var App = React.createClass({
 
-  getInitialState() {
-    return { Component: null };
+  getInitialState: function() {
+        return {
+            componentSelected: 'Intro'
+        }
+    },
+
+  changeComponent: function(component) {
+    this.setState({
+        componentSelected: component    
+    })
   },
 
-  renderExample([Component, title], i) {
-    return (
-      <TouchableOpacity
-        key={i}
-        style={styles.button}
-        onPress={() => this.setState({ Component })}
-      >
-        <Text>{title}</Text>
-      </TouchableOpacity>
-    );
+  renderComponent: function(component) {
+        if(component == 'Intro') {
+        return <ComponentIntro changeComponent={this.changeComponent} />
+      } else if(component == 'Signup') {
+        return <ComponentSignup changeComponent={this.changeComponent} />
+      } else if(component == 'map') {
+        return <ComponentMap changeComponent={this.changeComponent} />
+      }
   },
 
-  renderBackButton() {
+  render: function() {
     return (
-      <TouchableOpacity
-        style={styles.back}
-        onPress={() => this.setState({ Component: null })}
-      >
-        <Text style={{ fontWeight: 'bold', fontSize: 30 }}>&larr;</Text>
-      </TouchableOpacity>
-    );
-  },
-
-  renderExamples(examples) {
-    var { Component } = this.state;
-    return (
-      <View style={styles.container}>
-        {Component && <Component />}
-        {Component && this.renderBackButton()}
-        {!Component && (
-          <ScrollView
-            contentContainerStyle={styles.scrollview}
-            showsVerticalScrollIndicator={false}>
-            {examples.map(this.renderExample)}
-          </ScrollView>
-        )}
+      <View style={{flex: 1}}>
+        {this.renderComponent(this.state.componentSelected)}
       </View>
     );
-  },
-
-  render() {
-    return this.renderExamples([
-      [DisplayLatLng, 'Tracking Position']
-    ]);
-  },
+  }
 });
 
+var ComponentIntro = React.createClass({
+    render: function() {
+    return (
+        <View style={{backgroundColor: '#cceeff', paddingTop:100, flex:1}}>
+        <Text style={{color: '#0066ff', marginBottom:200, textAlign: 'center', fontSize:20}}>welcome to our app</Text>
+        <TouchableHighlight onPress={() => this.props.changeComponent('Signup') } style={styles.buttonIntro}><Text>Signup</Text></TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.changeComponent('map') } style={styles.buttonIntro}><Text>login (redirect to map for now)</Text></TouchableHighlight>
+      </View>
+    )
+  }
+})
 
+var ComponentSignup = React.createClass({
+    render: function() {
+    return (
+      <View style={{flex: 1}}>
+      {<Signup />}
+      </View>
+    )
+  }
+})
+
+var ComponentMap = React.createClass({
+    render: function() {
+    return (
+        <View style={{flex: 1}}>
+        {<DisplayLatLng />}
+        </View>
+    )
+  }
+})
 
 module.exports = App;
