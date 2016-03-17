@@ -6,9 +6,12 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "immutable": "^3.7.6",
     "react-native": "^0.21.0",
     "react-native-maps": "^0.3.1",
     "react-redux": "^4.4.0",
-    "redux": "^3.3.1"
-  }
+    "redux": "^3.3.1",
+    "tcomb-form-native": "^0.4.0"
+  },
+  "devDependencies": {}
 }
