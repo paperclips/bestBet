@@ -29,7 +29,7 @@ var styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   bubble: {
-    width: 120,
+    width: 120  ,
     flexDirection: 'row',
     alignSelf: 'flex-start',
     backgroundColor: 'pink',
