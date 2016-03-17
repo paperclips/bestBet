@@ -10,13 +10,11 @@ var {
   Image
 } = React;
 
-var zoneCalc = require('./zoneCalculator.js').zoneCalc;
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
 var InfoCallout = require('./infoCallout');
-let id = 0;
-
+var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
 
 var styles = require('../assets/styles.js').mapStyles;
 
@@ -26,7 +24,6 @@ const LATITUDE = 37.7832096;
 const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const ZONE = zoneCalc(LATITUDE,LONGITUDE);
 
 
 var DisplayLatLng = React.createClass({
@@ -37,9 +34,8 @@ var DisplayLatLng = React.createClass({
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
-        zone: zoneCalc(37.7832096,-122.4091516)
       },
-      events:[],
+      zone: zoneCalculator(37.7832096, -122.4091516),
       establishments: restaurants,
     };
   },
@@ -53,14 +49,11 @@ var DisplayLatLng = React.createClass({
 
   onRegionChange(region) {
     this.setState({ region });
-    this.setState({ region: this.calcZone() });
+    this.setState({ zone: this.calcZone()});
   },
-  calcZone(reg) {
-    var {region} = this.state;
-    return {
-      ...this.state.region,
-      zone: zoneCalc(this.state.latitude, this.state.longitude)
-    }
+  calcZone() {
+    var curRegion = this.state.region;
+    return zoneCalculator(curRegion.latitude, curRegion.longitude);
   },
 
   jumpRandom() {
@@ -114,7 +107,7 @@ var DisplayLatLng = React.createClass({
         </MapView>
         <View style={[styles.bubble, styles.latlng]}>
           <Text style={{ textAlign: 'center'}}>
-            {`${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.region.zone}`}
+            {`${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
           </Text>
         </View>
       </View>
@@ -122,6 +115,35 @@ var DisplayLatLng = React.createClass({
   },
 });
 
+// var zoneCalculator = function(userLat,userLong){
+//   var northLimit = 37.827747, //Northernmost latitude of SF
+//       southLimit = 37.700643, //Southernmost latitude of SF
+//       westLimit = -122.517591, //Westernmost longitude of SF
+//       eastLimit = -122.356817, //Easternmost longitude of SF
+//       zoneVertical = 0.7, //Vertical size of the zone in miles
+//       zoneHorizontal = 0.4, //Horizontal size of the zone in miles
+//       verticalLength = 8.78, //Total vertical length of SF
+//       horizontalLength = 8.79; //Total horizontal length of SF
+
+//   if(userLat < southLimit || userLat > northLimit || userLong < westLimit || userLong > eastLimit){
+//     console.log('User is outside San Francisco');
+//     return -1; //User is outside San Francisco
+//   }
+//   console.log(userLat,userLong);
+//   var verticalZones = Math.ceil(verticalLength / zoneVertical)-1; //13 vertical zones, zero indexed (0 to 12)
+//   var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal)-1; //22 horizontal zones, zero indexed (0 to 21)
+//   var verticalStep = Math.abs(southLimit - northLimit) / verticalZones;
+//   var horizontalStep = Math.abs(westLimit - eastLimit) / horizontalZones;
+//   //Zones are numbered from top-left to bottom-right
+//   var userX = Math.floor(Math.abs((userLong - eastLimit) / horizontalStep));
+//   var userY = Math.floor(Math.abs((userLat - northLimit) / verticalStep));
+//   console.log("usx ", userX);
+//   console.log("usy ",userY);
+
+//   var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
+//   console.log(zoneNumber);
+//   return zoneNumber;
+// };
 
 module.exports = DisplayLatLng;
 

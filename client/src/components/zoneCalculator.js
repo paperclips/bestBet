@@ -10,18 +10,18 @@ var zoneCalculator = function(userLat,userLong){
 
   if(userLat < southLimit || userLat > northLimit || userLong < westLimit || userLong > eastLimit){
     console.log('User is outside San Francisco');
-    return undefined; //User is outside San Francisco
+    return "outside service zone"; //User is outside San Francisco
   }
 
   var verticalZones = Math.ceil(verticalLength / zoneVertical)-1; //13 vertical zones, zero indexed (0 to 12)
   var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal)-1; //22 horizontal zones, zero indexed (0 to 21)
-
   var verticalStep = (southLimit - northLimit) / verticalZones;
   var horizontalStep = (westLimit - eastLimit) / horizontalZones;
-
   //Zones are numbered from top-left to bottom-right
   var userX = Math.floor(Math.abs((userLong - eastLimit) / horizontalStep));
   var userY = Math.floor(Math.abs((userLat - northLimit) / verticalStep));
+  console.log("usx ", userX);
+  console.log("usy ",userY);
 
   var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
   console.log(zoneNumber);
@@ -29,5 +29,5 @@ var zoneCalculator = function(userLat,userLong){
 };
 
 module.exports = {
-  zoneCalc: zoneCalculator
+  zoneCalculator: zoneCalculator
 };
