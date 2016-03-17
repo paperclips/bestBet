@@ -1,7 +1,18 @@
 // EACH STYLE SHEET represents the styles for that particular component
 var React = require('react-native');
 var {StyleSheet} = React;
-
+var introStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  button: {
+    flexDirection: 'row',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ededed'
+  }
+});
 var mapStyles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -64,6 +75,14 @@ var appStyles = StyleSheet.create({
    paddingHorizontal: 18,
    paddingVertical: 12,
    borderRadius: 20,
+ },
+ buttonIntro: {
+  padding:10, 
+  height:45, 
+  overflow:'hidden', 
+  borderRadius:4,
+  margin: 10,
+  backgroundColor: 'white'
  },
  back: {
    position: 'absolute',

@@ -9,7 +9,7 @@ var {
 var token = true;
 
 var DisplayLatLng = require('./src/components/map.js');
-
+var Login = require('./src/components/login.js')
 var styles = require('./src/assets/styles.js').appStyles;
 
 var App = React.createClass({
