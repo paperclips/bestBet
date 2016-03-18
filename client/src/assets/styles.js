@@ -141,17 +141,28 @@ var appStyles = StyleSheet.create({
 
 var markerStyles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
+    backgroundColor:'black',
+    justifyContent: 'center',
+     height:18,
+     width:18,
+     borderRadius: 9,
     alignSelf: 'flex-start',
   },
   dot: {
     flex: 0,
-    height:12,
-    width:12,
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
-    backgroundColor: 'blue',
-    borderRadius: 6,
+    height:3,
+    width:3,
+    borderRadius: 1.5,
+    backgroundColor:'black',
+    paddingHorizontal: 6,
+    paddingVertical: 6,
+  },
+  score: {
+    backgroundColor: 'red',
+    height:24,
+    width:24,
+    opacity:.3,
+    borderRadius: 12
   },
   dollar: {
     color: '#FFFFFF',
@@ -181,14 +192,14 @@ var markerStyles = StyleSheet.create({
 
 var calloutStyles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    alignSelf: 'flex-start'
+    flexDirection: 'row',
   },
   bubble: {
     flexDirection: 'row',
     alignSelf: 'auto',
-    backgroundColor: 'green',
-    opacity:.6,
+    top: 48,
+    backgroundColor: 'black',
+    opacity:.5,
     paddingHorizontal: 5,
     paddingVertical: 5,
     borderRadius: 30,
@@ -197,23 +208,10 @@ var calloutStyles = StyleSheet.create({
 
     //color: '#FFFFFF',
     //fontSize: 10,
-  },
-  arrow: {
-    backgroundColor: 'transparent',
-    borderWidth: 16,
-    borderColor: 'transparent',
-    borderTopColor: 'green',
-    alignSelf: 'flex-start',
-    marginTop: 1,
-  },
-  arrowBorder: {
-    backgroundColor: 'transparent',
-    borderWidth: 16,
-    borderColor: 'transparent',
-    borderTopColor: '#007a87',
-    alignSelf: 'center',
-    marginTop: 0.5,
-  },
+  }
+
+
+
 });
 
 module.exports = {
