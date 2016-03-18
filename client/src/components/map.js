@@ -13,7 +13,6 @@ var {
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
-var RestaurantRatingView = require('./simpleRating.js');
 
 var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
@@ -91,32 +90,26 @@ var DisplayLatLng = React.createClass({
           onRegionChange={this.onRegionChange}
         >
         {this.state.establishments.map((establishment) => (
-          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}>
-            <RestaurantRatingView 
-              coordinate={establishment.coordinate}
-              ref="m1"
-              style={{
-                backgroundColor: 'red',
-                height:24,
-                width:24,
-                opacity:.3,
-                borderRadius: 12
-              }}>
-            </RestaurantRatingView>
 
+          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}>
+            
             <RestaurantMarkerView 
-              ref="m1"
               coordinate={establishment.coordinate}
+              centerOffset={{x:0,y:0}}
               calloutOffset={{ x: 0, y: 0 }}
               calloutAnchor={{ x: 0, y: 0}}
-            > 
-            </RestaurantMarkerView>
+              ref="m1"
+              style={dotStyles[Math.floor(establishment.ourRating/10)]}
+              />
+
             <MapView.Callout tooltip>
               <InfoCallout>
                 <Text style={{ fontWeight:'bold', color: 'white' }}>ZN: {establishment.zoneNumber} SC:{establishment.ourRating.toPrecision(2)}</Text>
               </InfoCallout>
               </MapView.Callout>
+ 
             </MapView.Marker>
+
           ))}
         </MapView>
         <View style={[styles.bubble, styles.latlng]}>
@@ -130,3 +123,64 @@ var DisplayLatLng = React.createClass({
 });
 
 module.exports = DisplayLatLng;
+
+
+var dotStyles = [
+  {},
+  {},
+  {},
+  {
+    backgroundColor: 'red',
+    opacity:.3,
+    justifyContent: 'center',
+    height:8,
+    width:8,
+    borderRadius: 4,
+    alignSelf: 'flex-start'
+  },
+  {
+    backgroundColor: 'red',
+    opacity:.7,
+    justifyContent: 'center',
+    height:8,
+    width:8,
+    borderRadius: 4,
+    alignSelf: 'flex-start'
+  },
+  {
+    backgroundColor: 'red',
+    opacity:1,
+    justifyContent: 'center',
+    height:8,
+    width:8,
+    borderRadius: 4,
+    alignSelf: 'flex-start'
+  },
+  {
+    backgroundColor: 'green',
+    opacity:.7,
+    justifyContent: 'center',
+    height:12,
+    width:12,
+    borderRadius: 6,
+    alignSelf: 'flex-start'
+  },
+  {
+    backgroundColor: 'green',
+    opacity:.7,
+    justifyContent: 'center',
+    height:18,
+    width:18,
+    borderRadius: 9,
+    alignSelf: 'flex-start'
+  },
+  {
+    backgroundColor: 'green',
+    opacity:.7,
+    justifyContent: 'center',
+    height:24,
+    width:24,
+    borderRadius: 12,
+    alignSelf: 'flex-start'
+  }
+];

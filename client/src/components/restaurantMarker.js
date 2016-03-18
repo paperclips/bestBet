@@ -239,7 +239,7 @@ var RestaurantMarkerView = React.createClass({
         onPress={this._onPress}
         ref="marker"
         {...this.props}>
-          <View style={styles.dot}/>
+          <View/>
       </AIRMapMarker>
     );
   },
