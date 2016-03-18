@@ -24,9 +24,35 @@ var signupStyles = StyleSheet.create({
     borderColor: '#48BBEC',
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 10,
+    margin: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
+  },
+  list: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  row: {
+    justifyContent: 'center',
+    padding: 3,
+    margin: 3,
+    width: 100,
+    height: 100,
+    backgroundColor: '#F6F6F6',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#CCC'
+  },
+  thumb: {
+    width: 64,
+    height: 64
+  },
+  text: {
+    flex: 1,
+    marginTop: 5,
+    fontWeight: 'bold'
   }
 });
 var mapStyles = StyleSheet.create({
