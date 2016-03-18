@@ -14,12 +14,13 @@ var Form = t.form.Form;
 var styles = require('../assets/styles.js').signupStyles;
 var User   = t.struct({
   name: t.String,              // a required string
-  email: t.maybe(t.String),    // an optional string
+  //email: t.maybe(t.String),    // an optional string
   password: t.String
   //age: t.Number,               // a required number
   //rememberMe: t.Boolean        // a boolean
 });
 
+console.log('signuppage!!');
 var options = {
   fields: {
     password: {
@@ -28,7 +29,6 @@ var options = {
     }
   }
 };
-
 
 var THUMB_URLS = [
 'http://iconizer.net/files/Kids/orig/thumbnail.png', 
@@ -100,9 +100,6 @@ var Signup = React.createClass({
         this._genRows(this._pressData)
       )});
     },
-
-
-
 
   render: function() {
     return (
