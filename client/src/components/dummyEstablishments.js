@@ -9314,6 +9314,6 @@ console.log(converted);
 */
 
 module.exports = {
-  dummyData: dummyData
+  dummyData: dummyData.slice(0,50);
 };
 
