@@ -4,22 +4,22 @@ var {StyleSheet} = React;
 var signupStyles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginTop: 50,
-    padding: 20,
+    marginTop: 55,
+    padding: 15,
     backgroundColor: '#ffffff',
   },
   title: {
-    fontSize: 30,
+    fontSize: 10,
     alignSelf: 'center',
-    marginBottom: 30
+    marginBottom: 3
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 12,
     color: 'white',
     alignSelf: 'center'
   },
   button: {
-    height: 36,
+    height: 32,
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 1,
@@ -37,8 +37,8 @@ var signupStyles = StyleSheet.create({
     justifyContent: 'center',
     padding: 3,
     margin: 3,
-    width: 100,
-    height: 100,
+    width: 85,
+    height: 85,
     backgroundColor: '#F6F6F6',
     alignItems: 'center',
     borderWidth: 1,
@@ -46,8 +46,8 @@ var signupStyles = StyleSheet.create({
     borderColor: '#CCC'
   },
   thumb: {
-    width: 64,
-    height: 64
+    width: 50,
+    height: 50
   },
   text: {
     flex: 1,

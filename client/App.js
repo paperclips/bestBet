@@ -4,6 +4,7 @@ var {
   StyleSheet,
   Text,
   View,
+  NavigatorIOS,
   TouchableHighlight
 } = React;
 
@@ -59,10 +60,19 @@ var ComponentIntro = React.createClass({
 
 var ComponentSignup = React.createClass({
     render: function() {
+    // return (
+    //   <NavigatorIOS
+    //       style={{flex: 0.3}}
+    //       initialRoute={{
+    //           title: 'Signup Page',
+    //           component: Signup,
+    //       }}
+    //   />
+    // )
     return (
-      <View style={{flex: 1}}>
-      {<Signup />}
-      </View>
+        <View style={{flex: 1}}>
+        {<Signup />}
+        </View>
     )
   }
 })
