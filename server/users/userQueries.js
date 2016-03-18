@@ -5,7 +5,7 @@ var users_traits = models.Users_Traits;
 
 var jwt = require( 'jwt-simple' );
 var Q = require('q');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 
 // helpers:
