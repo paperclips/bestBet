@@ -1,7 +1,8 @@
 /*
 This code
-1) Creates "Restaurant" record with id=1 in Industries,
-4) Pulls 20 restaurants using Yelp API and saves them into Establishments table
+1) Creates "Restaurant" record with id=1 in Industries table,
+2) Creates 9 traits in the Traits table,
+3) Pulls 20 restaurants using Yelp API and saves them into Establishments table
 
 To run, uncomment code below and restart server. Once database is updated, comment out code
 
@@ -10,6 +11,7 @@ To run, uncomment code below and restart server. Once database is updated, comme
 var Yelp = require('yelp');
 var db = require('../config/db');
 
+var zoneCalculator = require('./zoneCalculator');
 var Industries = db.Industries;
 var Establishments = db.Establishments;
 var Traits = db.Traits;
@@ -50,6 +52,7 @@ zipcodes.forEach(function(zipcode){
     yelp.search({ term: '', location: zipcode, category_filter: 'restaurants',offset: offset, limit: 20})
       .then(function (data) {
         data.businesses.forEach(function(item){
+          var zoneNumber = zoneCalculator(item.location.coordinate.latitude, item.location.coordinate.longitude);
           Establishments.findOrCreate({where: {yelpId: item.id},
                                        defaults:{
                                          name: item.name,
@@ -64,76 +67,25 @@ zipcodes.forEach(function(zipcode){
                                          address: item.location.address[0] + ', ' + item.location.city + ', ' + item.location.state_code + ' ' + item.location.postal_code,
                                          phoneNumber: item.display_phone,
                                          industryId: 1,
-                                         zoneNumber: 0,
-                                       }
-                                      });
+                                         zoneNumber: zoneNumber
+                                      }});
         })
       }) // add create dummy object of rests
-      .then(function(items){
-        Establishments.findAll()
-          .then(function(objects){
-            var results = objects.map(function(object){
-              var obj = object.dataValues; 
-              obj.coordinate = {latitude: object.latitude, longitude: object.longitude};
-              obj.ourRating = object.yelpRating*(20-(Math.random()*15));
-              obj.zoneNumber = zoneCalculator(object.latitude, object.longitude);
-              return obj;
-            });
-            console.log(results)
-          });
-      })
-      .catch(function (err) {
-        console.error(err);
-      });
+      // .then(function(items){
+      //   Establishments.findAll()
+      //     .then(function(objects){
+      //       var results = objects.map(function(object){
+      //         var obj = object.dataValues; 
+      //         obj.coordinate = {latitude: object.latitude, longitude: object.longitude};
+      //         obj.ourRating = object.yelpRating*(20-(Math.random()*15));
+      //         obj.zoneNumber = zoneCalculator(object.latitude, object.longitude);
+      //         return obj;
+      //       });
+      //       console.log(results)
+      //     });
+      // })
+      // .catch(function (err) {
+      //   console.error(err);
+      // });
   })
 })
-
-
-//Function that determines user zones and calculates what data to request from the server
-var zoneCalculator = function(userLat,userLong){
-  var northLimit = 37.827747, //Northernmost latitude of SF
-      southLimit = 37.700643, //Southernmost latitude of SF
-      westLimit = -122.517591, //Westernmost longitude of SF
-      eastLimit = -122.356817, //Easternmost longitude of SF
-      zoneVertical = 0.7, //Vertical size of the zone in miles
-      zoneHorizontal = 0.4, //Horizontal size of the zone in miles
-      verticalLength = 8.78, //Total vertical length of SF
-      horizontalLength = 8.79; //Total horizontal length of SF
-
-  if(userLat < southLimit || userLat > northLimit || userLong < westLimit || userLong > eastLimit){
-    console.log('User is outside San Francisco');
-    return undefined; //User is outside San Francisco
-  }
-
-  var verticalZones = Math.ceil(verticalLength / zoneVertical)-1; //13 vertical zones, zero indexed (0 to 12)
-  var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal)-1; //22 horizontal zones, zero indexed (0 to 21)
-
-  var verticalStep = (southLimit - northLimit) / verticalZones;
-  var horizontalStep = (westLimit - eastLimit) / horizontalZones;
-
-  //Zones are numbered from top-left to bottom-right
-  var userX = Math.floor(Math.abs((userLong - eastLimit) / horizontalStep));
-  var userY = Math.floor(Math.abs((userLat - northLimit) / verticalStep));
-
-  var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
-  return zoneNumber;
-};
-
-
-//// Test function for zoneCalculator
-// var northLimit = 37.827747, //Northernmost latitude of SF
-//     southLimit = 37.700643, //Southernmost latitude of SF
-//     westLimit = -122.517591, //Westernmost longitude of SF
-//     eastLimit = -122.356817;
-
-// var mult = 0;
-// var mult2 = 0;
-// var k=1;
-// while(k+1){
-//   k = zoneCalculator(northLimit+(southLimit-northLimit)/12*mult,eastLimit+(westLimit-eastLimit)/21*mult2);
-//   console.log(k)
-//   if(k <= 12000){
-//     mult++;
-//   }
-//   mult2++;
-// };

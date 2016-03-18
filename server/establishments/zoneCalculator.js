@@ -27,6 +27,4 @@ var zoneCalculator = function(userLat,userLong){
   return zoneNumber;
 };
 
-module.exports = {
-  zoneCalc: zoneCalc
-};
+module.exports = zoneCalculator;

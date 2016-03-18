@@ -7,7 +7,7 @@ This code
 // for now everyone is in the same zone
 */
 
-var db        = require('../config/db');
+var db          = require('../config/db');
 var userQueries = require('./userQueries.js');
 
 var firstNames = ['joe','bob','jon','al','kim','joan','julie','bee','ann','beth'];
