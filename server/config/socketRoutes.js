@@ -18,14 +18,12 @@ app.post('/api/signin', authCtrl.signin );
 app.post('/api/signout', authCtrl.signout);
 
 // socket listeners
-io.on( 'connection' , function(socket){
+io.on('connect', function(socket){
   console.log('user connected' );
 
-  socket.emit('state', 'Somebody connected. Emit state');
-  socket.on('helloWorld', function() {
-    console.log('CCCCCConeccted!!!!');
+  socket.on('Get establishments',function(data){
+    userCtrl.sendData(socket,data.zones);
   });
-
 
   socket.on('userMoved', function(userDetails) {
     // listener recieves new zone # in userDetails(and knows socketId)
@@ -52,7 +50,7 @@ io.on( 'connection' , function(socket){
 
 });
 
-exports = module.exports = app;
+exports = module.exports = http;
 
 // NOTES on client-side events we don't need to listen for and why:
 

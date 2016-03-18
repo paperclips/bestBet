@@ -1,7 +1,7 @@
-var app = require('./config/socketRoutes.js');
+var http = require('./config/socketRoutes.js');
 
 var port = process.env.PORT || 3000;
-app.listen(port);
+http.listen(port);
 console.log('Server listening on port ' + port);
 
 // These modules populates the db:
@@ -11,3 +11,6 @@ console.log('Server listening on port ' + port);
 // var populateEstablishements = require('./establishments/populateEstablishments');
 // var populateUsers           = require('./users/populateUsers');
 // var populateVotes           = require('./votes/populateVotes');
+
+
+

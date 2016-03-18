@@ -34,7 +34,7 @@ var sendData = function (socket, zones) {
       voteQueries.getVotesInZones(zones)
         .then(function(zoneVotes){
           // then emit that to the that socketId
-          socket.broadcast.to(id).emit('newData', {establishments:zoneEstabs,votes: zoneVotes});
+          socket.emit('newData', {establishments:zoneEstabs,votes: zoneVotes});
           });
         });
 };
@@ -46,5 +46,6 @@ var changeDefaultTraits = function (user) {
 };
 module.exports = {
   setUserZone: setUserZone,
+  sendData: sendData,
   changeDefaultTraits: changeDefaultTraits
 };

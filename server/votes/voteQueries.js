@@ -10,7 +10,7 @@ var addVote = function (vote) {
     userId: vote.userId,
     voteValue: vote.voteValue,
     time: vote.time,
-    zoneNumber: vote.zone
+    zoneNumber: vote.zoneNumber
   })
   .then(function (vote){
     return;
@@ -21,7 +21,7 @@ var addVote = function (vote) {
 };
 // get all votes in a set of zones
 var getVotesInZones = function (zones) {
-  votes.findAll({where:{zone: {$in:zones}}})
+  return votes.findAll({where:{zoneNumber: {$in:zones}}})
     .then(function(votesInZones){
       return votesInZones;
     });
