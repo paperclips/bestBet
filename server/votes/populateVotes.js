@@ -17,7 +17,7 @@ var createFakeVotes = function (numPerUser) {
       users.forEach(function(user){
         for(var x = 0; x < numPerUser; x++) {
           var vote = {};
-          vote.establishmentId = Math.floor(Math.random()*40 + 1);
+          vote.establishmentId = Math.floor(Math.random()*20 + 1);
           vote.traitId = Math.floor(Math.random()*9 + 1);
           vote.userId = user.id;
           vote.voteValue = Boolean(Math.floor(Math.random()*2));
