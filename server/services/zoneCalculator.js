@@ -1,3 +1,6 @@
+var establishmentQueries = require('../establishments/establishmentQueries.js');
+
+
 var zoneCalculator = function(userLat,userLong){
   var northLimit = 37.827747, //Northernmost latitude of SF
       southLimit = 37.700643, //Southernmost latitude of SF
@@ -27,4 +30,16 @@ var zoneCalculator = function(userLat,userLong){
   return zoneNumber;
 };
 
-module.exports = zoneCalculator;
+var zoneOfEstablishment = function(establishmentId) {
+  return establishmentQueries.getEstablishmentById(establishmentId)
+    .then(function(estab) {
+      return (zoneCalculator(estab.dataValues.latitude, estab.dataValues.longitude)) ;
+    });
+};
+
+module.exports = {
+  zoneCalculator: zoneCalculator,
+  zoneOfEstablishment: zoneOfEstablishment
+};
+
+

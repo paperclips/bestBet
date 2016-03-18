@@ -22,7 +22,7 @@ var socket = io.connect(SERVER_ROOT, { jsonp: false });
 // Emit an event to server
 socket.on('connect',function(){
   //To receive establishment data, uncomment this line
-  //socket.emit('Get establishments',{zones: [6004]});  
+  socket.emit('Get establishments',{zones: [6004]});  
 });
 
 socket.on('newData',function(newData){
