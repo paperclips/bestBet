@@ -9297,23 +9297,23 @@ var dummyData = [ { id: 1,
     coordinate: { latitude: 37.77214, longitude: -122.39311 },
     ourRating: 51.74679602496326 } ];
 
-/*
-var convertToCoordinate = function (data) {
-  return data.map(function (record){
-    // add coordinate, b/c react-native-maps wants lat and long in an object
-    record.coordinate = {latitude: record.latitude, longitude: record.longitude};
-    // dummy rating based on yelp
-    record.ourRating = record.yelpRating*(20-(Math.random()*15));
-    record.zoneNumber = zoneCalculator(record.latitude, record.longitude);
-    return record;
+var estabObj = {};
+
+var addTraitFields = function (dummyData) {
+  return dummyData.map(function (estab){
+    estabObj[estab.id] = estab;
+    for (var x = 1; x <10; x++) {
+      estabObj[estab.id][x] = {votes:0,pos:0}; 
+    }
+    return estab;
   });
 };
-var converted = convertToCoordinate(dummyData);
+var converted = addTraitFields(dummyData);
 
-console.log(converted);
-*/
+console.log(estabObj);
+
 
 module.exports = {
-  dummyData: dummyData.slice(0,50)
+  dummyData: estabObj
 };
 

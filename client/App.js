@@ -27,7 +27,7 @@ socket.on('connect',function(){
 
 socket.on('newData',function(newData){
   //New establishment and votes data
-  console.log('GOT NEW DATA', newData);
+  // console.log('GOT NEW DATA', newData);
 })
 
 var App = React.createClass({
@@ -103,5 +103,7 @@ var ComponentMap = React.createClass({
     )
   }
 })
+
+
 
 module.exports = App;

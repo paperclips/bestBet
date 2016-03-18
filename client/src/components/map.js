@@ -9,14 +9,14 @@ var {
   ScrollView,
   Image
 } = React;
+var _ = require('underscore');
 
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
-
+var votes = require('./dummyVotes.js').dummyVotes;
 var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
-
 var styles = require('../assets/styles.js').mapStyles;
 
 var { width, height } = Dimensions.get('window');
@@ -25,6 +25,14 @@ const LATITUDE = 37.7832096;
 const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+var calculateEstablishmentQuality = function () {
+  votes.forEach(function(vote){
+    console.log(vote);
+  });
+};
+
+calculateEstablishmentQuality();
 
 
 var DisplayLatLng = React.createClass({
@@ -89,7 +97,7 @@ var DisplayLatLng = React.createClass({
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
-        {this.state.establishments.map((establishment) => (
+        {_.map(this.state.establishments, (establishment) => (
 
           <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}>
             
