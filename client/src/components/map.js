@@ -14,6 +14,7 @@ var _ = require('underscore');
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
+var UserMarkerView = require('./userMarker.js');
 var votes = require('./dummyVotes.js').dummyVotes;
 var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
@@ -79,10 +80,15 @@ var DisplayLatLng = React.createClass({
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
+      myLocation: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+      },
       zone: zoneCalculator(37.7832096, -122.4091516),
       establishments: restaurants,
       userId:user.id,
-      uPrefs: uPrefs
+      uPrefs: uPrefs,
+      intervalId: -1
     };
   },
   show() {
@@ -109,7 +115,14 @@ var DisplayLatLng = React.createClass({
   addVotesLive() {
     this.setState({establishments: addVotes(this.state.establishments)});
   },
-
+  turnOnVoteFlux () {
+    this.setState({intervalId:window.setInterval(this.addVotesLive, 500)});
+    console.log(this.state.intervalId);
+  },
+  turnOffVoteFlux () {
+    console.log(this.state.intervalId);
+    clearInterval(this.state.intervalId);
+  },
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
       && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
@@ -126,6 +139,9 @@ var DisplayLatLng = React.createClass({
 
           onRegionChange={this.onRegionChange}
         >
+        <MapView.Marker coordinate={this.state.myLocation}>
+          <UserMarkerView />
+        </MapView.Marker>
         {_.map(this.state.establishments, (establishment) => (
 
           <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}
@@ -146,13 +162,13 @@ var DisplayLatLng = React.createClass({
             <MapView.Callout tooltip>
               <InfoCallout>
                 <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
+                  {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
                 </Text>
                 <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
+                  {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
                 </Text>
                 <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
+                  {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
                 </Text>
               </InfoCallout>
             </MapView.Callout>
@@ -163,12 +179,17 @@ var DisplayLatLng = React.createClass({
           ))}
         </MapView>
         <TouchableOpacity onPress={this.changeTrait} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>Change</Text>
+            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>changeTrait</Text>
           </TouchableOpacity>
-                  <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>addVotes</Text>
+              <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>voteOnce</Text>
           </TouchableOpacity>
-
+        <TouchableOpacity onPress={this.turnOnVoteFlux} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>fluxVotes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.turnOffVoteFlux} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>stop</Text>
+          </TouchableOpacity>
         <View style={[styles.bubble, styles.latlng]}>
           <Text style={{ textAlign: 'center'}}>
 

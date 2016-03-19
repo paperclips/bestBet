@@ -148,6 +148,14 @@ var markerStyles = StyleSheet.create({
      borderRadius: 9,
     alignSelf: 'flex-start',
   },
+  me: {
+    height:12,
+    width:12,
+    borderRadius: 7.5,
+    backgroundColor:'cornflowerblue',
+    borderColor: 'darkblue',
+    borderWidth:2,
+  },
   dot: {
     flex: 0,
     height:3,
@@ -198,7 +206,7 @@ var calloutStyles = StyleSheet.create({
     width:100,
     height:100,
     flexDirection: 'row',
-    alignSelf: 'auto',
+    alignSelf: 'flex-end',
     backgroundColor: 'black',
     opacity:.5,
     paddingHorizontal: 0,
@@ -209,6 +217,14 @@ var calloutStyles = StyleSheet.create({
 
     //color: '#FFFFFF',
     //fontSize: 10,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderWidth: 4,
+    borderColor: 'transparent',
+    borderTopColor: 'black',
+    alignSelf: 'center',
+    marginTop: -9,
   }
 
 
