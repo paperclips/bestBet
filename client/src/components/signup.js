@@ -54,52 +54,52 @@ var hashCode = function(str) {
 
 var Signup = React.createClass({
   getInitialState: function() {
-      var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-      return {
-        dataSource: ds.cloneWithRows(this._genRows({})),
-      };
-    },
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    return {
+      dataSource: ds.cloneWithRows(this._genRows({})),
+    };
+  },
 
-    _pressData: ({}: {[key: number]: boolean}),
+  _pressData: ({}: {[key: number]: boolean}),
 
-    componentWillMount: function() {
-      this._pressData = {};
-    },
+  componentWillMount: function() {
+    this._pressData = {};
+  },
 
-    _renderRow: function(rowData: string, sectionID: number, rowID: number) {
-      var rowHash = Math.abs(hashCode(rowData));
-      var imgSource = {
-        uri: THUMB_URLS[rowHash % THUMB_URLS.length],
-      };
-      return (
-        <TouchableHighlight onPress={() => this._pressRow(rowID)} underlayColor='rgba(0,0,0,0)'>
-          <View>
-            <View style={styles.row}>
-              <Image style={styles.thumb} source={imgSource} />
-              <Text style={styles.text}>
-                {rowData}
-              </Text>
-            </View>
+  _renderRow: function(rowData: string, sectionID: number, rowID: number) {
+    var rowHash = Math.abs(hashCode(rowData));
+    var imgSource = {
+      uri: THUMB_URLS[rowHash % THUMB_URLS.length],
+    };
+    return (
+      <TouchableHighlight onPress={() => this._pressRow(rowID)} underlayColor='rgba(0,0,0,0)'>
+        <View>
+          <View style={styles.row}>
+            <Image style={styles.thumb} source={imgSource} />
+            <Text style={styles.text}>
+              {rowData}
+            </Text>
           </View>
-        </TouchableHighlight>
-      );
-    },
+        </View>
+      </TouchableHighlight>
+    );
+  },
 
-    _genRows: function(pressData: {[key: number]: boolean}): Array<string> {
-      var dataBlob = [];
-      for (var ii = 0; ii < 9; ii++) {
-        var pressedText = pressData[ii] ? ' (X)' : '';
-        dataBlob.push('Cell ' + ii + pressedText);
-      }
-      return dataBlob;
-    },
+  _genRows: function(pressData: {[key: number]: boolean}): Array<string> {
+    var dataBlob = [];
+    for (var ii = 0; ii < 9; ii++) {
+      var pressedText = pressData[ii] ? ' (X)' : '';
+      dataBlob.push('Cell ' + ii + pressedText);
+    }
+    return dataBlob;
+  },
 
-    _pressRow: function(rowID: number) {
-      this._pressData[rowID] = !this._pressData[rowID];
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(
-        this._genRows(this._pressData)
-      )});
-    },
+  _pressRow: function(rowID: number) {
+    this._pressData[rowID] = !this._pressData[rowID];
+    this.setState({dataSource: this.state.dataSource.cloneWithRows(
+      this._genRows(this._pressData)
+    )});
+  },
 
   render: function() {
     return (

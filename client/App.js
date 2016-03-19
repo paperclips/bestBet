@@ -9,6 +9,7 @@ var {
 } = React;
 var DisplayLatLng = require('./src/components/map.js');
 var Signup = require('./src/components/signup.js');
+var Login = require('./src/components/login.js');
 var styles = require('./src/assets/styles.js').appStyles;
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
@@ -48,7 +49,7 @@ var App = React.createClass({
 });
 
 var ComponentIntro = React.createClass({
-    render: function() {
+  render: function() {
     return (
         <View style={{backgroundColor: '#cceeff', paddingTop:100, flex:1}}>
         <Text style={{color: '#0066ff', marginBottom:200, textAlign: 'center', fontSize:20}}>welcome to our app</Text>
@@ -60,16 +61,16 @@ var ComponentIntro = React.createClass({
 })
 
 var ComponentSignup = React.createClass({
-    render: function() {
-    // return (
-    //   <NavigatorIOS
-    //       style={{flex: 0.3}}
-    //       initialRoute={{
-    //           title: 'Signup Page',
-    //           component: Signup,
-    //       }}
-    //   />
-    // )
+  render: function() {
+  // return (
+  //   <NavigatorIOS
+  //       style={{flex: 0.3}}
+  //       initialRoute={{
+  //           title: 'Signup Page',
+  //           component: Signup,
+  //       }}
+  //   />
+  // )
     return (
         <View style={{flex: 1}}>
         {<Signup />}
@@ -79,10 +80,10 @@ var ComponentSignup = React.createClass({
 })
 
 var ComponentMap = React.createClass({
-    render: function() {
+  render: function() {
     return (
         <View style={{flex: 1}}>
-        {<DisplayLatLng />}
+        {<Login />}
         </View>
     )
   }
