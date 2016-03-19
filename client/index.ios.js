@@ -10,12 +10,15 @@ import immutable from 'immutable';
 import App from './App.js';
 
 // create a store that has redux-thunk middleware enabled
-// const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+//const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
 // init store with rootReducer
-// const store = createStoreWithMiddleware(rootReducer);
+
+//const store = createStoreWithMiddleware(rootReducer);
 
 // console.log(store.getState().toJS());
+
+
 
 class client extends Component {
   render() {

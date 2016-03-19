@@ -33,7 +33,7 @@ var zoneCalculator = function(userLat,userLong){
 var zoneOfEstablishment = function(establishmentId) {
   return establishmentQueries.getEstablishmentById(establishmentId)
     .then(function(estab) {
-      return (zoneCalculator(estab.dataValues.latitude, estab.dataValues.longitude)) ;
+      return (zoneCalculator(estab.latitude, estab.longitude)) ;
     });
 };
 

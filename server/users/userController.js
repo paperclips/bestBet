@@ -33,15 +33,19 @@ var sendData = function (socket, zones) {
     .then(function(zoneEstabs){
       voteQueries.getVotesInZones(zones)
         .then(function(zoneVotes){
-          // zoneVotes.forEach(function(voteRec){
-          //  console.log(voteRec.dataValues);
-          //  console.log(',');
-          // })
-          // then emit that to the that socketId
-
-          socket.emit('newData', {establishments:zoneEstabs,votes: zoneVotes});
-          });
-        });
+          for(var i=0; i< zoneEstabs.length;i++){
+            var estab = zoneEstabs[i].dataValues;
+            var voteArr = zoneVotes.filter(function(vote){return vote.establishmentId === estab.id})
+                                      .map(function(vote){return {traitId: vote.traitId, voteValue: vote.voteValue, time: vote.time}});
+            
+            estab.votes = voteArr;
+            //Emit events once loop is complete and all establishments have votes array
+            if(i === zoneEstabs.length-1){
+              socket.emit('New Establishments', {establishments:zoneEstabs});  
+            }
+          }
+        })
+    })
 };
 // changes the user's stored default traits in the DB -- doesn't send anything back
 var changeDefaultTraits = function (user) {
