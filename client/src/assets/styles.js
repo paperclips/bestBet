@@ -154,8 +154,8 @@ var markerStyles = StyleSheet.create({
     width:3,
     borderRadius: 1.5,
     backgroundColor:'black',
-    paddingHorizontal: 6,
-    paddingVertical: 6,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
   score: {
     backgroundColor: 'red',
@@ -195,14 +195,15 @@ var calloutStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   bubble: {
+    width:100,
+    height:100,
     flexDirection: 'row',
     alignSelf: 'auto',
-    top: 48,
     backgroundColor: 'black',
     opacity:.5,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
-    borderRadius: 30,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    borderRadius: 50,
   },
   dollar: {
 

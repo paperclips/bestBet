@@ -8226,5 +8226,5 @@ var dummyVotes = [
 ];
 
 module.exports = {
-  dummyVotes: dummyVotes.slice(0,100)
+  dummyVotes: dummyVotes
 };

@@ -7,7 +7,6 @@ var {
   NavigatorIOS,
   TouchableHighlight
 } = React;
-
 var DisplayLatLng = require('./src/components/map.js');
 var Signup = require('./src/components/signup.js');
 var styles = require('./src/assets/styles.js').appStyles;

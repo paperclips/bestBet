@@ -19,6 +19,24 @@ var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
 var styles = require('../assets/styles.js').mapStyles;
 
+// SAMPLE DATA:
+var user = {id: 123, name: 'bribri', token:'abfe45'};
+var uPrefs = [2,5,4];
+var uPrefsSecond = [1,7,2];
+
+var traitNames = {
+  1:'Good Food', 
+  2:'Good Drinks', 
+  3:'Good Deal', 
+  4:'Not Noisy', 
+  5:'Not Crowded', 
+  6:'No Wait',
+  7:'Good Service',
+  8:'Upscale', 
+  9:'Veggie Friendly'
+};
+
+
 var { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.7832096;
@@ -28,12 +46,27 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 var calculateEstablishmentQuality = function () {
   votes.forEach(function(vote){
-    console.log(vote);
+    restaurants[vote.establishmentId].traits[vote.traitId].votes++;
+    if (vote.voteValue === true) {
+      restaurants[vote.establishmentId].traits[vote.traitId].pos++;
+    }
+    if(vote.voteValue.userId === 123) {
+      restaurants[vote.establishmentId].userVoted = true;
+    }
   });
 };
 
-calculateEstablishmentQuality();
+var addVotes = function (establishments) {
+  for(var x = 1; x < 10; x++) {
+    establishments[11].traits[x].pos += Math.floor(Math.random()*5);
+    establishments[11].traits[x].votes += Math.floor(5+ Math.random()*5);
+  }
+  return establishments;
 
+};
+
+calculateEstablishmentQuality();
+// console.log(restaurants);
 
 var DisplayLatLng = React.createClass({
   getInitialState() {
@@ -46,6 +79,8 @@ var DisplayLatLng = React.createClass({
       },
       zone: zoneCalculator(37.7832096, -122.4091516),
       establishments: restaurants,
+      userId:user.id,
+      uPrefs: uPrefs
     };
   },
   show() {
@@ -65,21 +100,16 @@ var DisplayLatLng = React.createClass({
     return zoneCalculator(curRegion.latitude, curRegion.longitude);
   },
 
-  jumpRandom() {
-    this.setState({ region: this.randomRegion() });
+  changeTrait() {
+    this.setState({ uPrefs: [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)] });
   },
 
-  animateRandom() {
-    this.refs.map.animateToRegion(this.randomRegion());
-  },
+  addVotesLive() {
+        console.log(this.state.establishments[10]);
+    console.log(addVotes(this.state.establishments));
+            console.log(this.state.establishments[10]);
 
-  randomRegion() {
-    var { region } = this.state;
-    return {
-      ...this.state.region,
-      latitude: region.latitude + (Math.random() - 0.5) * region.latitudeDelta / 2,
-      longitude: region.longitude + (Math.random() - 0.5) * region.longitudeDelta / 2,
-    };
+    // this.setState({establishments: }this.);
   },
 
   inView (coords) {
@@ -94,12 +124,18 @@ var DisplayLatLng = React.createClass({
           ref="map"
           mapType="terrain"
           style={styles.map}
-          region={this.state.region}
+          initialRegion={this.state.region}
+
           onRegionChange={this.onRegionChange}
         >
         {_.map(this.state.establishments, (establishment) => (
 
-          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}>
+          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}
+          centerOffset={{x:0,y:0}}
+            calloutOffset={{ x: 0, y: 0 }}
+            calloutAnchor={{ x: 0, y: 0 }}
+            ref="m1"
+            style={dotStyles[Math.floor(establishment.ourRating/10)]}>
             
             <RestaurantMarkerView 
               coordinate={establishment.coordinate}
@@ -107,22 +143,38 @@ var DisplayLatLng = React.createClass({
               calloutOffset={{ x: 0, y: 0 }}
               calloutAnchor={{ x: 0, y: 0}}
               ref="m1"
-              style={dotStyles[Math.floor(establishment.ourRating/10)]}
-              />
+              style={dotStyles[Math.floor(establishment.ourRating/10)]}/>
 
             <MapView.Callout tooltip>
               <InfoCallout>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>ZN: {establishment.zoneNumber} SC:{establishment.ourRating.toPrecision(2)}</Text>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>
+                  {establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
+                </Text>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>
+                  {establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
+                </Text>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>
+                  {establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
+                </Text>
               </InfoCallout>
-              </MapView.Callout>
- 
-            </MapView.Marker>
+            </MapView.Callout>
+          <Text style={{ fontWeight:'bold', color: 'black' }}>{establishment.name}</Text>
+
+        </MapView.Marker>
 
           ))}
         </MapView>
+        <TouchableOpacity onPress={this.changeTrait} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>Change</Text>
+          </TouchableOpacity>
+                  <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>addVotes</Text>
+          </TouchableOpacity>
+
         <View style={[styles.bubble, styles.latlng]}>
           <Text style={{ textAlign: 'center'}}>
-            {`${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
+
+            {`${this.state.uPrefs},${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
           </Text>
         </View>
       </View>

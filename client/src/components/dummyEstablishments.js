@@ -9299,20 +9299,29 @@ var dummyData = [ { id: 1,
 
 var estabObj = {};
 
-var addTraitFields = function (dummyData) {
-  return dummyData.map(function (estab){
-    estabObj[estab.id] = estab;
-    for (var x = 1; x <10; x++) {
-      estabObj[estab.id][x] = {votes:0,pos:0}; 
+// var addTraitFields = function () {
+//   dummyData.map(function (estab){
+//     estabObj[estab.id] = estab;
+//     estabObj[estab.id].traits = {};
+//     estabObj[estab.id].userVoted = false;
+//     for (var x = 1; x <10; x++) {
+//       estabObj[estab.id].traits[x] = {votes:0,pos:0}; 
+//     }
+//     return estab;
+//   });
+// };
+
+var onlyTwenty = function () {
+  for(var x = 0; x <21; x++) {
+    estabObj[x] = dummyData[x];
+    estabObj[x].traits = {};
+    estabObj[x].userVoted = false;
+    for (var y = 1; y <10; y++) {
+      estabObj[x].traits[y] = {votes:0,pos:0}; 
     }
-    return estab;
-  });
+  }
 };
-var converted = addTraitFields(dummyData);
-
-console.log(estabObj);
-
-
+onlyTwenty();
 module.exports = {
   dummyData: estabObj
 };
