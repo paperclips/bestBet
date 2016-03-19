@@ -58,8 +58,8 @@ var calculateEstablishmentQuality = function () {
 
 var addVotes = function (establishments) {
   for(var x = 1; x < 10; x++) {
-    establishments[11].traits[x].pos += Math.floor(Math.random()*5);
-    establishments[11].traits[x].votes += Math.floor(5+ Math.random()*5);
+    establishments[10].traits[x].pos += Math.floor(Math.random()*5);
+    establishments[10].traits[x].votes += Math.floor(5+ Math.random()*5);
   }
   return establishments;
 
@@ -105,11 +105,7 @@ var DisplayLatLng = React.createClass({
   },
 
   addVotesLive() {
-        console.log(this.state.establishments[10]);
-    console.log(addVotes(this.state.establishments));
-            console.log(this.state.establishments[10]);
-
-    // this.setState({establishments: }this.);
+    this.setState({establishments: addVotes(this.state.establishments)});
   },
 
   inView (coords) {

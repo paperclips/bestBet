@@ -9313,11 +9313,11 @@ var estabObj = {};
 
 var onlyTwenty = function () {
   for(var x = 0; x <21; x++) {
-    estabObj[x] = dummyData[x];
-    estabObj[x].traits = {};
-    estabObj[x].userVoted = false;
+    estabObj[x+1] = dummyData[x];
+    estabObj[x+1].traits = {};
+    estabObj[x+1].userVoted = false;
     for (var y = 1; y <10; y++) {
-      estabObj[x].traits[y] = {votes:0,pos:0}; 
+      estabObj[x+1].traits[y] = {votes:0,pos:0}; 
     }
   }
 };
