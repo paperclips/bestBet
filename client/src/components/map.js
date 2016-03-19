@@ -15,6 +15,9 @@ var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
 var UserMarkerView = require('./userMarker.js');
+var OutlineMarkerView = require('./outlineMarker.js');
+var UserVotedView = require('./userVoted.js');
+
 var votes = require('./dummyVotes.js').dummyVotes;
 var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
@@ -60,8 +63,8 @@ var calculateEstablishmentQuality = function () {
 var addVotes = function (establishments) {
   _.each(establishments, function (establishment) {
     _.each(traitNames, function (trait, i) {
-      establishment.traits[i].pos += Math.floor(Math.random()*5);
-      establishment.traits[i].votes += Math.floor(5+ Math.random()*5);
+      establishment.traits[i].pos += Math.floor(Math.random()*2);
+      establishment.traits[i].votes += 1;
     });
   });
   return establishments;
@@ -140,17 +143,24 @@ var DisplayLatLng = React.createClass({
           onRegionChange={this.onRegionChange}
         >
         <MapView.Marker coordinate={this.state.myLocation}>
-          <UserMarkerView />
+          <UserMarkerView/>
+        </MapView.Marker>
+        <MapView.Marker coordinate={this.state.myLocation}>
+          <OutlineMarkerView/>
         </MapView.Marker>
         {_.map(this.state.establishments, (establishment) => (
-
+          
           <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}
           centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1"
             style={dotStyles[Math.floor(establishment.ourRating/10)]}>
-            
+
+          <MapView.Marker coordinate={this.state.myLocation}>
+            <UserVotedView/>
+          </MapView.Marker>
+
             <RestaurantMarkerView 
               coordinate={establishment.coordinate}
               centerOffset={{x:0,y:0}}

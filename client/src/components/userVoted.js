@@ -7,7 +7,7 @@ var {
 } = React;
 var styles = require('../assets/styles.js').markerStyles;
 
-var UserMarker = React.createClass({
+var UserVotedMarker = React.createClass({
   getDefaultProps() {
     return {
       fontSize: 13,
@@ -15,9 +15,9 @@ var UserMarker = React.createClass({
   },
   render() {
     return (
-      <View style={styles.me}/>
+      <View style={styles.voted}/>
     );
   },
 });
 
-module.exports = UserMarker;
+module.exports = UserVotedMarker;

@@ -151,10 +151,26 @@ var markerStyles = StyleSheet.create({
   me: {
     height:12,
     width:12,
-    borderRadius: 7.5,
-    backgroundColor:'cornflowerblue',
-    borderColor: 'darkblue',
+    borderRadius: 6,
+    backgroundColor:'blue',
+    borderColor: 'white',
     borderWidth:2,
+  },
+  voted: {
+    height:12,
+    width:12,
+    borderRadius: 6,
+    backgroundColor:'white',
+    borderColor: 'black',
+    borderWidth:1,
+  },
+   outline: {
+    height:30,
+    width:30,
+    borderRadius: 15,
+    backgroundColor:'blue',
+    opacity:.3,
+ 
   },
   dot: {
     flex: 0,

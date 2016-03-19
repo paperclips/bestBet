@@ -15,7 +15,7 @@ var UserMarker = React.createClass({
   },
   render() {
     return (
-      <View style={styles.me}/>
+      <View style={styles.outline}/>
     );
   },
 });
