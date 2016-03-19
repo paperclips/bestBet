@@ -182,31 +182,32 @@ var DisplayLatLng = React.createClass({
                 </Text>
               </InfoCallout>
             </MapView.Callout>
-          <Text style={{ fontWeight:'bold', color: 'black' }}>{establishment.name}</Text>
+          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
 
         </MapView.Marker>
 
           ))}
         </MapView>
-        <TouchableOpacity onPress={this.changeTrait} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>changeTrait</Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={this.changeTrait} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>changeTrait</Text>
           </TouchableOpacity>
-              <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>voteOnce</Text>
+          <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>voteOnce</Text>
           </TouchableOpacity>
-        <TouchableOpacity onPress={this.turnOnVoteFlux} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>fluxVotes</Text>
+          <TouchableOpacity onPress={this.turnOnVoteFlux} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>fluxVotes</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.turnOffVoteFlux} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 8, fontWeight: 'bold' }}>stop</Text>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>stop</Text>
           </TouchableOpacity>
-        <View style={[styles.bubble, styles.latlng]}>
-          <Text style={{ textAlign: 'center'}}>
-
-            {`${this.state.uPrefs},${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
-          </Text>
+          </View>
+          <View style={[styles.bubble, styles.latlng]}>
+            <Text style={{ textAlign: 'center'}}>
+              {`${this.state.uPrefs},${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
+            </Text>
+          </View>
         </View>
-      </View>
     );
   },
 });
