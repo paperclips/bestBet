@@ -33,7 +33,12 @@ var sendData = function (socket, zones) {
     .then(function(zoneEstabs){
       voteQueries.getVotesInZones(zones)
         .then(function(zoneVotes){
+          // zoneVotes.forEach(function(voteRec){
+          //  console.log(voteRec.dataValues);
+          //  console.log(',');
+          // })
           // then emit that to the that socketId
+
           socket.emit('newData', {establishments:zoneEstabs,votes: zoneVotes});
           });
         });

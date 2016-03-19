@@ -18,8 +18,6 @@ var infoCallout = React.createClass({
               {this.props.children}
             </View>
           </View>
-      <View style={styles.arrow} />
-
       </View>
     );
   },

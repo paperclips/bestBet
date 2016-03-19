@@ -148,14 +148,38 @@ var markerStyles = StyleSheet.create({
      borderRadius: 9,
     alignSelf: 'flex-start',
   },
+  me: {
+    height:12,
+    width:12,
+    borderRadius: 6,
+    backgroundColor:'blue',
+    borderColor: 'white',
+    borderWidth:2,
+  },
+  voted: {
+    height:12,
+    width:12,
+    borderRadius: 6,
+    backgroundColor:'white',
+    borderColor: 'black',
+    borderWidth:1,
+  },
+   outline: {
+    height:30,
+    width:30,
+    borderRadius: 15,
+    backgroundColor:'blue',
+    opacity:.3,
+ 
+  },
   dot: {
     flex: 0,
     height:3,
     width:3,
     borderRadius: 1.5,
     backgroundColor:'black',
-    paddingHorizontal: 6,
-    paddingVertical: 6,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
   score: {
     backgroundColor: 'red',
@@ -195,19 +219,28 @@ var calloutStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   bubble: {
+    width:100,
+    height:100,
     flexDirection: 'row',
-    alignSelf: 'auto',
-    top: 48,
+    alignSelf: 'flex-end',
     backgroundColor: 'black',
     opacity:.5,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
-    borderRadius: 30,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    borderRadius: 50,
   },
   dollar: {
 
     //color: '#FFFFFF',
     //fontSize: 10,
+  },
+  arrow: {
+    backgroundColor: 'transparent',
+    borderWidth: 4,
+    borderColor: 'transparent',
+    borderTopColor: 'black',
+    alignSelf: 'center',
+    marginTop: -9,
   }
 
 

@@ -9,15 +9,37 @@ var {
   ScrollView,
   Image
 } = React;
+var _ = require('underscore');
 
 var MapView = require('react-native-maps');
 var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
+var UserMarkerView = require('./userMarker.js');
+var OutlineMarkerView = require('./outlineMarker.js');
+var UserVotedView = require('./userVoted.js');
 
+var votes = require('./dummyVotes.js').dummyVotes;
 var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
-
 var styles = require('../assets/styles.js').mapStyles;
+
+// SAMPLE DATA:
+var user = {id: 123, name: 'bribri', token:'abfe45'};
+var uPrefs = [2,5,4];
+var uPrefsSecond = [1,7,2];
+
+var traitNames = {
+  1:'Good Food', 
+  2:'Good Drinks', 
+  3:'Good Deal', 
+  4:'Not Noisy', 
+  5:'Not Crowded', 
+  6:'No Wait',
+  7:'Good Service',
+  8:'Upscale', 
+  9:'Veggie Friendly'
+};
+
 
 var { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -26,6 +48,31 @@ const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
+var calculateEstablishmentQuality = function () {
+  votes.forEach(function(vote){
+    restaurants[vote.establishmentId].traits[vote.traitId].votes++;
+    if (vote.voteValue === true) {
+      restaurants[vote.establishmentId].traits[vote.traitId].pos++;
+    }
+    if(vote.voteValue.userId === 123) {
+      restaurants[vote.establishmentId].userVoted = true;
+    }
+  });
+};
+
+var addVotes = function (establishments) {
+  _.each(establishments, function (establishment) {
+    _.each(traitNames, function (trait, i) {
+      establishment.traits[i].pos += Math.floor(Math.random()*2);
+      establishment.traits[i].votes += 1;
+    });
+  });
+  return establishments;
+
+};
+
+calculateEstablishmentQuality();
+// console.log(restaurants);
 
 var DisplayLatLng = React.createClass({
   getInitialState() {
@@ -36,8 +83,15 @@ var DisplayLatLng = React.createClass({
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
+      myLocation: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+      },
       zone: zoneCalculator(37.7832096, -122.4091516),
       establishments: restaurants,
+      userId:user.id,
+      uPrefs: uPrefs,
+      intervalId: -1
     };
   },
   show() {
@@ -57,23 +111,21 @@ var DisplayLatLng = React.createClass({
     return zoneCalculator(curRegion.latitude, curRegion.longitude);
   },
 
-  jumpRandom() {
-    this.setState({ region: this.randomRegion() });
+  changeTrait() {
+    this.setState({ uPrefs: [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)] });
   },
 
-  animateRandom() {
-    this.refs.map.animateToRegion(this.randomRegion());
+  addVotesLive() {
+    this.setState({establishments: addVotes(this.state.establishments)});
   },
-
-  randomRegion() {
-    var { region } = this.state;
-    return {
-      ...this.state.region,
-      latitude: region.latitude + (Math.random() - 0.5) * region.latitudeDelta / 2,
-      longitude: region.longitude + (Math.random() - 0.5) * region.longitudeDelta / 2,
-    };
+  turnOnVoteFlux () {
+    this.setState({intervalId:window.setInterval(this.addVotesLive, 500)});
+    console.log(this.state.intervalId);
   },
-
+  turnOffVoteFlux () {
+    console.log(this.state.intervalId);
+    clearInterval(this.state.intervalId);
+  },
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
       && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
@@ -86,38 +138,76 @@ var DisplayLatLng = React.createClass({
           ref="map"
           mapType="terrain"
           style={styles.map}
-          region={this.state.region}
+          initialRegion={this.state.region}
+
           onRegionChange={this.onRegionChange}
         >
-        {this.state.establishments.map((establishment) => (
+        <MapView.Marker coordinate={this.state.myLocation}>
+          <UserMarkerView/>
+        </MapView.Marker>
+        <MapView.Marker coordinate={this.state.myLocation}>
+          <OutlineMarkerView/>
+        </MapView.Marker>
+        {_.map(this.state.establishments, (establishment) => (
+          
+          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}
+          centerOffset={{x:0,y:0}}
+            calloutOffset={{ x: 0, y: 0 }}
+            calloutAnchor={{ x: 0, y: 0 }}
+            ref="m1"
+            style={dotStyles[Math.floor(establishment.ourRating/10)]}>
 
-          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}>
-            
+          <MapView.Marker coordinate={this.state.myLocation}>
+            <UserVotedView/>
+          </MapView.Marker>
+
             <RestaurantMarkerView 
               coordinate={establishment.coordinate}
               centerOffset={{x:0,y:0}}
               calloutOffset={{ x: 0, y: 0 }}
               calloutAnchor={{ x: 0, y: 0}}
               ref="m1"
-              style={dotStyles[Math.floor(establishment.ourRating/10)]}
-              />
+              style={dotStyles[Math.floor(establishment.ourRating/10)]}/>
 
             <MapView.Callout tooltip>
               <InfoCallout>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>ZN: {establishment.zoneNumber} SC:{establishment.ourRating.toPrecision(2)}</Text>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>
+                  {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
+                </Text>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>
+                  {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
+                </Text>
+                <Text style={{ fontWeight:'bold', color: 'white' }}>
+                  {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
+                </Text>
               </InfoCallout>
-              </MapView.Callout>
- 
-            </MapView.Marker>
+            </MapView.Callout>
+          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
+
+        </MapView.Marker>
 
           ))}
         </MapView>
-        <View style={[styles.bubble, styles.latlng]}>
-          <Text style={{ textAlign: 'center'}}>
-            {`${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
-          </Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={this.changeTrait} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>Trait</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>voteOnce</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.turnOnVoteFlux} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>fluxVotes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.turnOffVoteFlux} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>stop</Text>
+          </TouchableOpacity>
+          </View>
+          <View style={[styles.bubble, styles.latlng]}>
+            <Text style={{ textAlign: 'center'}}>
+              {`${this.state.uPrefs},${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
+            </Text>
+          </View>
         </View>
-      </View>
     );
   },
 });

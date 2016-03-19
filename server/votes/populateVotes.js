@@ -20,7 +20,7 @@ var createFakeVotes = function (numPerUser) {
 
         for(var x = 0; x < numPerUser; x++) {
           var vote = {};
-          vote.establishmentId = Math.floor(Math.random()*20 + 1);
+          vote.establishmentId = Math.floor(Math.random()*3000 + 1);
           vote.traitId = Math.floor(Math.random()*9 + 1);
           vote.userId = user.id;
           vote.voteValue = Boolean(Math.floor(Math.random()*2));
@@ -29,6 +29,8 @@ var createFakeVotes = function (numPerUser) {
             .then(function (zoneNumber){
               vote.zoneNumber = zoneNumber;
               voteQueries.addVote(vote);
+              // console.log(vote);
+              // console.log(',');
             });
           }
       });
