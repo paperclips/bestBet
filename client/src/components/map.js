@@ -57,10 +57,12 @@ var calculateEstablishmentQuality = function () {
 };
 
 var addVotes = function (establishments) {
-  for(var x = 1; x < 10; x++) {
-    establishments[10].traits[x].pos += Math.floor(Math.random()*5);
-    establishments[10].traits[x].votes += Math.floor(5+ Math.random()*5);
-  }
+  _.each(establishments, function (establishment) {
+    _.each(traitNames, function (trait, i) {
+      establishment.traits[i].pos += Math.floor(Math.random()*5);
+      establishment.traits[i].votes += Math.floor(5+ Math.random()*5);
+    });
+  });
   return establishments;
 
 };
