@@ -190,16 +190,16 @@ var DisplayLatLng = React.createClass({
         </MapView>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this.changeTrait} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>changeTrait</Text>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>Trait</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>voteOnce</Text>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>voteOnce</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.turnOnVoteFlux} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>fluxVotes</Text>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>fluxVotes</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.turnOffVoteFlux} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>stop</Text>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>stop</Text>
           </TouchableOpacity>
           </View>
           <View style={[styles.bubble, styles.latlng]}>
