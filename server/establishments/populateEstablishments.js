@@ -11,7 +11,7 @@ To run, uncomment code below and restart server. Once database is updated, comme
 var Yelp = require('yelp');
 var db = require('../config/db');
 
-var zoneCalculator = require('../services/zoneCalculator').zoneCalculator;
+var zoneCalculator = require('../services/zoneHandler').zoneCalculator;
 var Industries = db.Industries;
 var Establishments = db.Establishments;
 var Traits = db.Traits;
@@ -74,22 +74,6 @@ zipcodes.forEach(function(zipcode){
       })
       .catch(function(err){
         console.error(err);
-      }) // add create dummy object of rests
-      // .then(function(items){
-      //   Establishments.findAll()
-      //     .then(function(objects){
-      //       var results = objects.map(function(object){
-      //         var obj = object.dataValues; 
-      //         obj.coordinate = {latitude: object.latitude, longitude: object.longitude};
-      //         obj.ourRating = object.yelpRating*(20-(Math.random()*15));
-      //         obj.zoneNumber = zoneCalculator(object.latitude, object.longitude);
-      //         return obj;
-      //       });
-      //       console.log(results)
-      //     });
-      // })
-      // .catch(function (err) {
-      //   console.error(err);
-      // });
+      })
   })
 })

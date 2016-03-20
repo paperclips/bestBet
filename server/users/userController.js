@@ -1,8 +1,10 @@
 // user controller
 var zoneHandler = require('../services/zoneHandler.js');
-var estabQueries = require('../establishments/establishmentQueries.js');
-var voteQueries = require('../votes/voteQueries.js');
 var userQueries = require('../users/userQueries.js');
+
+var models = require('../config/db.js');
+var Establishments = models.Establishments;
+var Votes = models.Votes;
 
 // sets the users current zone and sends back the relevant establishments
 var setUserZone = function (socket, userOldZone, userNewZone) {
@@ -29,23 +31,13 @@ var setUserZone = function (socket, userOldZone, userNewZone) {
 // gets the currently surrounding establishments and emits back to client...
 var sendData = function (socket, zones) {
   // LOAD establishment data (from establishment table in DB) for appropriate zones
-  estabQueries.getEstabsInZones(zones)
-    .then(function(zoneEstabs){
-      voteQueries.getVotesInZones(zones)
-        .then(function(zoneVotes){
-          for(var i=0; i< zoneEstabs.length;i++){
-            var estab = zoneEstabs[i].dataValues;
-            var voteArr = zoneVotes.filter(function(vote){return vote.establishmentId === estab.id})
-                                      .map(function(vote){return {traitId: vote.traitId, voteValue: vote.voteValue, time: vote.time}});
-            
-            estab.votes = voteArr;
-            //Emit events once loop is complete and all establishments have votes array
-            if(i === zoneEstabs.length-1){
-              socket.emit('New Establishments', {establishments:zoneEstabs});  
-            }
-          }
-        })
-    })
+  Establishments.findAll({where:{zoneNumber:{$in:zones}}})
+    .then(function(estabsInZones){
+      Votes.findAll({where:{zoneNumber: {$in:zones}}})
+           .then(function(votesInZones){
+             socket.emit('New Establishments', {establishments:estabsInZones,votes: votesInZones});  
+           });
+    });
 };
 // changes the user's stored default traits in the DB -- doesn't send anything back
 var changeDefaultTraits = function (user) {

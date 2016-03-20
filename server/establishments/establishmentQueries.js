@@ -11,8 +11,8 @@ var getEstabsInZones = function(zones) {
     });
 };
 
-var getEstablishmentById = function (theID) {
-  return Establishments.findOne({where:{id:theID}})
+var getEstablishmentById = function (estID) {
+  return Establishments.findOne({where:{id:estID}})
     .then(function(establishment){
       return establishment;
     });
