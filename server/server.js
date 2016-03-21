@@ -1,4 +1,4 @@
-var http = require('./config/socketRoutes.js');
+var http = require('./config/routes.js');
 
 var port = process.env.PORT || 3000;
 http.listen(port);
@@ -8,9 +8,9 @@ console.log('Server listening on port ' + port);
 
 // UNCOMMENT THESE NEXT THREE TO POPULATE YOUR DATABASE, THEN COMMENT IT OUT AGAIN:
 
-// var populateEstablishements = require('./establishments/populateEstablishments');
-// var populateUsers           = require('./users/populateUsers');
-// var populateVotes           = require('./votes/populateVotes');
+// var populateEstablishements = require('./populateData/populateEstablishments');
+// var populateUsers           = require('./populateData/populateUsers');
+// var populateVotes           = require('./populateData/populateVotes');
 
 
 

@@ -13,21 +13,6 @@ var styles = require('./src/assets/styles.js').appStyles;
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
-var io = require('socket.io-client/socket.io');
-
-const SERVER_ROOT = 'http://localhost:3000';
-var socket = io.connect(SERVER_ROOT, { jsonp: false });
-
-// Emit an event to server
-socket.on('connect',function(){
-  //To receive establishment data, uncomment this line
-  socket.emit('Get establishments',{zones: [6004]});  
-});
-
-socket.on('newData',function(newData){
-  //New establishment and votes data
-  // console.log('GOT NEW DATA', newData);
-})
 
 var App = React.createClass({
 
