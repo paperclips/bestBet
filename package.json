@@ -4,7 +4,7 @@
   "description": "App that finds places you'll love",
   "main": "app.js",
   "dependencies": {
-    "bcryptjs": "^2.3.0",
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",

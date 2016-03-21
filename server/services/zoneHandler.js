@@ -1,12 +1,11 @@
 // zoneHandler services
 var _ = require('underscore');
-var establishmentQueries = require('../establishments/establishmentQueries.js');
 
 // these variables  represent the width/height of the theoretical zone Matrix
 var NUM_OF_ROWS = 13;
 var NUM_OF_COLS = 22;
 
-var zoneCalculator = function(userLat,userLong){
+var zoneCalculator = function(lat,long){
   var northLimit = 37.827747, //Northernmost latitude of SF
       southLimit = 37.700643, //Southernmost latitude of SF
       westLimit = -122.517591, //Westernmost longitude of SF
@@ -16,7 +15,7 @@ var zoneCalculator = function(userLat,userLong){
       verticalLength = 8.78, //Total vertical length of SF
       horizontalLength = 8.79; //Total horizontal length of SF
 
-  if(userLat < southLimit || userLat > northLimit || userLong < westLimit || userLong > eastLimit){
+  if(lat < southLimit || lat > northLimit || long < westLimit || long > eastLimit){
     console.log('User is outside San Francisco');
     return undefined; //User is outside San Francisco
   }
@@ -28,63 +27,56 @@ var zoneCalculator = function(userLat,userLong){
   var horizontalStep = (westLimit - eastLimit) / horizontalZones;
 
   //Zones are numbered from top-left to bottom-right
-  var userX = Math.floor(Math.abs((userLong - eastLimit) / horizontalStep));
-  var userY = Math.floor(Math.abs((userLat - northLimit) / verticalStep));
+  var userX = Math.floor(Math.abs((long - eastLimit) / horizontalStep));
+  var userY = Math.floor(Math.abs((lat - northLimit) / verticalStep));
 
   var zoneNumber = userY * 1000 + userX; //Convert to YYYXXX, where YYY - vertical zone, XXX - horizontal zone
   return zoneNumber;
 };
 
-var zoneOfEstablishment = function(establishmentId) {
-  return establishmentQueries.getEstablishmentById(establishmentId)
-    .then(function(estab) {
-      return zoneCalculator(estab.latitude, estab.longitude);
-    });
-};
 
-// RECEIVES an Old zone number and the new zone number
-// RETURNS and array of two arrays:
-  // first array is the zones to unsub from
-  // second array is the new zones to sub to
-var getNewZonesOnMove = function (oldZoneNumber, newZoneNumber) {
-  var oldZones = getSurroundingZones(oldZoneNumber);
-  var newZones = getSurroundingZones(newZoneNumber);
-  var zonesToUpdate = [[],[]];
-  zonesToUpdate[0] = _.difference(oldZones, newZones);
-  zonesToUpdate[1] = _.difference(newZones, oldZones);
-  return zonesToUpdate;
-};
+//******************** Move to client ******************* //
 
-// RECEIVES a zone number
-// RETURNS and array containing that zone number and the 8 surrounding zones
-var getSurroundingZones = function (zoneNumber) {
-  var zoneArr = [];
-  for (var x = -1; x <=1; x++) {
-    for (var y = -1; y <=1; y++) {
-      var zone = zoneNumber + y * 1000 + x;
-      if(isAZone(zone)) {
-        zoneArr.push(zone);
-      }
-    }
-  }
-  return zoneArr;
-};
+// // RECEIVES an Old zone number and the new zone number
+// // RETURNS and array of two arrays:
+//   // first array is the zones to unsub from
+//   // second array is the new zones to sub to
+// var getNewZonesOnMove = function (oldZoneNumber, newZoneNumber) {
+//   var oldZones = getSurroundingZones(oldZoneNumber);
+//   var newZones = getSurroundingZones(newZoneNumber);
+//   var zonesToUpdate = [[],[]];
+//   zonesToUpdate[0] = _.difference(oldZones, newZones);
+//   zonesToUpdate[1] = _.difference(newZones, oldZones);
+//   return zonesToUpdate;
+// };
 
-var isAZone = function (zoneNumber) {
-  if(zoneNumber >= 0 &&
-    zoneNumber % 1000 < NUM_OF_COLS &&
-    zoneNumber < (NUM_OF_ROWS-1)*1000+(NUM_OF_COLS) &&
-    (zoneNumber+1) % 1000 > 0) {
-    return true;
-  } else {
-    return false;
-  }
-};
+// // RECEIVES a zone number
+// // RETURNS and array containing that zone number and the 8 surrounding zones
+// var getSurroundingZones = function (zoneNumber) {
+//   var zoneArr = [];
+//   for (var x = -1; x <=1; x++) {
+//     for (var y = -1; y <=1; y++) {
+//       var zone = zoneNumber + y * 1000 + x;
+//       if(isAZone(zone)) {
+//         zoneArr.push(zone);
+//       }
+//     }
+//   }
+//   return zoneArr;
+// };
+
+// var isAZone = function (zoneNumber) {
+//   if(zoneNumber >= 0 &&
+//     zoneNumber % 1000 < NUM_OF_COLS &&
+//     zoneNumber < (NUM_OF_ROWS-1)*1000+(NUM_OF_COLS) &&
+//     (zoneNumber+1) % 1000 > 0) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 
 
 module.exports = {
-  zoneCalculator: zoneCalculator,
-  zoneOfEstablishment: zoneOfEstablishment,
-  getSurroundingZones: getSurroundingZones,
-  getNewZonesOnMove: getNewZonesOnMove
+  zoneCalculator: zoneCalculator
 };

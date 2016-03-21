@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var bcrypt = require('bcryptjs');
+var bcrypt = require('bcrypt-nodejs');
 
 var models = require('../config/db');
 var Users = models.Users;
@@ -11,8 +11,8 @@ var findUser = function(userName){
 
 var addUser = function (userDetails) {
   var cipher = Promise.promisify(bcrypt.hash);
-  return cipher(userDetails.password, 10,null).then(function(hash) {
-    return Users.create({userName:userDetails.userName,
+  return cipher(userDetails.password, null,null).then(function(hash) {
+    return Users.create({userName: userDetails.userName,
                          name: userDetails.name,
                          password: hash})
   });
@@ -36,7 +36,7 @@ var getUserTraits = function(userId){
 var setUserTraits = function(data){
   Users_Traits.findOrCreate({where: {userId: data.userId}, defaults:{traitCombo: data.traitCombo}})
               .spread(function(user, created) {
-                //If user already existed, update traits
+                //If user already exists, update traits
                 if(!created){
                   Users_Traits.update({traitCombo: data.traitCombo}, {where: {userId: data.userId}})
                               .then(function(result){

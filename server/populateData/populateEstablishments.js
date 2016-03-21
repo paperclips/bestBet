@@ -20,7 +20,7 @@ var traitSensitivities = [false, false, false, true, true, true, true, false, fa
 
 var popTraits = function () {
   traitNames.forEach(function(trait, index){
-    Traits.findOrCreate({where:{name:trait,timeSensitive:traitSensitivities[index]}});
+    Traits.findOrCreate({where:{name:trait, timeSensitive:traitSensitivities[index]}});
   });
 };
 popTraits();

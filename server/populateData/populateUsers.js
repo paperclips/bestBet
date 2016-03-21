@@ -8,10 +8,11 @@ This code
 */
 
 var db       = require('../config/db');
-var userCtrl = require('./userController.js');
+var userCtrl = require('../controllers/userController.js');
 
 var firstNames = ['joe','bob','jon','al','kim','joan','julie','bee','ann','beth'];
 var lastNames = ['a','b','c','d','e','f','g','h','i','j'];
+
 var createFakeUsers = function(num) {
   var y = num-1;
   for (var x = 0; x < num; x++) {

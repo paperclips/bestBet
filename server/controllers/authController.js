@@ -1,5 +1,5 @@
 // auth controller
-var userCtrl   = require('../users/userController.js');
+var userCtrl   = require('./userController.js');
 var jwt = require( 'jwt-simple' );
 
 function signup (req, res) {

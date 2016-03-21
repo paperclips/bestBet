@@ -5,10 +5,10 @@ var bodyParser = require('body-parser');
 var http       = require('http').Server(app);
 var io         = require('socket.io')(http);
 
-var userCtrl   = require('../users/userController.js');
-var voteCtrl   = require('../votes/voteController.js');
-var authCtrl   = require('../auth/authController.js');
-var estabCtrl  = require('../establishments/establishmentController');
+var userCtrl   = require('../controllers/userController.js');
+var voteCtrl   = require('../controllers/voteController.js');
+var authCtrl   = require('../controllers/authController.js');
+var estabCtrl  = require('../controllers/estabController');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -34,7 +34,7 @@ io.on('connect', function(socket){
   });
 
   socket.on('setUserTraits', function (data){
-    //data is an object {userId, traitCombo}
+    // data is an object {userId, traitCombo}
     // note - client will set traits locally, so no need to send back
     userCtrl.setUserTraits(data);
   });
