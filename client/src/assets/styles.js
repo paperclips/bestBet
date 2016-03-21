@@ -222,12 +222,15 @@ var calloutStyles = StyleSheet.create({
     width:100,
     height:100,
     flexDirection: 'row',
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     backgroundColor: 'black',
     opacity:.5,
     paddingHorizontal: 0,
     paddingVertical: 0,
     borderRadius: 50,
+  },
+  stats:{
+    alignSelf: 'flex-end'
   },
   dollar: {
 

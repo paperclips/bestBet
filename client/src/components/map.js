@@ -26,7 +26,6 @@ var styles = require('../assets/styles.js').mapStyles;
 // SAMPLE DATA:
 var user = {id: 123, name: 'bribri', token:'abfe45'};
 var uPrefs = [2,5,4];
-var uPrefsSecond = [1,7,2];
 
 var traitNames = {
   1:'Good Food', 
@@ -48,14 +47,19 @@ const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-var calculateEstablishmentQuality = function () {
+// Functions that will be moved:
+var processVoteData = function () {
   votes.forEach(function(vote){
     restaurants[vote.establishmentId].traits[vote.traitId].votes++;
     if (vote.voteValue === true) {
       restaurants[vote.establishmentId].traits[vote.traitId].pos++;
     }
     if(vote.voteValue.userId === 123) {
-      restaurants[vote.establishmentId].userVoted = true;
+      if(vote.voteValue === true) {
+        restaurants[vote.establishmentId].userVoted = 2;
+      } else {
+        restaurants[vote.establishmentId].userVoted = 1;
+      }
     }
   });
 };
@@ -68,11 +72,12 @@ var addVotes = function (establishments) {
     });
   });
   return establishments;
-
 };
 
-calculateEstablishmentQuality();
-// console.log(restaurants);
+processVoteData();
+
+
+//THE ACTUAL map deal
 
 var DisplayLatLng = React.createClass({
   getInitialState() {
@@ -117,14 +122,39 @@ var DisplayLatLng = React.createClass({
 
   addVotesLive() {
     this.setState({establishments: addVotes(this.state.establishments)});
+    this.calculateUserScores();
   },
   turnOnVoteFlux () {
     this.setState({intervalId:window.setInterval(this.addVotesLive, 500)});
-    console.log(this.state.intervalId);
   },
   turnOffVoteFlux () {
-    console.log(this.state.intervalId);
     clearInterval(this.state.intervalId);
+  },
+  calculateUserScores (estabId) {
+    // console.log(estabId);
+    // console.log(this.state.establishments[estabId]);
+    // return 8;
+    if (this.state.establishments[estabId] === undefined) {
+      return 0;
+    } else {
+
+      var cume = 0.0;
+      var totes = 0;
+       for (var x = 0; x < 3; x++) {
+        if (this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes>0) {
+          console.log("ind ",this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
+            this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes);
+          cume += 
+          this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
+            this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes
+          totes++;
+        } 
+       }
+    }
+    if(totes === 0) {
+      return 0;
+    }
+    return Math.ceil(10*(cume/totes));   
   },
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
@@ -149,42 +179,34 @@ var DisplayLatLng = React.createClass({
           <OutlineMarkerView/>
         </MapView.Marker>
         {_.map(this.state.establishments, (establishment) => (
-          
-          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}
-          centerOffset={{x:0,y:0}}
+          <MapView.Marker key={establishment.id} 
+            coordinate={establishment.coordinate}
+            centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
-            ref="m1"
-            style={dotStyles[Math.floor(establishment.ourRating/10)]}>
+            ref="m1">
+              <View style={scoreStyles[this.calculateUserScores(establishment.id)]}>
+                <View style={userDot[establishment.userVoted]}/>
+              </View>
 
-          <MapView.Marker coordinate={this.state.myLocation}>
-            <UserVotedView/>
+              <MapView.Callout tooltip>
+                <InfoCallout>
+                <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
+
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
+                  </Text>
+                </InfoCallout>
+              </MapView.Callout>
+
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}:{this.calculateUserScores(establishment.id)}/10</Text>
           </MapView.Marker>
-
-            <RestaurantMarkerView 
-              coordinate={establishment.coordinate}
-              centerOffset={{x:0,y:0}}
-              calloutOffset={{ x: 0, y: 0 }}
-              calloutAnchor={{ x: 0, y: 0}}
-              ref="m1"
-              style={dotStyles[Math.floor(establishment.ourRating/10)]}/>
-
-            <MapView.Callout tooltip>
-              <InfoCallout>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
-                </Text>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
-                </Text>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
-                </Text>
-              </InfoCallout>
-            </MapView.Callout>
-          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
-
-        </MapView.Marker>
 
           ))}
         </MapView>
@@ -214,63 +236,145 @@ var DisplayLatLng = React.createClass({
 
 module.exports = DisplayLatLng;
 
-
-var dotStyles = [
-  {},
-  {},
-  {},
-  {
-    backgroundColor: 'red',
-    opacity:.3,
-    justifyContent: 'center',
-    height:8,
-    width:8,
-    borderRadius: 4,
-    alignSelf: 'flex-start'
-  },
-  {
-    backgroundColor: 'red',
-    opacity:.7,
-    justifyContent: 'center',
-    height:8,
-    width:8,
-    borderRadius: 4,
-    alignSelf: 'flex-start'
-  },
-  {
-    backgroundColor: 'red',
-    opacity:1,
-    justifyContent: 'center',
-    height:8,
-    width:8,
-    borderRadius: 4,
-    alignSelf: 'flex-start'
-  },
-  {
-    backgroundColor: 'green',
-    opacity:.7,
-    justifyContent: 'center',
+var userDot = {
+  1: {
     height:12,
     width:12,
     borderRadius: 6,
-    alignSelf: 'flex-start'
+    backgroundColor:'red',
+    borderColor: 'blue',
+    borderWidth:1
   },
-  {
-    backgroundColor: 'green',
-    opacity:.7,
-    justifyContent: 'center',
-    height:18,
-    width:18,
-    borderRadius: 9,
-    alignSelf: 'flex-start'
+  0: {
+    height:12,
+    width:12,
+    borderRadius: 6,
+    backgroundColor:'black',
+    borderColor: 'white',
+    borderWidth:2,
   },
-  {
-    backgroundColor: 'green',
-    opacity:.7,
-    justifyContent: 'center',
-    height:24,
-    width:24,
-    borderRadius: 12,
-    alignSelf: 'flex-start'
+  1: {
+    height:12,
+    width:12,
+    borderRadius: 6,
+    backgroundColor:'lime',
+    borderColor: 'blue',
+    borderWidth:1,
   }
-];
+};
+
+var scoreStyles = {
+  0:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor:'rgba(0, 0, 0, 0.3)'
+  },
+  1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:6,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+
+  },
+  2:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  },
+  4:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:60,
+    width:60,
+    backgroundColor:'transparent',
+    borderColor: 'rgba(230, 134, 0, 0.25)',
+    borderWidth:24,
+    borderRadius: 30,
+  },
+  5:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(245, 241, 0, 0.2)',
+    
+  },
+  6:{
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(163, 245, 0, 0.3)',
+  },
+  7:{
+   justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    alignSelf:'center',
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  8:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  9:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(34, 224, 0, 0.6)',
+  },
+  10:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(34, 224, 0, 0.7)',
+  },
+  
+};
+  
