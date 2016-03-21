@@ -237,7 +237,7 @@ var DisplayLatLng = React.createClass({
 module.exports = DisplayLatLng;
 
 var userDot = {
-  0: {
+  1: {
     height:12,
     width:12,
     borderRadius: 6,
@@ -245,7 +245,7 @@ var userDot = {
     borderColor: 'blue',
     borderWidth:1
   },
-  2: {
+  0: {
     height:12,
     width:12,
     borderRadius: 6,
