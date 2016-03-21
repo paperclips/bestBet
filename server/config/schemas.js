@@ -3,10 +3,8 @@
 module.exports = function(Sequelize, db){
   var Users = db.define('Users', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      userName: {type: Sequelize.STRING, unique: true, notNull: true},
       name: {type: Sequelize.STRING, notNull: true},
-      email: {type: Sequelize.STRING, unique: true, notNull: true},
-      salt: {type: Sequelize.STRING, notNull: true},
+      userName: {type: Sequelize.STRING, unique: true, notNull: true},
       password: {type: Sequelize.STRING, notNull: true}
     }, { timestamps: false });
 
@@ -23,7 +21,6 @@ module.exports = function(Sequelize, db){
       longitude: {type: Sequelize.FLOAT},
       address: {type: Sequelize.STRING},
       phoneNumber: {type: Sequelize.STRING},
-      industryId: {type: Sequelize.INTEGER},
       zoneNumber: {type: Sequelize.INTEGER}
     }, { timestamps: false });
 
@@ -45,15 +42,13 @@ module.exports = function(Sequelize, db){
 
   var Users_Traits = db.define('Users_Traits', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      traitId: {type: Sequelize.INTEGER, notNull: true},
       userId: {type: Sequelize.INTEGER, notNull: true},
-      industryId: {type: Sequelize.INTEGER}
+      traitCombo: {type: Sequelize.INTEGER, notNull: true},
     }, { timestamps: false });
 
   var Genres = db.define('Genres', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      name: {type: Sequelize.STRING, notNull: true},
-      industryId: {type: Sequelize.INTEGER, notNull: true}
+      name: {type: Sequelize.STRING, notNull: true}
     }, { timestamps: false });
 
   var YelpCategories_Genres = db.define('YelpCategories_Genres', {
@@ -62,27 +57,16 @@ module.exports = function(Sequelize, db){
       genreId: {type: Sequelize.INTEGER, notNull: true}
     }, { timestamps: false });
 
-  var Industries = db.define('Industries', {
-      id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      name: {type: Sequelize.STRING, notNull: true},
-    }, { timestamps: false });
-
   /*
   belongsTo creates foreignKey on itself
   hasOne creates foreignKey on the target
   */
 
-  //Establishments.belongsTo(Genres, { foreignKey: 'genreId' });
-  //Establishments.belongsTo(YelpCategories_Genres, { foreignKey: 'yelpCategory' });
-  Establishments.belongsTo(Industries, { foreignKey: 'industryId' });
   Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
   Users.belongsToMany(Traits, { through: 'Users_Traits', foreignKey: 'userId' });
   Traits.belongsToMany(Users, { through: 'Users_Traits', foreignKey: 'traitId' });
-
-  Users_Traits.belongsTo(Industries, { foreignKey: 'industryId' });
-  Genres.belongsTo(Industries, { foreignKey: 'industryId' });
   YelpCategories_Genres.belongsTo(Genres, { foreignKey: 'genreId' });
 
   return {
@@ -92,7 +76,6 @@ module.exports = function(Sequelize, db){
     Votes: Votes,
     Users_Traits: Users_Traits,
     Genres: Genres,
-    YelpCategories_Genres: YelpCategories_Genres,
-    Industries: Industries
+    YelpCategories_Genres: YelpCategories_Genres
   };
 };

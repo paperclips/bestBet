@@ -12,18 +12,8 @@ var Yelp = require('yelp');
 var db = require('../config/db');
 
 var zoneCalculator = require('../services/zoneHandler').zoneCalculator;
-var Industries = db.Industries;
 var Establishments = db.Establishments;
 var Traits = db.Traits;
-
-// Add Restaurant industry
-Industries.findOrCreate({where: {name: 'Restaurants'}})
-  .spread(function(industry, created) {
-    console.log(industry.get({
-      plain: true
-    }))
-    console.log(created)
-  });
 
 var traitNames = ['Good Food', 'Good Drinks', 'Good Deal', 'Not Noisy', 'Not Crowded', 'No Wait','Good Service','Upscale', 'Veggie Friendly'];
 var traitSensitivities = [false, false, false, true, true, true, true, false, false];
@@ -67,7 +57,6 @@ zipcodes.forEach(function(zipcode){
                                          longitude: item.location.coordinate.longitude,
                                          address: item.location.address[0] + ', ' + item.location.city + ', ' + item.location.state_code + ' ' + item.location.postal_code,
                                          phoneNumber: item.display_phone,
-                                         industryId: 1,
                                          zoneNumber: zoneNumber
                                       }});
         })

@@ -1,19 +1,31 @@
-voteQueries = require('./voteQueries.js');
-// vote controller
+var Votes = require('../config/db').Votes;
 
-// does what it has to do when some fool votes
-function registerVote (vote) {
-  // vote controller adds to vote table (with estabId, zone, etc.)
-  voteQueries.addVote(vote)
-    .then(function(nothing){
-      //TODO:
-      //emit to vote zone room
-      // vote controller would have to ZOEN ROOM to the appropriate socketIds that a new vote happened and send that info
-    });
+// adds votes to the votes table
+var addVotes = function (voteDetails) {
+  Object.keys(voteDetails.votes).forEach(function(key){
+    var vote = {establishmentId: voteDetails.establishmentId,
+                traitId: key,
+                userId: voteDetails.userId,
+                voteValue: voteDetails.votes[key],
+                time: voteDetails.time,
+                zoneNumber: voteDetails.zoneNumber};
+
+    Votes.create(vote);
+  });
+};
+  
+// get all votes in a set of zones
+var getVotesInZones = function (zones) {
+  return Votes.findAll({where:{zoneNumber: {$in:zones}}})
+};
+
+// get all votes in a set of zones
+var getAllUserVotesInZones = function (userId, zones) {
+  return Votes.findAll({where:{userId: userId, zoneNumber: {$in:zones}}})
 };
 
 module.exports = {
-  registerVote: registerVote
+  addVotes: addVotes,
+  getVotesInZones: getVotesInZones,
+  getAllUserVotesInZones: getAllUserVotesInZones
 };
-
-// sends vote

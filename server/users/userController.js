@@ -1,52 +1,57 @@
-// user controller
-var zoneHandler = require('../services/zoneHandler.js');
-var userQueries = require('../users/userQueries.js');
+var Promise = require('bluebird');
+var bcrypt = require('bcryptjs');
 
-var models = require('../config/db.js');
-var Establishments = models.Establishments;
-var Votes = models.Votes;
+var models = require('../config/db');
+var Users = models.Users;
+var Users_Traits = models.Users_Traits;
 
-// sets the users current zone and sends back the relevant establishments
-var setUserZone = function (socket, userOldZone, userNewZone) {
-  var zones = [];
-  // if the user has just logged in, we need to get all 9 relevant zones
-  if(userOldZone === null) {
-    zones[1] = zoneHandler.getSurroundingZones(userNewZone);
-    zones[0] = [];
-  } else {// if there was an old zone though, we only need to send a certain group of new ones
-    zones = zoneHandler.getNewZonesOnMove(userOldZone, userNewZone);
-  }
-  // join the user to the zone rooms
-  zones[0].forEach(function(zone){
-    socket.leave(zone);
-    // leave the room
+var findUser = function(userName){
+  return Users.findOne({where:{userName:userName}});
+};
+
+var addUser = function (userDetails) {
+  var cipher = Promise.promisify(bcrypt.hash);
+  return cipher(userDetails.password, 10,null).then(function(hash) {
+    return Users.create({userName:userDetails.userName,
+                         name: userDetails.name,
+                         password: hash})
   });
-  zones[1].forEach(function(zone){
-    socket.join(zone);
-    // join the room
-  });
-  sendData(socket, zones[1]);
 };
 
-// gets the currently surrounding establishments and emits back to client...
-var sendData = function (socket, zones) {
-  // LOAD establishment data (from establishment table in DB) for appropriate zones
-  Establishments.findAll({where:{zoneNumber:{$in:zones}}})
-    .then(function(estabsInZones){
-      Votes.findAll({where:{zoneNumber: {$in:zones}}})
-           .then(function(votesInZones){
-             socket.emit('New Establishments', {establishments:estabsInZones,votes: votesInZones});  
-           });
-    });
+var checkPass = function (userName, attPassword, callback) {
+  findUser(userName).then(function(user) {
+    if (!user) {
+      return callback(false);
+    };
+    bcrypt.compare(attPassword, user.password, function(err,match){
+      match ? callback(match,user) : callback(match);
+    })
+  });
 };
-// changes the user's stored default traits in the DB -- doesn't send anything back
-var changeDefaultTraits = function (user) {
-  userQueries.updateUserInfo(user.id, user.traits);
-  // note - the client will also reset them locally, and we WON'T send these back to the client
-  // the client will only reference them on next login
+
+var getUserTraits = function(userId){
+  return Users_Traits.findOne({where: {userId: userId}, attributes: ['traitCombo']});
 };
+
+var setUserTraits = function(data){
+  Users_Traits.findOrCreate({where: {userId: data.userId}, defaults:{traitCombo: data.traitCombo}})
+              .spread(function(user, created) {
+                //If user already existed, update traits
+                if(!created){
+                  Users_Traits.update({traitCombo: data.traitCombo}, {where: {userId: data.userId}})
+                              .then(function(result){
+                                console.log('User traits updated:',result);
+                              }, function(error){
+                                console.log('User traits update failed:',error);
+                              });
+                }
+              })
+};
+
 module.exports = {
-  setUserZone: setUserZone,
-  sendData: sendData,
-  changeDefaultTraits: changeDefaultTraits
+  findUser: findUser,
+  addUser: addUser,
+  checkPass: checkPass,
+  getUserTraits: getUserTraits,
+  setUserTraits: setUserTraits
 };
