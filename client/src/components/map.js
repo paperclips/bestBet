@@ -173,42 +173,32 @@ var DisplayLatLng = React.createClass({
           <OutlineMarkerView/>
         </MapView.Marker>
         {_.map(this.state.establishments, (establishment) => (
-          
-          <MapView.Marker key={establishment.id} style={dotStyles['container']}coordinate={establishment.coordinate}
-          centerOffset={{x:0,y:0}}
+          <MapView.Marker key={establishment.id} 
+            coordinate={establishment.coordinate}
+            centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
-            ref="m1"
-            >
-          <MapView.Marker coordinate={establishment.coordinate}>
-            <UserMarkerView/>
+            ref="m1">
+              <View style={dotStyles[this.calculateUserScores(establishment.id)]}>
+                <View style={dotStyles[0]}/>
+              </View>
+
+              <MapView.Callout tooltip>
+                <InfoCallout>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
+                  </Text>
+                </InfoCallout>
+              </MapView.Callout>
+
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.id}:{establishment.name}</Text>
           </MapView.Marker>
-        <MapView.Marker coordinate={establishment.coordinate}>
-            <UserMarkerView/>
-          </MapView.Marker>
-            <RestaurantMarkerView 
-              coordinate={establishment.coordinate}
-              
-              style={dotStyles[this.calculateUserScores(establishment.id)]}>
-            </RestaurantMarkerView>
-
-
-            <MapView.Callout tooltip>
-              <InfoCallout>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
-                </Text>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
-                </Text>
-                <Text style={{ fontWeight:'bold', color: 'white' }}>
-                  {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
-                </Text>
-              </InfoCallout>
-            </MapView.Callout>
-          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.id}:{establishment.name}</Text>
-
-        </MapView.Marker>
 
           ))}
         </MapView>
@@ -276,6 +266,7 @@ var dotStyles = {
     height:60,
     width:60,
     borderRadius: 30,
+    alignSelf:'center',
     borderColor: 'rgba(194, 113, 0, 0.3)',
     borderWidth:24,
   },
