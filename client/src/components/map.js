@@ -146,7 +146,9 @@ var DisplayLatLng = React.createClass({
         } 
        }
     }
-     return Math.floor(10*(cume/totes));   
+    console.log("tot ",estabId, ": ",Math.ceil(5*(cume/totes)));
+
+     return Math.ceil(5*(cume/totes));   
   },
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
@@ -172,24 +174,24 @@ var DisplayLatLng = React.createClass({
         </MapView.Marker>
         {_.map(this.state.establishments, (establishment) => (
           
-          <MapView.Marker key={establishment.id} coordinate={establishment.coordinate}
+          <MapView.Marker key={establishment.id} style={dotStyles['container']}coordinate={establishment.coordinate}
           centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1"
-            style={this.calculateUserScores(establishment.id)}>
-
-          <MapView.Marker coordinate={this.state.myLocation}>
-            <UserVotedView/>
+            >
+          <MapView.Marker coordinate={establishment.coordinate}>
+            <UserMarkerView/>
           </MapView.Marker>
-
+        <MapView.Marker coordinate={establishment.coordinate}>
+            <UserMarkerView/>
+          </MapView.Marker>
             <RestaurantMarkerView 
               coordinate={establishment.coordinate}
-              centerOffset={{x:0,y:0}}
-              calloutOffset={{ x: 0, y: 0 }}
-              calloutAnchor={{ x: 0, y: 0}}
-              ref="m1"
-              style={dotStyles[this.calculateUserScores(establishment.id)]}/>
+              
+              style={dotStyles[this.calculateUserScores(establishment.id)]}>
+            </RestaurantMarkerView>
+
 
             <MapView.Callout tooltip>
               <InfoCallout>
@@ -238,68 +240,65 @@ module.exports = DisplayLatLng;
 
 
 var dotStyles = {
+  'content':{
+
+    justifyContent:'center',
+    alignContent: 'center'
+  },
   0:{
-    backgroundColor: 'black ',
-    opacity:.5,
+    backgroundColor: 'black',
     justifyContent: 'center',
     height:12,
     width:12,
     borderRadius: 6,
-    alignSelf: 'flex-start'
+    alignSelf: 'center'
   },
   1:{
-    backgroundColor: 'red',
-    opacity:.3,
-    justifyContent: 'center',
-    height:8,
-    width:8,
-    borderRadius: 4,
-    alignSelf: 'flex-start'
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    alignSelf:'center',
+    borderColor: 'rgba(209, 0, 0, 0.2)',
   },
   2:{
-    backgroundColor: 'red',
-    opacity:.7,
-    justifyContent: 'center',
-    height:8,
-    width:8,
-    borderRadius: 4,
-    alignSelf: 'flex-start'
+    backgroundColor: 'transparent',
+    height:30,
+    width:30,
+    borderRadius: 15,
+    borderWidth:9,
+    alignSelf:'center',
+    borderColor: 'rgba(209, 0, 0, 0.2)',
   },
   3:{
-    backgroundColor: 'red',
-    opacity:1,
-    justifyContent: 'center',
-    height:8,
-    width:8,
-    borderRadius: 4,
-    alignSelf: 'flex-start'
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderColor: 'rgba(194, 113, 0, 0.3)',
+    borderWidth:24,
   },
   4:{
-    backgroundColor: 'green',
-    opacity:.7,
     justifyContent: 'center',
-    height:12,
-    width:12,
-    borderRadius: 6,
-    alignSelf: 'flex-start'
+    height:60,
+    width:60,
+    backgroundColor:'transparent',
+    borderColor: 'rgba(34, 204, 0, 0.4)',
+    borderWidth:24,
+    borderRadius: 30,
+    alignSelf:'center'
   },
   5:{
-    backgroundColor: 'green',
-    opacity:.7,
     justifyContent: 'center',
-    height:18,
-    width:18,
-    borderRadius: 9,
-    alignSelf: 'flex-start'
+    backgroundColor:'transparent',
+    height:90,
+    width:90,
+    borderRadius: 45,
+    alignSelf: 'center',
+    borderColor: 'rgba(34, 204, 0, 0.4)',
+    borderWidth:39,
   },
-  6:{
-    backgroundColor: 'green',
-    opacity:.7,
-    justifyContent: 'center',
-    height:24,
-    width:24,
-    borderRadius: 12,
-    alignSelf: 'flex-start'
-  }
+  
 };
   
