@@ -55,7 +55,11 @@ var processVoteData = function () {
       restaurants[vote.establishmentId].traits[vote.traitId].pos++;
     }
     if(vote.voteValue.userId === 123) {
-      restaurants[vote.establishmentId].userVoted = true;
+      if(vote.voteValue === true) {
+        restaurants[vote.establishmentId].userVoted = 2;
+      } else {
+        restaurants[vote.establishmentId].userVoted = 1;
+      }
     }
   });
 };
@@ -133,6 +137,7 @@ var DisplayLatLng = React.createClass({
     if (this.state.establishments[estabId] === undefined) {
       return 0;
     } else {
+
       var cume = 0.0;
       var totes = 0;
        for (var x = 0; x < 3; x++) {
@@ -146,9 +151,10 @@ var DisplayLatLng = React.createClass({
         } 
        }
     }
-    console.log("tot ",estabId, ": ",Math.ceil(5*(cume/totes)));
-
-     return Math.ceil(5*(cume/totes));   
+    if(totes === 0) {
+      return 0;
+    }
+    return Math.ceil(10*(cume/totes));   
   },
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
@@ -179,12 +185,14 @@ var DisplayLatLng = React.createClass({
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-              <View style={dotStyles[this.calculateUserScores(establishment.id)]}>
-                <View style={dotStyles[0]}/>
+              <View style={scoreStyles[this.calculateUserScores(establishment.id)]}>
+                <View style={userDot[establishment.userVoted]}/>
               </View>
 
               <MapView.Callout tooltip>
                 <InfoCallout>
+                <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
+
                   <Text style={{ fontWeight:'bold', color: 'white' }}>
                     {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
                   </Text>
@@ -197,7 +205,7 @@ var DisplayLatLng = React.createClass({
                 </InfoCallout>
               </MapView.Callout>
 
-              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.id}:{establishment.name}</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}:{this.calculateUserScores(establishment.id)}/10</Text>
           </MapView.Marker>
 
           ))}
@@ -228,67 +236,144 @@ var DisplayLatLng = React.createClass({
 
 module.exports = DisplayLatLng;
 
-
-var dotStyles = {
-  'content':{
-
-    justifyContent:'center',
-    alignContent: 'center'
-  },
-  0:{
-    backgroundColor: 'black',
-    justifyContent: 'center',
+var userDot = {
+  0: {
     height:12,
     width:12,
     borderRadius: 6,
-    alignSelf: 'center'
+    backgroundColor:'red',
+    borderColor: 'blue',
+    borderWidth:1
+  },
+  2: {
+    height:12,
+    width:12,
+    borderRadius: 6,
+    backgroundColor:'black',
+    borderColor: 'white',
+    borderWidth:2,
+  },
+  1: {
+    height:12,
+    width:12,
+    borderRadius: 6,
+    backgroundColor:'lime',
+    borderColor: 'blue',
+    borderWidth:1,
+  }
+};
+
+var scoreStyles = {
+  0:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor:'rgba(0, 0, 0, 0.3)'
   },
   1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor: 'transparent',
     height:60,
     width:60,
     borderRadius: 30,
-    borderWidth:24,
-    alignSelf:'center',
-    borderColor: 'rgba(209, 0, 0, 0.2)',
+    borderWidth:6,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+
   },
   2:{
-    backgroundColor: 'transparent',
-    height:30,
-    width:30,
-    borderRadius: 15,
-    borderWidth:9,
-    alignSelf:'center',
-    borderColor: 'rgba(209, 0, 0, 0.2)',
-  },
-  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor: 'transparent',
     height:60,
     width:60,
     borderRadius: 30,
-    alignSelf:'center',
-    borderColor: 'rgba(194, 113, 0, 0.3)',
     borderWidth:24,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
   },
   4:{
+    alignSelf: 'center',
     justifyContent: 'center',
     height:60,
     width:60,
     backgroundColor:'transparent',
-    borderColor: 'rgba(34, 204, 0, 0.4)',
+    borderColor: 'rgba(230, 134, 0, 0.25)',
     borderWidth:24,
     borderRadius: 30,
-    alignSelf:'center'
   },
   5:{
     justifyContent: 'center',
-    backgroundColor:'transparent',
-    height:90,
-    width:90,
-    borderRadius: 45,
     alignSelf: 'center',
-    borderColor: 'rgba(34, 204, 0, 0.4)',
-    borderWidth:39,
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(245, 241, 0, 0.2)',
+    
+  },
+  6:{
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(163, 245, 0, 0.3)',
+  },
+  7:{
+   justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    alignSelf:'center',
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  8:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  9:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(34, 224, 0, 0.6)',
+  },
+  10:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:60,
+    width:60,
+    borderRadius: 30,
+    borderWidth:24,
+    borderColor: 'rgba(34, 224, 0, 0.7)',
   },
   
 };

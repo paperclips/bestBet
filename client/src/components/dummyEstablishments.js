@@ -9315,11 +9315,11 @@ var onlyTwenty = function () {
   for(var x = 0; x <20; x++) {
     estabObj[dummyData[x].id] = dummyData[x];
     estabObj[dummyData[x].id].traits = {};
-    estabObj[dummyData[x].id].userVoted = false;
+    estabObj[dummyData[x].id].userVoted = 0;
     for (var y = 1; y <10; y++) {
       estabObj[dummyData[x].id].traits[y] = {votes:0,pos:0}; 
     }
-    // console.log(estabObj[dummyData[x].id]);
+    console.log(estabObj[dummyData[x].id]);
   }
 };
 onlyTwenty();
