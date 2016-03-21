@@ -11,6 +11,7 @@ var {
 } = React;
 
 var DisplayLatLng = require('./map.js');
+var Intro = require('./intro.js');
 var App = require('../../App.js');
 var Form = t.form.Form;
 var styles = require('../assets/styles.js').signupStyles;
@@ -95,11 +96,20 @@ var ComponentMap = React.createClass({
 
 //both button goes to map view for now
 var ComponentIntro = React.createClass({
-  render: function() {
+    render: function() {
+    // return (
+    //   <NavigatorIOS
+    //       style={{flex: 0.3}}
+    //       initialRoute={{
+    //           title: 'Signup Page',
+    //           component: Signup,
+    //       }}
+    //   />
+    // )
     return (
-      <View style={{flex: 1}}>
-        {<DisplayLatLng />}
-      </View>
+        <View style={{flex: 1}}>
+        {<Intro />}
+        </View>
     )
   }
 })

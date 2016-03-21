@@ -9,6 +9,7 @@ var {
 } = React;
 var DisplayLatLng = require('./map.js');
 var Signup = require('./signup.js');
+var Login = require('./login.js')
 var styles = require('../assets/styles.js').appStyles;
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
@@ -97,7 +98,7 @@ var ComponentMap = React.createClass({
     render: function() {
     return (
         <View style={{flex: 1}}>
-        {<DisplayLatLng />}
+        {<Login />}
         </View>
     )
   }
