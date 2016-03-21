@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   switch(action.type) {
     case SIGNUP:
-      return action.payload
+      return action.payload;
     // case LOGIN:
     //   return action.payload
     default:
