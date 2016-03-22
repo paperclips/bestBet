@@ -1,4 +1,5 @@
 import io from 'socket.io-client/socket.io';
+import socket from './utils.js';
 
 import zones from './zoneHandler.js';
 import zoneCalc from '../components/zoneCalculator.js';
