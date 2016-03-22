@@ -26,7 +26,7 @@ function saveVoteToState(voteData){
   }
 };
 
-export function addSocket (dispatch,socket){
+export default function (dispatch,socket){
   dispatch(addSocketToState(socket));
   socket.on('New Establishments', (estabsAndVotes) => {addEstabToState(estabsAndVotes,dispatch,socket)});
 };

@@ -3,6 +3,7 @@ import io from 'socket.io-client/socket.io';
 import zoneHandler from './zoneHandler.js';
 
 const SERVER_URL = 'http://10.8.30.75:3000';
+//const SERVER_URL = 'http://localhost:3000';
 
 export function sendReq (method,route,body){
   const url = `${SERVER_URL}${route}`;
@@ -14,7 +15,7 @@ export function sendReq (method,route,body){
 
 //Connect socket
 export function connectSocket(){
-  return io.connect(SERVER_ADDRESS, { jsonp: false });
+  return io.connect(SERVER_URL, { jsonp: false });
 };
 
 export function updateZoneSubscription(socket, oldZones, newZones){

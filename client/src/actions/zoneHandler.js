@@ -71,6 +71,7 @@ var isAZone = function (zoneNumber) {
 
 
 module.exports = {
+  zoneCalculator: zoneCalculator,
   getSurroundingZones: getSurroundingZones,
   getNewZonesOnMove: getNewZonesOnMove
 };
