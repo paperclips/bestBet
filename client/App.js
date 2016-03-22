@@ -4,12 +4,14 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import rootReducer from './src/reducers/rootReducer';
-// import Intro from './src/components/intro.js';
 import Router from './src/components/router';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-// const reducer = combineReducers(reducers);
 const store = createStoreWithMiddleware(rootReducer);
+
+//Socket.io expects window.navigator.userAgent to be a string, need to set
+window.navigator.userAgent = "react-native"; //or any other string value
+
 
 export default class client extends Component {
   render() {

@@ -21,6 +21,7 @@ export default (user, navigator) => {
     sendReq('POST','/login',user).then(function(res){
       if(res.status === 200){
         let body = res.body;
+        console.log('RES BODY FROM SERVER:',body);
         navigator.geolocation.getCurrentPosition(
           (position) => {
             let userZone = zoneHandler.zoneCalculator(position.coords.latitute, position.coords.longitude);
@@ -28,14 +29,14 @@ export default (user, navigator) => {
             body.userZone = userZone;
             var socket = connectSocket();
             addSocket(dispatch, socket);//saves socket into state, adds listeners for ('New Establishments', 'voteAdded')
-            dispatch（userLogin(body)); //save user info to user state
+            dispatch(userLogin(body)); //save user info to user state
             socket.emit('Get Establishments',{userId: body.id, zones: estabZones});
-            updateZoneSubscription(socket,[],estabZones)); //joins zones
+            updateZoneSubscription(socket,[],estabZones); //joins zones
             navigator.immediatelyResetRouteStack([{ name: 'Map' }]);//then redirect user to mapview
           });
       } else {
-        dispatch（userLogin(res.body)) //add error to user state
+        dispatch(userLogin(res.body)) //add error to user state
       }
-    }
+    })
   }
 }
