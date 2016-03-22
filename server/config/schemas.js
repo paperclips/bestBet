@@ -65,8 +65,7 @@ module.exports = function(Sequelize, db){
   Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
-  Users.belongsToMany(Traits, { through: 'Users_Traits', foreignKey: 'userId' });
-  Traits.belongsToMany(Users, { through: 'Users_Traits', foreignKey: 'traitId' });
+  Users_Traits.belongsTo(Users, { foreignKey: 'userId' });
   YelpCategories_Genres.belongsTo(Genres, { foreignKey: 'genreId' });
 
   return {

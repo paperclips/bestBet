@@ -4,11 +4,11 @@ import zoneHandler from './zoneHandler.js';
 
 const SERVER_URL = 'http://localhost:3000';
 
-export function sendReq (type,route,body){ 
+export function sendReq (method,route,body){
   const url = `${SERVER_URL}${route}`;
   const headers = { 'Content-Type': 'application/json'};
-  const options = {headers,type}
-
+  const options = {headers,method}
+  options.body = JSON.stringify(body);
   return fetch(url, options)
 };
 

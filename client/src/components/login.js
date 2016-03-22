@@ -41,6 +41,7 @@ export default class Login extends Component {
     var value = this.refs.form.getValue();
     if(value){
       this.setState({userName: value.userName, password: value.password});
+      this.props.loginUser(this.state, this.props.navigator) 
     }
   }
 
@@ -52,10 +53,45 @@ export default class Login extends Component {
           type={User}
           options={options}
         />
-      <TouchableHighlight style={styles.button} onPress={() => this.props.loginUser(this.getSta, navigator) } underlayColor='#99d9f4'>
+      <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
         <Text style={styles.buttonText}>login</Text>
       </TouchableHighlight>
       </View>
     )
   }
 };
+
+
+// export default class Login extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = { userName: '', password: '' };
+//   }
+  
+//   onPress(){
+//     this.props.loginUser(this.getState(), this.props.navigator) 
+//   }
+
+//   render() {
+//     return (
+//       <View>
+//       <TextInput 
+//         value={this.state.userName}
+//         onChangeText={ userName => this.setState({ userName }) }
+//         placeholderTextColor="white"
+//         placeholder="userName" 
+//       />
+      
+//       <TextInput 
+//         value={this.state.password}
+//         secureTextEntry={true}
+//         onChangeText={ password => this.setState({ password }) }  
+//         placeholderTextColor="white"
+//         placeholder="password"
+//       />
+
+//       <Button text="Login" clickAction={this.onPress.bind(this)} />
+//       </View>
+//     );  
+//   }
+// }

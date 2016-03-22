@@ -20,9 +20,10 @@ var createFakeUsers = function(num) {
     user.name = firstNames[x%10] +' '+ lastNames[y%10];
     user.userName = 'user' + x;
     user.password = firstNames[x%10];
-    user.traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
-    userCtrl.addUser(user);
-    userCtrl.setUserTraits(user);
+    //user.traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
+    userCtrl.addUser(user)
+    //user.userId = newUser.id;
+    //userCtrl.setUserTraits(user);
     y--;
   }
 };

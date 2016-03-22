@@ -10,7 +10,7 @@ function signup (req, res) {
     } else {
       userCtrl.addUser(req.body).then(function(user){
         var token = jwt.encode(user.userName, 'secret');
-        res.send(200,{id: user.id, name: user.name, userName: user.userName, token: token});  
+        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token});  
       })
     }
   })
@@ -19,15 +19,18 @@ function signup (req, res) {
 function login (req, res) {
   var userName = req.body.userName;
   var password = req.body.password;
+  console.log('GOT TO HERE:',req.body);
 
   userCtrl.checkPass(userName, password,function(match,user){
     if(!match){
       res.status(401).json({error:'Incorrect username or password'})
     } else {
       //Get user preferences
-      userCtrl.getUserTraits.then(function(traitCombo){
+      
+      userCtrl.getUserTraits(user.id).then(function(traitCombo){
+        console.log('TRAITS:',traitCombo);
         var token = jwt.encode(userName, 'secret');
-        res.send(200,{id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo});    
+        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo});    
       })
     }
   })

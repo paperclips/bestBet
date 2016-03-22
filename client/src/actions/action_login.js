@@ -1,11 +1,9 @@
-import LOGIN from './constants.js';
-import sendReq from './utils.js';
-import updateZoneSubscription from './utils.js';
+import {LOGIN} from './constants.js';
+import {sendReq,updateZoneSubscription, connectSocket} from './utils.js';
 
 import zoneHandler from './zoneHandler.js';
 import getEstablishments from './action_getEstablishments';
 import addSocket from './action_addSocket';
-import connectSocket from './utils';
 
 function userLogin(userData) {
   return {
@@ -19,9 +17,9 @@ function userLogin(userData) {
 export default (user, navigator) => {
   return (dispatch) => {
     sendReq('POST','/login',user).then(function(res){
+      console.log('RES BODY FROM SERVER:',res.body);
       if(res.status === 200){
         let body = res.body;
-        console.log('RES BODY FROM SERVER:',body);
         navigator.geolocation.getCurrentPosition(
           (position) => {
             let userZone = zoneHandler.zoneCalculator(position.coords.latitute, position.coords.longitude);
