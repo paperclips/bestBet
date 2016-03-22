@@ -15,17 +15,23 @@ var lastNames = ['a','b','c','d','e','f','g','h','i','j'];
 
 var createFakeUsers = function(num) {
   var y = num-1;
-  for (var x = 0; x < num; x++) {
+  var numberArray = new Array(num+1).join('1').split('');
+  numberArray.forEach(function(v,x){
     var user = {};
     user.name = firstNames[x%10] +' '+ lastNames[y%10];
     user.userName = 'user' + x;
     user.password = firstNames[x%10];
-    //user.traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
-    userCtrl.addUser(user)
-    //user.userId = newUser.id;
-    //userCtrl.setUserTraits(user);
+    userCtrl.findUser(user.userName).then(function(oldUser){
+      if(!oldUser){
+        userCtrl.addUser(user).then(function(newUser){
+          user.userId = newUser.id;
+          user.traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
+          userCtrl.setUserTraits(user);
+        });
+      }
+    });
     y--;
-  }
+  })
 };
 
 createFakeUsers(20);

@@ -11,16 +11,10 @@ var findUser = function(userName){
 
 var addUser = function (userDetails) {
   var cipher = Promise.promisify(bcrypt.hash);
-  cipher(userDetails.password, null,null).then(function(hash) {
-    Users.create({userName: userDetails.userName,
-                  name: userDetails.name,
-                  password: hash})
-         .then(function(user){
-            console.log('UUUUUUUUUUU444SER:',user);
-            var traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
-            var data = {userId: user.id, traitCombo: traitCombo};
-            setUserTraits(data);
-         })
+  return cipher(userDetails.password, null,null).then(function(hash) {
+    return Users.create({userName: userDetails.userName,
+                         name: userDetails.name,
+                         password: hash})
   });
 };
 

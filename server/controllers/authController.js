@@ -6,7 +6,7 @@ function signup (req, res) {
   var userName = req.body.userName;
   userCtrl.findUser(userName).then(function(user){
     if(user){
-      res.status(401).json({error: 'This username is taken'});
+      res.status(401).send({error: 'This username is taken'});
     } else {
       userCtrl.addUser(req.body).then(function(user){
         var token = jwt.encode(user.userName, 'secret');
@@ -23,14 +23,14 @@ function login (req, res) {
 
   userCtrl.checkPass(userName, password,function(match,user){
     if(!match){
-      res.status(401).json({error:'Incorrect username or password'})
+      res.status(401).send({error:'Incorrect username or password'})
     } else {
       //Get user preferences
       
-      userCtrl.getUserTraits(user.id).then(function(traitCombo){
-        console.log('TRAITS:',traitCombo);
+      userCtrl.getUserTraits(user.id).then(function(traitRecord){
+        var traitCombo = traitRecord.traitCombo;
         var token = jwt.encode(userName, 'secret');
-        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo});    
+        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo});
       })
     }
   })
