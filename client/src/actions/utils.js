@@ -18,6 +18,10 @@ export function connectSocket(){
 };
 
 export function updateZoneSubscription(socket, oldZones, newZones){
-  //socket.leave(oldZones);
-  //socket.join(newZones);
+  oldZones.forEach(function(zone){
+    socket.leave(zone);  
+  });
+  newZones.forEach(function(zone){
+    socket.join(zone);  
+  });
 };

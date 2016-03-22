@@ -16,7 +16,7 @@ var App = require('../../App.js');
 var Form = t.form.Form;
 var styles = require('../assets/styles.js').signupStyles;
 var User   = t.struct({
-  name: t.String,
+  userName: t.String,
   password: t.String
 });
 
