@@ -127,6 +127,7 @@ export default class Map extends Component {
   }
 
   changeTrait() {
+    console.log("est ",this.props.establishments);
     this.setState({ uPrefs: [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)] });
   }
 
