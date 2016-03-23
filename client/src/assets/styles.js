@@ -1,12 +1,23 @@
 // EACH STYLE SHEET represents the styles for that particular component
 var React = require('react-native');
+var Dimensions = require('Dimensions');
+var windowSize = Dimensions.get('window');
 var {StyleSheet} = React;
 var signupStyles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    marginTop: 55,
-    padding: 15,
+    paddingLeft: windowSize.height/40,
+    paddingRight: windowSize.height/40,
+    marginTop: windowSize.height/45,
     backgroundColor: '#ffffff',
+  },
+  topSpace: {
+    marginTop: windowSize.height/35,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    height: windowSize.height/15,
+    padding: windowSize.height/45
   },
   title: {
     fontSize: 10,
@@ -18,18 +29,9 @@ var signupStyles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
-  button: {
-    height: 32,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    margin: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
-  },
   button1: {
-    height: 20,
+    flex:1,
+    height: windowSize.height/20,
     width: 80,
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
@@ -37,10 +39,13 @@ var signupStyles = StyleSheet.create({
     borderRadius: 5,
     margin: 3,
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexWrap: 'wrap', 
+    alignItems: 'flex-start',
+    flexDirection:'row'
   },
   button2: {
-    height: 20,
+    height: windowSize.height/17,
     width: 80,
     backgroundColor: '#bbec48',
     borderColor: '#48BBEC',
@@ -48,33 +53,10 @@ var signupStyles = StyleSheet.create({
     borderRadius: 5,
     margin: 3,
     alignSelf: 'center',
-    justifyContent: 'center'
-  },
-  list: {
     justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  },
-  row: {
-    justifyContent: 'center',
-    padding: 3,
-    margin: 3,
-    width: 85,
-    height: 85,
-    backgroundColor: '#F6F6F6',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: '#CCC'
-  },
-  thumb: {
-    width: 50,
-    height: 50
-  },
-  text: {
-    flex: 1,
-    marginTop: 5,
-    fontWeight: 'bold'
+    flexWrap: 'wrap', 
+    alignItems: 'flex-start',
+    flexDirection:'row'
   }
 });
 var mapStyles = StyleSheet.create({

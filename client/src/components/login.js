@@ -51,18 +51,24 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
+
+
+      <View style={styles.topSpace}>
+      </View>
         <Form
           ref="form"
           type={User}
           options={options}
         />
-      <TouchableHighlight style={styles.button} onPress={this.onLogin.bind(this)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>login</Text>
-      </TouchableHighlight>
-      <TouchableHighlight style={styles.button} onPress={this.onSignup.bind(this)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Signup</Text>
-      </TouchableHighlight>
-      </View>
+        <View style={{flexDirection: 'row', height: 50, marginTop: 40, padding: 20}}>
+        <TouchableHighlight style={styles.button1} onPress={this.onLogin.bind(this)} underlayColor='#99d9f4'>
+          <Text style={styles.buttonText}>login</Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.button1} onPress={this.onSignup.bind(this)} underlayColor='#99d9f4'>
+          <Text style={styles.buttonText}>Signup</Text>
+        </TouchableHighlight>
+        </View>
+      </View>  
     )
   }
 };
