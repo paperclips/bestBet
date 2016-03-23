@@ -9,10 +9,11 @@ var signupStyles = StyleSheet.create({
     paddingLeft: windowSize.height/40,
     paddingRight: windowSize.height/40,
     marginTop: windowSize.height/45,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f7f6f3',
   },
   topSpace: {
     marginTop: windowSize.height/35,
+    backgroundColor: '#f7f6f3',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -29,15 +30,21 @@ var signupStyles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
+  twoButtons: {
+    flexDirection: 'row',
+    height: windowSize.height/15, 
+    paddingLeft: windowSize.height/20,
+    paddingRight: windowSize.height/20
+
+  },
   button1: {
     flex:1,
     height: windowSize.height/20,
-    width: 80,
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 2,
     borderRadius: 5,
-    margin: 3,
+    margin: windowSize.width/80,
     alignSelf: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap', 
@@ -45,13 +52,12 @@ var signupStyles = StyleSheet.create({
     flexDirection:'row'
   },
   button2: {
-    height: windowSize.height/17,
-    width: 80,
-    backgroundColor: '#bbec48',
-    borderColor: '#48BBEC',
+    height: windowSize.height/16,
+    backgroundColor: '#09a5ff',
+    borderColor: '#007dc1',
     borderWidth: 2,
-    borderRadius: 5,
-    margin: 3,
+    borderRadius: 10,
+    margin: windowSize.width/80,
     alignSelf: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap', 
@@ -97,7 +103,6 @@ var mapStyles = StyleSheet.create({
     marginVertical: 20,
     backgroundColor: 'transparent',
   },
-
 });
 
 var appStyles = StyleSheet.create({
@@ -174,7 +179,6 @@ var markerStyles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor:'blue',
     opacity:.3,
- 
   },
   dot: {
     flex: 0,

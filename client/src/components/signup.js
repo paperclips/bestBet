@@ -60,6 +60,10 @@ export default class Signup extends Component {
     }
   }
 
+  backToSignin(){
+    this.props.navigator.pop();
+  }
+
   traitsClicked (traitChoice) {
     var index = this.traitCombo.indexOf(traitChoice);
     var choices = this.state.buttonPress;
@@ -73,13 +77,9 @@ export default class Signup extends Component {
     this.setState({buttonPress: choices});
   }
 
-
-
-
-
   render() {
     return (
-      <View>
+      <View style={{backgroundColor: '#f7f6f3'}}>
       <View style={styles.topSpace}>
       </View>
 
@@ -97,7 +97,6 @@ export default class Signup extends Component {
       </TouchableHighlight>
       </View>
 
-
       <View style={styles.buttonContainer}>
       <TouchableHighlight style={[styles.button1, this.state.buttonPress[3] && styles.button2]} onPress={this.traitsClicked.bind(this, 4)} underlayColor='#99d9f4'>
         <Text style={styles.buttonText}>Not Noisy</Text>
@@ -111,7 +110,6 @@ export default class Signup extends Component {
         <Text style={styles.buttonText}>No Wait</Text>
       </TouchableHighlight> 
       </View>
-
 
       <View style={styles.buttonContainer}>
       <TouchableHighlight style={[styles.button1, this.state.buttonPress[6] && styles.button2]} onPress={this.traitsClicked.bind(this, 7)} underlayColor='#99d9f4'>
@@ -127,7 +125,6 @@ export default class Signup extends Component {
       </TouchableHighlight> 
       </View>
 
-
       <View style={styles.container}>
         <Form
           ref="form"
@@ -135,9 +132,15 @@ export default class Signup extends Component {
           options={options}
         />
       </View> 
+
+      <View style={styles.twoButtons}>
+      <TouchableHighlight style={styles.button1} onPress={this.backToSignin.bind(this)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Back to Login</Text>
+      </TouchableHighlight>
       <TouchableHighlight style={styles.button1} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
         <Text style={styles.buttonText}>Signup</Text>
       </TouchableHighlight>
+      </View>
       </View>
     )
   }
