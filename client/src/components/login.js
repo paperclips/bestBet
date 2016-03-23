@@ -37,15 +37,15 @@ export default class Login extends Component {
     this.state = { userName: '', password: '' };
     this.allTraits = 
       {
-      "one" : false,
-      "two" : false,
-      "three" : false,
-      "four" : false,
-      "five" : false,
-      "six" : false,
-      "seven" : false,
-      "eight" : false,
-      "nine" : false
+      "1" : false,
+      "2" : false,
+      "3" : false,
+      "4" : false,
+      "5" : false,
+      "6" : false,
+      "7" : false,
+      "8" : false,
+      "9" : false
     };
     
     // this.t.trait1 = false;
@@ -85,12 +85,13 @@ export default class Login extends Component {
     }
   }
 
-
-
   traitsClicked (traitChoice, number) {
-    console.log(traitChoice, "should be one two three or four..");
+    console.log(number, "should be one two three or four..");
     var finalChoice = [];
-    this.allTraits[traitChoice] = !this.allTraits[traitChoice];
+    this.allTraits[number] = !this.allTraits[number];
+    if(this.allTraits[number]){
+
+    }
     console.log(this.allTraits, 'list of traits in T/F');
     for(var key in this.allTraits){
       if(this.allTraits[key]){
@@ -99,53 +100,56 @@ export default class Login extends Component {
     }
 
     if(finalChoice.length === 3){
-      console.log('THREE!')
+      console.log('USER GOT ALL THREE TRAITS CHOICES!')
     } else if (finalChoice.length > 3){
       console.log('too many traits, only pick three');
     } else {
-      console.log('PICK MORE!');
+      console.log('pick more traits!');
     }
-    console.log(finalChoice, '1 - 3 numbers array');
+    console.log(finalChoice, 'should be 1 - 3 numbers array');
   }
+
+// var traitNames = ['Good Food', 'Good Drinks', 'Good Deal', 'Not Noisy', 'Not Crowded', 'No Wait','Good Service','Upscale', 'Veggie Friendly'];
+
 
   render() {
     return (
       <View style={styles.container}>
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "one", 1)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_1</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "one", 1)} underlayColor={'black'} onPressIn={this.togglePressIn} onPressOut={this.togglePressIn}>
+        <Text style={styles.buttonText}>Good Food</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "two", 2)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_2</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "two", 2)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Good Drinks</Text>
       </TouchableHighlight>        
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "three", 3)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_3</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "three", 3)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Good Deal</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "four", 4)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_4</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "four", 4)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Not Noisy</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "five", 5)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_5</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "five", 5)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Not Crowded</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "six", 6)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_6</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "six", 6)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>No Wait</Text>
       </TouchableHighlight> 
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "seven", 7)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_7</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "seven", 7)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Good Service</Text>
       </TouchableHighlight> 
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "eight", 8)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_8</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "eight", 8)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Upscale</Text>
       </TouchableHighlight> 
 
-      <TouchableHighlight style={styles.button} onPress={this.traitsClicked.bind(this, "nine", 9)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Trait_9</Text>
+      <TouchableHighlight style={styles.button1} onPress={this.traitsClicked.bind(this, "nine", 9)} underlayColor='#99d9f4'>
+        <Text style={styles.buttonText}>Veggie Friendly</Text>
       </TouchableHighlight> 
         <Form
           ref="form"

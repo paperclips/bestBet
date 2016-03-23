@@ -29,13 +29,14 @@ var signupStyles = StyleSheet.create({
     justifyContent: 'center'
   },
   button1: {
-    height: 25,
+    height: 40,
+    width: 80,
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    margin: 10,
-    alignSelf: 'stretch',
+    borderWidth: 2,
+    borderRadius: 5,
+    margin: 5,
+    alignSelf: 'center',
     justifyContent: 'center'
   },
   list: {
