@@ -20,7 +20,7 @@ var createFakeUsers = function(num) {
     var user = {};
     user.name = firstNames[x%10] +' '+ lastNames[y%10];
     user.userName = 'User' + x;
-    user.password = firstNames[x%10];
+    user.password = 'a';
     userCtrl.findUser(user.userName).then(function(oldUser){
       if(!oldUser){
         userCtrl.addUser(user).then(function(newUser){

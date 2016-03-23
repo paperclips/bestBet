@@ -26,6 +26,13 @@ io.on('connect', function(socket){
     console.log("serv data get est ", data);
     estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabsInZones){
       socket.emit('New Establishments', {establishments: estabsInZones});
+      console.log("eZ ",estabsInZones);
+      // socket.emit('New Establishments', {establishments: estabsInZones});
+      // voteCtrl.getVotesInZones(data.zones).then(function(votesInZones){
+      //   voteCtrl.getAllUserVotesInZones(data.userId,data.zones).then(function(userVotes){
+      //     socket.emit('New Establishments', {establishments:estabsInZones, votes:votesInZones, userVotes: });    
+      //   })
+      // })
     })
   });
 

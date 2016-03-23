@@ -11,8 +11,8 @@ var db          = require('../config/db');
 var Users       = db.Users;
 var Votes       = db.Votes;
 var Estab       = db.Establishments;
-
-
+var EstabHistories = db.EsablishmentHistories;
+var voteCtrl = require('../controllers/voteController.js');
 
 var createFakeVotes = function (numPerUser) {
   Users.findAll({raw: true}).then(function(users){
@@ -24,12 +24,13 @@ var createFakeVotes = function (numPerUser) {
              vote.establishmentId = est.id;
              vote.zoneNumber = est.zoneNumber;
              numberArray.forEach(function(){
-               vote.userId = user.id;
-               vote.traitId = Math.floor(Math.random()*9 + 1);
-               vote.voteValue = Boolean(Math.floor(Math.random()*2));
-               vote.time = new Date();
-               Votes.create(vote);
-             })
+              vote.userId = user.id;
+              vote.traitId = Math.floor(Math.random()*9 + 1);
+              vote.voteValue = Boolean(Math.floor(Math.random()*2));
+              vote.time = new Date();
+              Votes.create(vote);
+              // Then add the vote to the history
+              voteCtrl.addVoteToHistory(vote.establishmentId, vote.traitId, vote.voteValue);
            }); 
     })
   })
@@ -39,3 +40,4 @@ var createFakeVotes = function (numPerUser) {
 };
 
 createFakeVotes(10);
+
