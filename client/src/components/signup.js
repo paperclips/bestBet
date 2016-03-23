@@ -55,7 +55,7 @@ export default class Signup extends Component {
         this.setState({error: ""});
         var comboInteger = 1 * this.traitCombo.join('');
         this.setState({name: value.name, userName: value.userName, password: value.password, traitCombo: comboInteger});
-        this.props.signupUser(this.state, this.props.navigator);
+        this.props.authUser(this.state, this.props.navigator, '/signup');
       }
     }
   }

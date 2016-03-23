@@ -1,10 +1,10 @@
 import { Component } from 'react-native';
 import { connect } from 'react-redux';
 import signup from '../components/signup.js';
-import signupUser from '../actions/action_signup';
+import authUser from '../actions/action_auth.js';
 
 function mapStateToProps({ user }) {
   return { user };
 }
 
-export default connect(mapStateToProps, { signupUser })(signup);
+export default connect(mapStateToProps, { authUser })(signup);

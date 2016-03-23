@@ -40,7 +40,7 @@ export default class Login extends Component {
     var value = this.refs.form.getValue();
     if(value){
       this.setState({userName: value.userName, password: value.password});
-      this.props.loginUser(this.state, this.props.navigator) 
+      this.props.authUser(this.state, this.props.navigator, '/login');
     }
   }
 
