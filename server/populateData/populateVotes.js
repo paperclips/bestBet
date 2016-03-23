@@ -12,6 +12,8 @@ var Users       = db.Users;
 var Votes       = db.Votes;
 var Estab       = db.Establishments;
 
+
+
 var createFakeVotes = function (numPerUser) {
   Users.findAll({raw: true}).then(function(users){
     users.forEach(function(user){

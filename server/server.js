@@ -9,9 +9,9 @@ console.log('Server listening on port ' + port);
 
 // UNCOMMENT THESE NEXT THREE TO POPULATE YOUR DATABASE, THEN COMMENT IT OUT AGAIN:
 
-var populateEstablishements = require('./populateData/populateEstablishments');
-var populateUsers           = require('./populateData/populateUsers');
-var populateVotes           = require('./populateData/populateVotes');
+// var populateEstablishements = require('./populateData/populateEstablishments');
+// var populateUsers           = require('./populateData/populateUsers');
+// var populateVotes           = require('./populateData/populateVotes');
 
 
 

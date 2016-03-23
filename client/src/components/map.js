@@ -1,4 +1,6 @@
-var React = require('react-native');
+import React, { Component } from 'react-native';
+
+
 var {
   PropTypes,
   View,
@@ -9,6 +11,7 @@ var {
   ScrollView,
   Image
 } = React;
+
 var _ = require('underscore');
 
 var MapView = require('react-native-maps');
@@ -78,10 +81,10 @@ processVoteData();
 
 
 //THE ACTUAL map deal
-
-var DisplayLatLng = React.createClass({
-  getInitialState() {
-    return {
+export default class Map extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -97,53 +100,52 @@ var DisplayLatLng = React.createClass({
       userId:user.id,
       uPrefs: uPrefs,
       intervalId: -1
-    };
-  },
+    }
+  }
+  
   show() {
         this.refs.m1.showCallout();
-      },
+      }
 
   hide() {
     this.refs.m1.hideCallout();
-  },
+  }
 
   onRegionChange(region) {
     this.setState({ region });
     this.setState({ zone: this.calcZone()});
-  },
+  }
+
   calcZone() {
     var curRegion = this.state.region;
     return zoneCalculator(curRegion.latitude, curRegion.longitude);
-  },
+  }
 
   changeTrait() {
     this.setState({ uPrefs: [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)] });
-  },
+  }
 
   addVotesLive() {
     this.setState({establishments: addVotes(this.state.establishments)});
     this.calculateUserScores();
-  },
+  }
+
   turnOnVoteFlux () {
-    this.setState({intervalId:window.setInterval(this.addVotesLive, 500)});
-  },
+    // this.setState({intervalId:window.setInterval(addVotesLive, 500)});
+  }
+
   turnOffVoteFlux () {
     clearInterval(this.state.intervalId);
-  },
+  }
+
   calculateUserScores (estabId) {
-    // console.log(estabId);
-    // console.log(this.state.establishments[estabId]);
-    // return 8;
     if (this.state.establishments[estabId] === undefined) {
       return 0;
     } else {
-
       var cume = 0.0;
       var totes = 0;
        for (var x = 0; x < 3; x++) {
         if (this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes>0) {
-          console.log("ind ",this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
-            this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes);
           cume += 
           this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
             this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes
@@ -155,12 +157,14 @@ var DisplayLatLng = React.createClass({
       return 0;
     }
     return Math.ceil(10*(cume/totes));   
-  },
+  }
+
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
       && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
       )
-  },
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -170,7 +174,7 @@ var DisplayLatLng = React.createClass({
           style={styles.map}
           initialRegion={this.state.region}
 
-          onRegionChange={this.onRegionChange}
+          onRegionChange={this.onRegionChange.bind(this)}
         >
         <MapView.Marker coordinate={this.state.myLocation}>
           <UserMarkerView/>
@@ -185,7 +189,7 @@ var DisplayLatLng = React.createClass({
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-              <View style={scoreStyles[this.calculateUserScores(establishment.id)]}>
+              <View style={scoreStyles[this.calculateUserScores.bind(this, establishment.id)()]}>
                 <View style={userDot[establishment.userVoted]}/>
               </View>
 
@@ -205,25 +209,19 @@ var DisplayLatLng = React.createClass({
                 </InfoCallout>
               </MapView.Callout>
 
-              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}:{this.calculateUserScores(establishment.id)}/10</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}:{this.calculateUserScores.bind(this, establishment.id)()}/10</Text>
           </MapView.Marker>
 
           ))}
         </MapView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this.changeTrait} style={[styles.bubble, styles.button]}>
+          <TouchableOpacity onPress={this.changeTrait.bind(this)} style={[styles.bubble, styles.button]}>
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>Trait</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.addVotesLive} style={[styles.bubble, styles.button]}>
+          <TouchableOpacity onPress={this.addVotesLive.bind(this)} style={[styles.bubble, styles.button]}>
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>voteOnce</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.turnOnVoteFlux} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>fluxVotes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.turnOffVoteFlux} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>stop</Text>
-          </TouchableOpacity>
-          </View>
+        </View>
           <View style={[styles.bubble, styles.latlng]}>
             <Text style={{ textAlign: 'center'}}>
               {`${this.state.uPrefs},${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
@@ -231,10 +229,10 @@ var DisplayLatLng = React.createClass({
           </View>
         </View>
     );
-  },
-});
+  }
 
-module.exports = DisplayLatLng;
+};
+
 
 var userDot = {
   1: {
@@ -377,4 +375,13 @@ var scoreStyles = {
   },
   
 };
+
+/*
+<TouchableOpacity onPress={this.turnOnVoteFlux.bind(this)} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>fluxVotes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.turnOffVoteFlux.bind(this)} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>stop</Text>
+          </TouchableOpacity>
+*/
   
