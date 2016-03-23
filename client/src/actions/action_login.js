@@ -12,8 +12,6 @@ function userLogin(userData) {
   }
 }
 
-
-//{id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo}
 export default (user, reactNavigator) => {
   return (dispatch) => {
     sendReq('POST','/login',user).then(function(res){

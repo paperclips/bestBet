@@ -29,24 +29,24 @@ var signupStyles = StyleSheet.create({
     justifyContent: 'center'
   },
   button1: {
-    height: 40,
+    height: 20,
     width: 80,
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 2,
     borderRadius: 5,
-    margin: 5,
+    margin: 3,
     alignSelf: 'center',
     justifyContent: 'center'
   },
   button2: {
-    height: 40,
+    height: 20,
     width: 80,
     backgroundColor: '#bbec48',
     borderColor: '#48BBEC',
     borderWidth: 2,
     borderRadius: 5,
-    margin: 5,
+    margin: 3,
     alignSelf: 'center',
     justifyContent: 'center'
   },

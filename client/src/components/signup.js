@@ -40,22 +40,21 @@ var options = {
 export default class Signup extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', userName: '', password: '', traitCombo: null, buttonPress: [0,0,0,0,0,0,0,0,0]};
+    this.state = { name: '', userName: '', password: '', traitCombo: null, buttonPress: [0,0,0,0,0,0,0,0,0], error: ''};
     this.traitCombo = [];
-    this.error = '';
   }
 
   onPress(){
-
     var value = this.refs.form.getValue();
     if(value){
       if(value.password !== value.comparePassword){
-        this.error = "Passwords don't match";
+        this.setState({error: "Passwords don't match"});
       } else if(this.traitCombo.length === 0){
-        this.error = "Please set your preferences"
+        this.setState({error: "Please set your preferences"});
       } else {
-        this.error = '';
-        this.setState({name: value.name, userName: value.userName, password: value.password, traitCombo: this.traitCombo});
+        this.setState({error: ""});
+        var comboInteger = 1 * this.traitCombo.join('');
+        this.setState({name: value.name, userName: value.userName, password: value.password, traitCombo: comboInteger});
         this.props.signupUser(this.state, this.props.navigator);
       }
     }
@@ -63,19 +62,15 @@ export default class Signup extends Component {
 
   traitsClicked (traitChoice) {
     var index = this.traitCombo.indexOf(traitChoice);
+    var choices = this.state.buttonPress;
     if(index > -1){
       this.traitCombo.splice(index,1)
-      var choices = this.state.buttonPress;
       choices[traitChoice-1] = false;
-      this.setState({buttonPress: choices});
-      console.log(this.state.buttonPress, 'FLIPPPP');
     } else if(this.traitCombo.length < 3){
       this.traitCombo.push(traitChoice);
-      var choices = this.state.buttonPress;
       choices[traitChoice-1] = true;
-      this.setState({buttonPress: choices});
     }
-    console.log(this.traitCombo, '<<ARRAY OF USER CHOSEN TRAITS %+$$');
+    this.setState({buttonPress: choices});
   }
 
   render() {
@@ -123,7 +118,7 @@ export default class Signup extends Component {
           options={options}
         />
       <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>login</Text>
+        <Text style={styles.buttonText}>Signup</Text>
       </TouchableHighlight>
       </View>
     )
