@@ -21,7 +21,7 @@ export default (user, reactNavigator) => {
         let body = res._bodyText;
         function gotLocation(position){
           console.log('PPPPPPPOS:',position);
-          let userZone = zoneHandler.zoneCalculator(position.coords.latitute, position.coords.longitude);
+          let userZone = zoneHandler.zoneCalculator(position.coords.latitude, position.coords.longitude);
           let estabZones = zoneHandler.getSurroundingZones(userZone);
           body.userZone = userZone;
           var socket = connectSocket();

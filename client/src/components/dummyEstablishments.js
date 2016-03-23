@@ -9319,7 +9319,7 @@ var onlyTwenty = function () {
     for (var y = 1; y <10; y++) {
       estabObj[dummyData[x].id].traits[y] = {votes:0,pos:0}; 
     }
-    console.log(estabObj[dummyData[x].id]);
+    // console.log(estabObj[dummyData[x].id]);
   }
 };
 onlyTwenty();

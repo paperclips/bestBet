@@ -4,7 +4,7 @@ import Map from '../components/map';
 
 import userMoves from '../actions/action_userMoves';
 
-function mapStateToProps({ user, socket, establishments }) {
+function mapStateToProps({ user, socket, establishments}) {
   return { user, socket, establishments };
 }
 

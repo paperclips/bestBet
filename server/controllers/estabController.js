@@ -1,4 +1,5 @@
 var Establishments = require('../config/db').Establishments;
+var Votes = require('../config/db').Votes;
 
 // get all establishments in these zones
 var getEstabsInZones = function(userId, zones) {

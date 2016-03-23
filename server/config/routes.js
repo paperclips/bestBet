@@ -22,7 +22,8 @@ app.post('/login', authCtrl.login );
 io.on('connect', function(socket){
   console.log('user connected' );
 
-  socket.on('Get establishments',function(data){
+  socket.on('Get Establishments',function(data){
+    console.log("serv data get est ", data);
     //data is an object {userId, zones: [array of zones]}
     estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabsInZones){
       socket.emit('New Establishments', {establishments: estabsInZones});

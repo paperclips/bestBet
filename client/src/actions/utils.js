@@ -19,10 +19,15 @@ export function connectSocket(){
 };
 
 export function updateZoneSubscription(socket, oldZones, newZones){
-  oldZones.forEach(function(zone){
-    socket.leave(zone);  
-  });
+  if(oldZones.length > 0){
+    oldZones.forEach(function(zone){
+      socket.leave(zone);  
+    });
+  }
+  
   newZones.forEach(function(zone){
-    socket.join(zone);  
+  // console.log("in zs new each? ",zone)
+
+    // socket.join(zone);  
   });
 };
