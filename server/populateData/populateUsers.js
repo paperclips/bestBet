@@ -19,7 +19,7 @@ var createFakeUsers = function(num) {
   numberArray.forEach(function(v,x){
     var user = {};
     user.name = firstNames[x%10] +' '+ lastNames[y%10];
-    user.userName = 'user' + x;
+    user.userName = 'User' + x;
     user.password = firstNames[x%10];
     userCtrl.findUser(user.userName).then(function(oldUser){
       if(!oldUser){

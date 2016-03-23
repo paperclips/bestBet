@@ -12,15 +12,12 @@ function userLogin(userData) {
   }
 }
 
-
-//{id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo}
-export default (user, reactNavigator) => {
+export default (user, reactNavigator, route) => {
   return (dispatch) => {
-    sendReq('POST','/login',user).then(function(res){
+    sendReq('POST', route, user).then(function(res){
       if(res.status === 200){
         let body = res._bodyText;
         function gotLocation(position){
-          console.log('PPPPPPPOS:',position);
           let userZone = zoneHandler.zoneCalculator(position.coords.latitude, position.coords.longitude);
           let estabZones = zoneHandler.getSurroundingZones(userZone);
           body.userZone = userZone;

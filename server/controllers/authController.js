@@ -4,13 +4,16 @@ var jwt = require( 'jwt-simple' );
 
 function signup (req, res) {
   var userName = req.body.userName;
-  userCtrl.findUser(userName).then(function(user){
-    if(user){
+  var traitCombo = req.body.traitCombo;
+  userCtrl.findUser(userName).then(function(oldUser){
+    if(oldUser){
       res.status(401).send({error: 'This username is taken'});
     } else {
       userCtrl.addUser(req.body).then(function(user){
         var token = jwt.encode(user.userName, 'secret');
-        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token});  
+        console.log(user, 'NEW USER!!!');
+        userCtrl.setUserTraits({userId: user.id, traitCombo: traitCombo});
+        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo});  
       })
     }
   })
@@ -26,7 +29,6 @@ function login (req, res) {
       res.status(401).send({error:'Incorrect username or password'})
     } else {
       //Get user preferences
-      
       userCtrl.getUserTraits(user.id).then(function(traitRecord){
         var traitCombo = traitRecord.traitCombo;
         var token = jwt.encode(userName, 'secret');
