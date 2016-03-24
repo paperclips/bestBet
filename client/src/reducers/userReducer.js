@@ -1,4 +1,4 @@
-import { LOGIN, UPDATE_USER_ZONE, CLEAR_ERROR } from '../actions/constants';
+import { LOGIN, UPDATE_USER_ZONE, CLEAR_ERROR, RESET_TRAITS } from '../actions/constants';
 
 const INITIAL_STATE = {
   id: null,
@@ -15,9 +15,11 @@ export default function (state = INITIAL_STATE, action) {
     case LOGIN:
       return action.payload;
     case UPDATE_USER_ZONE:
-      return {...state, userZone: action.payload}
+      return {...state, userZone: action.payload};
     case CLEAR_ERROR:
-      return {...state, error: ''}
+      return {...state, error: ''};
+    case RESET_TRAITS:
+      return {...state, traitCombo: action.payload};  
     default:
       return state;
   }

@@ -166,7 +166,6 @@ export default class Login extends Component {
         </Button>
       </View>  
       </View>
-
       </SideMenu>
     )
   }

@@ -36,7 +36,7 @@ module.exports = class Menu extends Component {
 
   resetTraits() {
     // var comboInteger = 1 * this.traitCombo.join('');
-    this.setState({traitCombo: this.traitCombo});
+    // this.setState({traitCombo: this.traitCombo}); // ['2', '5', '9']
     console.log(this.traitCombo,'<-newcomboInteger');
   }
 

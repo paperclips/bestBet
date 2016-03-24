@@ -6,3 +6,4 @@ export const GET_EST = 'GET_EST';
 export const ADD_SOCKET = 'ADD_SOCKET';
 export const REPLACE_ESTABS = 'REPLACE_ESTABS';
 export const UPDATE_USER_ZONE = 'UPDATE_USER_ZONE';
+export const RESET_TRAITS = 'RESET_TRAITS';
