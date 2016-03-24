@@ -2,12 +2,11 @@
 
 /*
 This code
-1) Creates "50 fake users" records
-2) Give users default traits
-// for now everyone is in the same zone
+-- Creates "50 fake users" records
+-- Give users default traits
 */
 
-var db       = require('../config/db');
+var Users    = require('../config/db').Users;
 var userCtrl = require('../controllers/userController.js');
 
 var firstNames = ['joe','bob','jon','al','kim','joan','julie','bee','ann','beth'];
@@ -35,17 +34,16 @@ var createFakeUsers = function(num) {
 };
 
 function createTest () {
-      var user = {};
-
+  var user = {};
   user.name = 'H';
   user.userName = 'H';
   user.password = 'h';
   userCtrl.addUser(user).then(function(newUser){
-          user.userId = newUser.id;
-          user.traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
-          userCtrl.setUserTraits(user);
-        });
+    user.userId = newUser.id;
+    user.traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
+    userCtrl.setUserTraits(user);
+  });
 };
 
 createTest();
-createFakeUsers(20);
+createFakeUsers(50);
