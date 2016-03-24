@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   error: ''
 };
 
-export default function (state = {}, action) {
+export default function (state = INITIAL_STATE, action) {
   switch(action.type) {
     case LOGIN:
       return action.payload;
