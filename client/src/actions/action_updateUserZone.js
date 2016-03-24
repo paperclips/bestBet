@@ -1,1 +1,0 @@
-//dispatches action that returns {type: 'UPDATE_ZONE', payload: newZone}

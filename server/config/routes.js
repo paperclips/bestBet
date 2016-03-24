@@ -24,14 +24,8 @@ io.on('connect', function(socket){
 
   socket.on('Get Establishments',function(data){
     console.log("serv data get est ", data);
-    //data is an object {userId, zones: [array of zones]}
     estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabsInZones){
       socket.emit('New Establishments', {establishments: estabsInZones});
-      // voteCtrl.getVotesInZones(data.zones).then(function(votesInZones){
-      //   voteCtrl.getAllUserVotesInZones(data.userId,data.zones).then(function(userVotes){
-      //     socket.emit('New Establishments', {establishments:estabsInZones, votes:votesInZones, userVotes: });    
-      //   })
-      // })
     })
   });
 
@@ -39,6 +33,18 @@ io.on('connect', function(socket){
     // data is an object {userId, traitCombo}
     // note - client will set traits locally, so no need to send back
     userCtrl.setUserTraits(data);
+  });
+
+  socket.on('joinRooms', function (newZones){
+    newZones.forEach(function(zone){
+      socket.join(zone);
+    });
+  });
+
+  socket.on('leaveRooms', function (oldZones){
+    oldZones.forEach(function(zone){
+      socket.leave(zone);
+    });
   });
 
   // incoming vote

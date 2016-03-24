@@ -2,7 +2,6 @@ import {LOGIN} from './constants.js';
 import {sendReq,updateZoneSubscription, connectSocket} from './utils.js';
 
 import zoneHandler from './zoneHandler.js';
-import getEstablishments from './action_getEstablishments';
 import addSocket from './action_addSocket';
 
 function userLogin(userData) {
@@ -15,8 +14,8 @@ function userLogin(userData) {
 export default (user, reactNavigator, route) => {
   return (dispatch) => {
     sendReq('POST', route, user).then(function(res){
+      let body = JSON.parse(res._bodyText);
       if(res.status === 200){
-        let body = res._bodyText;
         function gotLocation(position){
           let userZone = zoneHandler.zoneCalculator(position.coords.latitude, position.coords.longitude);
           let estabZones = zoneHandler.getSurroundingZones(userZone);
@@ -33,7 +32,7 @@ export default (user, reactNavigator, route) => {
         };
         navigator.geolocation.getCurrentPosition(position => gotLocation(position), logError);
       } else {
-        dispatch(userLogin(res._bodyText)) //add error to user state
+        dispatch(userLogin(body)) //add error to user state
       }
     })
   }

@@ -1,9 +1,23 @@
-//Receives navigator, socket
+import {UPDATE_USER_ZONE} from './constants.js';
+import {sendReq,updateZoneSubscription, connectSocket} from './utils.js';
+import zoneHandler from './zoneHandler.js';
+import addSocket from './action_addSocket';
 
-//calculate newZone from coordinates
-//call getNewZonesOnMove with user's oldZone from the store and newZone; [[leave zones], [join zones]]
-//dispatch getEstablishments action with zones listed under "join zones"
-//call socket function to leave old zones and join new zones
-  //call utils.connectSocket,
-  //pass socket connection, joinZones, leaveZones to AddListeners functions, that calls RemoveListener function with leaveZones;
-//call action_updateUserZone with newZone
+function updateUserZone(newZone){
+  return {
+    type: UPDATE_USER_ZONE,
+    payload: newZone
+  }
+}
+
+export default (userId,socket,oldZone,lat,long) => {
+  return (dispatch) => {
+    var newZone = zoneHandler.zoneCalculator(lat,long);
+    if(newZone !== oldZone){
+      var zonesToUpdate = zoneHandler.getNewZonesOnMove(oldZone,newZone);//[[leave],[join]];
+      updateZoneSubscription(socket,zonesToUpdate[0],zonesToUpdate[1]);//Join and Leave rooms
+      socket.emit('Get Establishments',{userId: userId, zones: zonesToUpdate[1]});
+      dispatch(updateUserZone(newZone));
+    }
+  }
+}
