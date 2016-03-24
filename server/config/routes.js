@@ -23,17 +23,14 @@ io.on('connect', function(socket){
   console.log('user connected' );
 
   socket.on('Get Establishments',function(data){
-    console.log("serv data get est ", data);
     //data is an object {userId, zones: [array of zones]}
-    estabCtrl.getEstabsInZones(data.userId,data.zones,function(rests, hists, votes){
-      // console.log("RESTS    ----> ",rests, "HISTS ---->", hists, "VOTES ---->",votes, "<<<< GOOD DATA");
-      socket.emit('New Establishments', {establishments:rests, histories: hists, votes:votes });    
-    });
+    estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabs){
+      socket.emit('New Establishments', {establishments:estabs});    
+    })
   });
 
   socket.on('setUserTraits', function (data){
     // data is an object {userId, traitCombo}
-    // note - client will set traits locally, so no need to send back
     userCtrl.setUserTraits(data);
   });
 

@@ -21,12 +21,6 @@ module.exports = function(Sequelize, db){
       longitude: {type: Sequelize.FLOAT},
       address: {type: Sequelize.STRING},
       phoneNumber: {type: Sequelize.STRING},
-      zoneNumber: {type: Sequelize.INTEGER}
-    }, { timestamps: false });
-
-    var EstablishmentHistories= db.define('EstablishmentHistories', {
-      id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      establishmentId: {type: Sequelize.INTEGER, notNull: true},
       zoneNumber: {type: Sequelize.INTEGER},
       trait1Pos: {type: Sequelize.INTEGER},
       trait1Tot: {type: Sequelize.INTEGER},
@@ -45,7 +39,7 @@ module.exports = function(Sequelize, db){
       trait8Pos: {type: Sequelize.INTEGER},
       trait8Tot: {type: Sequelize.INTEGER},
       trait9Pos: {type: Sequelize.INTEGER},
-      trait9Tot: {type: Sequelize.INTEGER},
+      trait9Tot: {type: Sequelize.INTEGER}
     }, { timestamps: false });
 
   var Traits = db.define('Traits', {
@@ -61,7 +55,7 @@ module.exports = function(Sequelize, db){
       userId: {type: Sequelize.INTEGER, notNull: true},
       voteValue: {type: Sequelize.BOOLEAN, notNull: true},
       time: {type: Sequelize.DATE, notNull: true},
-      zoneNumber: {type: Sequelize.INTEGER, notNull: true}
+      //zoneNumber: {type: Sequelize.INTEGER, notNull: true}
     }, { timestamps: false });
 
   var Users_Traits = db.define('Users_Traits', {
@@ -76,7 +70,6 @@ module.exports = function(Sequelize, db){
     }, { timestamps: false });
 
   var YelpCategories_Genres = db.define('YelpCategories_Genres', {
-      //id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
       yelpCategory: {type: Sequelize.STRING, primaryKey: true, notNull: true},
       genreId: {type: Sequelize.INTEGER, notNull: true}
     }, { timestamps: false });
@@ -86,9 +79,9 @@ module.exports = function(Sequelize, db){
   hasOne creates foreignKey on the target
   */
 
-  Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Establishments.hasMany(Votes, {foreignKey: 'establishmentId'});
-  EstablishmentHistories.belongsTo(Establishments, { foreignKey: 'establishmentId' });
+  Users.hasMany(Votes, {foreignKey: 'userId'});
+  Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
   Users_Traits.belongsTo(Users, { foreignKey: 'userId' });
@@ -97,7 +90,6 @@ module.exports = function(Sequelize, db){
   return {
     Users: Users,
     Establishments: Establishments,
-    EstablishmentHistories: EstablishmentHistories,
     Traits: Traits,
     Votes: Votes,
     Users_Traits: Users_Traits,

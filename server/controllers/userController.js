@@ -1,9 +1,9 @@
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 
-var models = require('../config/db');
-var Users = models.Users;
-var Users_Traits = models.Users_Traits;
+var db = require('../config/db');
+var Users = db.Users;
+var Users_Traits = db.Users_Traits;
 
 var findUser = function(userName){
   return Users.findOne({where:{userName:userName},raw:true});

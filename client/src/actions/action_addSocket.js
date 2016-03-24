@@ -1,4 +1,4 @@
-import {ADD_SOCKET, ADD_VOTE, ADD_ESTABS} from './constants.js';
+import {ADD_SOCKET, ADD_VOTE, REPLACE_ESTABS} from './constants.js';
 
 function addSocketToState(socket) {
   return {
@@ -15,7 +15,7 @@ function addEstabToState(estabs,dispatch,socket) {
 
 function saveEstabsToState(estabs){
   return {
-    type: ADD_ESTABS,
+    type: REPLACE_ESTABS,
     payload: estabs.establishments
   }
 }
@@ -29,7 +29,7 @@ function saveVoteToState(voteData){
 
 export default function (dispatch,socket){
   dispatch(addSocketToState(socket));
-  socket.on('New Establishments', (restaurantsObject) => {addEstabToState(restaurantsObject,dispatch,socket)});
+  socket.on('New Establishments', (estabs) => {addEstabToState(estabs,dispatch,socket)});
 };
 
 
