@@ -25,7 +25,13 @@ io.on('connect', function(socket){
   socket.on('Get Establishments',function(data){
     //data is an object {userId, zones: [array of zones]}
     estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabs){
-      socket.emit('New Establishments', {establishments:estabs});    
+      var estabObject = {};
+      for(var i = 0; i<estabs.length;i++){
+        estabObject[estabs[i].id] = estabs[i];
+        if(i === estabs.length-1){
+          socket.emit('New Establishments', {establishments:estabObject});
+        }
+      }
     })
   });
 
