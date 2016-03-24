@@ -8,6 +8,7 @@ function addSocketToState(socket) {
 };
 
 function addEstabToState(estabs,dispatch,socket) {
+  console.log("ESTABS ---- >", estabs);
   dispatch(saveEstabsToState(estabs));
   socket.on('voteAdded', (voteData) => {dispatch(saveVoteToState(voteData))});
 };
@@ -28,7 +29,7 @@ function saveVoteToState(voteData){
 
 export default function (dispatch,socket){
   dispatch(addSocketToState(socket));
-  socket.on('New Establishments', (estabsAndVotes) => {addEstabToState(estabsAndVotes,dispatch,socket)});
+  socket.on('New Establishments', (restaurantsObject) => {addEstabToState(restaurantsObject,dispatch,socket)});
 };
 
 

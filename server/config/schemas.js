@@ -88,9 +88,7 @@ module.exports = function(Sequelize, db){
 
   Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Establishments.hasMany(Votes, {foreignKey: 'establishmentId'});
-
   EstablishmentHistories.belongsTo(Establishments, { foreignKey: 'establishmentId' });
-
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
   Users_Traits.belongsTo(Users, { foreignKey: 'userId' });

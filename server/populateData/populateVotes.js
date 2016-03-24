@@ -32,12 +32,12 @@ var createFakeVotes = function (numPerUser) {
               // Then add the vote to the history
               voteCtrl.addVoteToHistory(vote.establishmentId, vote.traitId, vote.voteValue);
            }); 
-    })
-  })
-  .catch(function(err) {
-    console.error(err);
+    }).catch(function(err) {
+        console.error(err);
+    });
   });
+  
+});
 };
-
 createFakeVotes(10);
 

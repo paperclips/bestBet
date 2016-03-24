@@ -1,4 +1,5 @@
 var Votes = require('../config/db').Votes;
+var EstabHistories = require('../config/db').EstablishmentHistories;
 
 // adds votes to the votes table
 var addVotes = function (voteDetails) {
@@ -21,19 +22,26 @@ var addVotes = function (voteDetails) {
 // if timeToGoBack isn't passed, we just get all the votes
 var getVotesForEstablishment = function (estabId, timeToGoBack) {
   if (!timeToGoBack) {
-    return Votes.findAll({where:{establishmentId:estabId}});
+    return Votes.findAll({where:{establishmentId:estabId}, raw:true});
   } else {
     return Votes.findAll({where: {
       establishmentId:estabId,
       time: {$gt: new Date()-timeToGoBack}
-    }});
+    }, raw:true});
   }
 }
   
 // get all votes in a set of zones
-var getVotesInZones = function (zones) {
-  return Votes.findAll({where:{zoneNumber: {$in:zones}}})
-};
+var getVotesInZones = function (zones, timeToGoBack) {
+    if (!timeToGoBack) {
+      return Votes.findAll({where:{zoneNumber: {$in:zones}},raw:true});
+    } else {
+      return Votes.findAll({where: {
+      zoneNumber: {$in: zones},
+      time: {$gt: new Date()-timeToGoBack}
+    }, raw:true});
+  }
+}
 
 // get all votes in a set of zones
 var getAllUserVotesInZones = function (userId, zones) {
@@ -41,8 +49,8 @@ var getAllUserVotesInZones = function (userId, zones) {
 };
 
 var addVoteToHistory = function (establishmentId, traitId, vote) {
-  EstabHistories.find(
-    {where: {establishmentId: est.id}})
+  EstabHistories.findOne(
+    {where: {establishmentId: establishmentId}})
     .then(function(estab){
       switch(traitId) {
         case 1:

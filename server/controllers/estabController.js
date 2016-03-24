@@ -12,39 +12,54 @@ var voteController = require('./voteController.js')
 // returns a lot of stuff
 
 
-var getEstabsInZones = function(userId, zones) {
+var getEstabsInZones = function(userId, zones, callback) {
   // Find all establishmenents in zones, and include last 24 hours of votes for each trait,
   // plus lifetime votes by this user
   voteController.getAllUserVotesInZones(userId, zones)
   .then(function (userVotes) {
     var restaurantData = {}; 
+    var restaurantHistories = {};
+    var restaurantVotes = {};
     restaurantData.userVotes = userVotes;
-    Establishments.findAll({
-      raw: true,
-      where:{zoneNumber:{$in:zones}}
-      })
+    Establishments.findAll({raw: true,where:{zoneNumber:{$in:zones}}})
       .then(function (estabs) {
-        estabs.forEach(function(estab){
-          restaurantData[estab.id] = {};
-          restaurantData[estab.id].info = estab;
-          EstablishmentHistories.findOne({
-            raw: true,
-            where:{establishmentId: estab.id}
-          })
-          .then(function (estabHist){
-            restaurantData[estab.id].hist = estabHist;
-              // get recent votes for that restaurant
-              voteController.getVotesForEstablishment(estab.id, 24*60*60*1000)
-                .then(function(estabVotes){
-                  restaurantData[estab.id].votes = estabVotes;
-                });
+        var x = 0;
+        var finished = false;
+        
+        while (!finished) {
+          if(x === estabs.length) {
+              finished = true;
+            }
+          x++;
+          if(estabs[x] !== undefined) {
+             
+            var estab = estabs[x];
+            
+            restaurantData[estab.id] = {};
+            restaurantData[estab.id].info = estab;
+
+            EstablishmentHistories.findOne({raw:true,where:{establishmentId: estab.id}})
+              .then(function (estabHist){
+                restaurantHistories[estabHist.id] = estabHist;
+                // get recent votes for that restaurant
+               
+                voteController.getVotesInZones(zones, 24*60*60*1000)
+                  .then(function(estabVotes){
+                    restaurantVotes = estabVotes;
+                    if(finished) {
+                      callback(restaurantData, restaurantHistories, restaurantVotes);
+                    }
+                   
+                  });
+              })
+              .catch(function (err) {
+                console.log(err);
               });
-            });
-        })
-      })
-      .then(function(){
-        console.log(restaurantData);
-      });
+          }
+        }
+        
+      })        
+  });
 };
 
 module.exports = {

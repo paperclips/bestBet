@@ -8,7 +8,7 @@ var io         = require('socket.io')(http);
 var userCtrl   = require('../controllers/userController.js');
 var voteCtrl   = require('../controllers/voteController.js');
 var authCtrl   = require('../controllers/authController.js');
-var estabCtrl  = require('../controllers/estabController');
+var estabCtrl  = require('../controllers/estabController.js');
 
 //app.set('domain', 'domain name here');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,16 +24,11 @@ io.on('connect', function(socket){
 
   socket.on('Get Establishments',function(data){
     console.log("serv data get est ", data);
-    estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabsInZones){
-      socket.emit('New Establishments', {establishments: estabsInZones});
-      console.log("eZ ",estabsInZones);
-      // socket.emit('New Establishments', {establishments: estabsInZones});
-      // voteCtrl.getVotesInZones(data.zones).then(function(votesInZones){
-      //   voteCtrl.getAllUserVotesInZones(data.userId,data.zones).then(function(userVotes){
-      //     socket.emit('New Establishments', {establishments:estabsInZones, votes:votesInZones, userVotes: });    
-      //   })
-      // })
-    })
+    //data is an object {userId, zones: [array of zones]}
+    estabCtrl.getEstabsInZones(data.userId,data.zones,function(rests, hists, votes){
+      // console.log("RESTS    ----> ",rests, "HISTS ---->", hists, "VOTES ---->",votes, "<<<< GOOD DATA");
+      socket.emit('New Establishments', {establishments:rests, histories: hists, votes:votes });    
+    });
   });
 
   socket.on('setUserTraits', function (data){

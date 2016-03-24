@@ -11,7 +11,7 @@ console.log('Server listening on port ' + port);
 
 // var populateEstablishements = require('./populateData/populateEstablishments');
 // var populateUsers           = require('./populateData/populateUsers');
-// var populateVotes           = require('./populateData/populateVotes');
+var populateVotes           = require('./populateData/populateVotes');
 
 
 

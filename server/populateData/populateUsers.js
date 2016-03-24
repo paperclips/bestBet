@@ -48,4 +48,4 @@ function createTest () {
 };
 
 createTest();
-createFakeUsers(50);
+createFakeUsers(20);
