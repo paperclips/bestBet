@@ -113,38 +113,41 @@ export default class Map extends Component {
 
   onRegionChange(region) {
     console.log("INIT ESTS ===>",this.props.establishments,"INIT ENNND");
-     // console.log("INIT USER ===>",this.props.user,"INIT ENNND");
+     console.log("INIT USER ===>",this.props.user,"INIT ENNND");
+
     var uP = this.props.user.traitCombo.toString().split("");
-    console.log(uP);
-    this.setState({ region });
+    console.log("UTRaITS ",uP);
     this.setState({ zone: this.calcZone()});
-    this.setState({ establishments: this.props.establishments});
+    // this.setState({ establishments: this.props.establishments});
     this.setState({ uPrefs: uP });
     this.setState({ userId: this.props.user.id });
 
     var userId = this.props.user.id;
-    console.log("AFT INIT STATE ",this.state, "STATE AFF INIT");
+    // console.log("AFT INIT STATE ",this.state, "STATE AFF INIT");
     var socket = this.props.socket;
     var oldUserZone = this.props.user.userZone;
     //Update userZone in store, get new Establishments, join/leave zones
     var liveLOC ={};
     function gotLocation(position){
-      console.log(position);
+      // console.log("CUR LIVE POS --->",position);
       liveLOC = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       };
+      this.setState({ myLocation: {latitude: position.coords.latitude, longitude: position.coords.longitude} });
+      this.setState({ region:liveLOC });
+      // console.log("NEW STATE IN REGION --- > ",this.state.region);
+      return liveLOC;
+
     };
     function logError(error) {
       console.log('Navigator \'getCurrentPosition\' error:', error);
     };
-    navigator.geolocation.getCurrentPosition(position => gotLocation(position), logError);
-    this.setState({region: liveLOC});
-    console.log("NEW RGE --- > ",this.state.region);
+    navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
 
-    this.props.userMoves(userId, socket, oldUserZone, this.state.region.latitude, this.state.region.longitude);
+    // this.props.userMoves(userId, socket, oldUserZone, this.state.region.latitude, this.state.region.longitude);
   
   }
 
@@ -154,11 +157,9 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    console.log("ESTABS REAL--->",this.props.establishments, "EST ENNND");
-    var uP = this.props.user.traitCombo.toString().split("");
-    this.setState({ uPrefs: uP });
-    this.setState({ establishments: this.props.establishments});
-    console.log (this.state.establishments, "IS IT IN?")
+    console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
+    // this.setState({ uPrefs: uP });
+    // this.setState({ establishments: this.props.establishments});
   }
 
   addVotesLive() {
@@ -175,24 +176,23 @@ export default class Map extends Component {
   }
 
   calculateUserScores (estabId) {
-    // if (this.state.establishments[estabId] === undefined) {
-    //   return 0;
-    // } else {
-    //   var cume = 0.0;
-    //   var totes = 0;
-    //    for (var x = 0; x < 3; x++) {
-    //     if (this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes>0) {
-    //       cume += 
-    //       this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
-    //         this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes
-    //       totes++;
-    //     } 
-    //    }
-    // }
-    // if(totes === 0) {
-    //   return 0;
-    // }
-    return 7;
+    if (this.state.establishments[estabId] === undefined) {
+      return 0;
+    } else {
+      var cume = 0.0;
+      var totes = 0;
+       for (var x = 0; x < 3; x++) {
+        if (this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes>0) {
+          cume += 
+          this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
+            this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes
+          totes++;
+        } 
+       }
+    }
+    if(totes === 0) {
+      return 0;
+    }
     // return Math.ceil(10*(cume/totes));   
   }
 
@@ -218,15 +218,16 @@ export default class Map extends Component {
         <MapView.Marker coordinate={this.state.myLocation}>
           <OutlineMarkerView/>
         </MapView.Marker>
+       
         {_.map(this.props.establishments, (establishment) => (
           <MapView.Marker key={establishment.id} 
-            coordinate={establishment.coordinate}
+            coordinate={{latitude:establishment.latitude, longitude: establishment.longitude}}
             centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-              <View style={scoreStyles[this.calculateUserScores.bind(this, establishment.id)()]}>
-                <View style={userDot[establishment.userVoted]}/>
+              <View style={scoreStyles[4]}>
+                <View style={userDot[2]}/>
               </View>
 
               <MapView.Callout tooltip>
@@ -278,7 +279,7 @@ var userDot = {
     borderColor: 'white',
     borderWidth:2,
   },
-  1: {
+  2: {
     height:12,
     width:12,
     borderRadius: 6,
@@ -424,6 +425,17 @@ var scoreStyles = {
                    HHH // {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
                   </Text>
 
+
+ // <MapView.Marker key={this.props.establishments[0].id}> 
+        //   coordinate={{latitude:this.props.establishments[0].latitude, longitude: this.props.establishments[0].longitude}}
+        //       centerOffset={{x:0,y:0}}
+        //       calloutOffset={{ x: 0, y: 0 }}
+        //       calloutAnchor={{ x: 0, y: 0 }}
+        //       ref="m1">
+        //         <View style={scoreStyles[4]}>
+        //           <View style={userDot[2]}/>
+        //         </View>
+        // </MapView.Marker>
 
 
 */
