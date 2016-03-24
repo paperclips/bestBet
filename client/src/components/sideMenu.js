@@ -241,7 +241,7 @@ SideMenu.defaultProps = {
   toleranceY: 10,
   toleranceX: 10,
   edgeHitWidth: 60,
-  openMenuOffset: deviceScreen.width * 2 / 3,
+  openMenuOffset: deviceScreen.width * 1 / 2.5,
   hiddenMenuOffset: 0,
   onStartShouldSetResponderCapture: () => true,
   onChange: () => {},

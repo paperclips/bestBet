@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
   nineButtons: {
     flexDirection: 'column',
     height: window.height, 
-    // paddingLeft: 20,
-    // paddingRight: window.height/20,
+    paddingLeft: window.width/100,
+    paddingRight: window.width/100,
     alignItems: 'flex-start',
     // justifyContent: 'center',
   },
@@ -29,10 +29,10 @@ const styles = StyleSheet.create({
   },
   menu: {
     flex: 1,
-    width: window.width,
-    height: window.height,
-    backgroundColor: '#e6faff',
-    padding: 20,
+    // width: window.width,
+    // height: window.height,
+    backgroundColor: '#f3f5f4',
+    padding: 10,
   },
   avatarContainer: {
     marginBottom: 10,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   button1: {
     height: window.height/20,
-    width: 100,
+    width: window.width/3.5,
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 2,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   button2: {
     height: window.height/16,
-    width: 100,
+    width: window.width/3.5,
     backgroundColor: '#09a5ff',
     borderColor: '#007dc1',
     borderWidth: 2,
