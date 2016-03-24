@@ -1,4 +1,4 @@
-import {ADD_SOCKET, ADD_ESTABS} from './constants.js';
+import {ADD_SOCKET, ADD_VOTE, ADD_ESTABS} from './constants.js';
 
 function addSocketToState(socket) {
   return {
@@ -8,13 +8,11 @@ function addSocketToState(socket) {
 };
 
 function addEstabToState(estabs,dispatch,socket) {
-  // console.log("WTF add es to state",estabs, dispatch, socket);
   dispatch(saveEstabsToState(estabs));
   socket.on('voteAdded', (voteData) => {dispatch(saveVoteToState(voteData))});
 };
 
 function saveEstabsToState(estabs){
-  // console.log("estabs in ac add soc ", estabs);
   return {
     type: ADD_ESTABS,
     payload: estabs.establishments

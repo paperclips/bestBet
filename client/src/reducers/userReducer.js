@@ -1,4 +1,4 @@
-import { LOGIN } from '../actions/constants';
+import { LOGIN, UPDATE_USER_ZONE } from '../actions/constants';
 
 const INITIAL_STATE = {
   id: null,
@@ -6,13 +6,16 @@ const INITIAL_STATE = {
   userName: null,
   token: null,
   traitCombo: null,
-  userZone: null
+  userZone: null,
+  error: ''
 };
 
 export default function (state = INITIAL_STATE, action) {
   switch(action.type) {
     case LOGIN:
       return action.payload;
+    case UPDATE_USER_ZONE:
+      return {...state, userZone: action.payload}
     default:
       return state;
   }

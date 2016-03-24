@@ -23,7 +23,7 @@ var UserVotedView = require('./userVoted.js');
 
 var votes = require('./dummyVotes.js').dummyVotes;
 var InfoCallout = require('./infoCallout');
-var zoneCalculator = require('./zoneCalculator.js').zoneCalculator;
+var zoneCalculator = require('../actions/zoneHandler.js').zoneCalculator;
 var styles = require('../assets/styles.js').mapStyles;
 
 // SAMPLE DATA:
@@ -114,6 +114,11 @@ export default class Map extends Component {
   onRegionChange(region) {
     this.setState({ region });
     this.setState({ zone: this.calcZone()});
+    var userId = this.props.user.id;
+    var socket = this.props.socket;
+    var oldUserZone = this.props.user.userZone;
+    //Update userZone in store, get new Establishments, join/leave zones
+    this.props.userMoves(userId, socket, oldUserZone, this.state.region.latitude, this.state.region.longitude);
   }
 
   calcZone() {
