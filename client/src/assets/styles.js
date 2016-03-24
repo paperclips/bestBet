@@ -12,7 +12,7 @@ var signupStyles = StyleSheet.create({
     backgroundColor: '#f7f6f3',
   },
   topSpace: {
-    marginTop: windowSize.height/35,
+    marginTop: windowSize.height/20,
     backgroundColor: '#f7f6f3',
   },
   buttonContainer: {

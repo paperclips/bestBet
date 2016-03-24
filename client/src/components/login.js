@@ -1,6 +1,8 @@
 'use strict';
 var React = require('react-native');
 var t = require('tcomb-form-native');
+var Dimensions = require('Dimensions');
+var windowSize = Dimensions.get('window');
 var { 
   AppRegistry,
   Component, 
@@ -55,6 +57,8 @@ export default class Login extends Component {
 
   render() {
     return (
+      <View style={{height: windowSize.height, backgroundColor: '#f7f6f3'}}>
+
       <View style={styles.container}>
         <View style={styles.topSpace}>
         </View>
@@ -73,6 +77,7 @@ export default class Login extends Component {
         </View>
         <Text style={styles.error}>{this.onError.call(this)}</Text>
       </View>  
+      </View>
     )
   }
 };
