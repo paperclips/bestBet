@@ -158,7 +158,7 @@ export default class Login extends Component {
 
         <Button style={styles.button} onPress={() => this.toggle()}>
           <Image
-            source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: 32, height: 32, }} />
+            source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />
         </Button>
 
 
