@@ -112,11 +112,11 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
-    console.log("INIT ESTS ===>",this.props.establishments,"INIT ENNND");
-     console.log("INIT USER ===>",this.props.user,"INIT ENNND");
+    // console.log("INIT ESTS ===>",this.props.establishments,"INIT ENNND");
+    //  console.log("INIT USER ===>",this.props.user,"INIT ENNND");
 
     var uP = this.props.user.traitCombo.toString().split("");
-    console.log("UTRaITS ",uP);
+    // console.log("UTRaITS ",uP);
     this.setState({ zone: this.calcZone()});
     // this.setState({ establishments: this.props.establishments});
     this.setState({ uPrefs: uP });
@@ -157,7 +157,7 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
+    // console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
     // this.setState({ uPrefs: uP });
     // this.setState({ establishments: this.props.establishments});
   }
