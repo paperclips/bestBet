@@ -11,84 +11,13 @@ const {
 } = React;
 
 const window = Dimensions.get('window');
-const uri = 'http://cf.ltkcdn.net/socialnetworking/images/std/168646-425x425-Cat-Avatar-Primary.jpg';
-
-const styles = StyleSheet.create({
-  nineButtons: {
-    flexDirection: 'column',
-    height: window.height, 
-    paddingLeft: window.width/100,
-    paddingRight: window.width/100,
-    alignItems: 'flex-start',
-    // justifyContent: 'center',
-  },
-  buttonText: {
-    fontSize: 12,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  menu: {
-    flex: 1,
-    // width: window.width,
-    // height: window.height,
-    backgroundColor: '#f3f5f4',
-    padding: 10,
-  },
-  avatarContainer: {
-    marginBottom: 10,
-    marginTop: 20,
-  },
-  avatar: {
-    width: window.height/20,
-    height: window.height/20,
-    borderRadius: 24,
-    flex: 1,
-  },
-  name: {
-    position: 'absolute',
-    left: 20,
-    top: 20,
-  },
-  item: {
-    fontSize: 14,
-    // fontWeight: '300',
-    paddingTop: 5,
-  },
-  button1: {
-    height: window.height/20,
-    width: window.width/3.5,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 2,
-    borderRadius: 5,
-    margin: window.width/80,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap', 
-    alignItems: 'flex-start',
-    flexDirection:'row'
-  },
-  button2: {
-    height: window.height/16,
-    width: window.width/3.5,
-    backgroundColor: '#09a5ff',
-    borderColor: '#007dc1',
-    borderWidth: 2,
-    borderRadius: 10,
-    margin: window.width/80,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap', 
-    alignItems: 'flex-start',
-    flexDirection:'row'
-  }
-});
+const styles = require('../assets/styles.js').menuStyles2;
 
 module.exports = class Menu extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { name: '', userName: '', password: '', traitCombo: null, buttonPress: [0,0,0,0,0,0,0,0,0], error: ''};
+    this.state = {buttonPress: [0,0,0,0,0,0,0,0,0]};
     this.traitCombo = [];
   }
 
@@ -103,6 +32,12 @@ module.exports = class Menu extends Component {
       choices[traitChoice-1] = true;
     }
     this.setState({buttonPress: choices});
+  }
+
+  resetTraits() {
+    // var comboInteger = 1 * this.traitCombo.join('');
+    this.setState({traitCombo: this.traitCombo});
+    console.log(this.traitCombo,'<-newcomboInteger');
   }
 
   static propTypes = {
@@ -163,22 +98,18 @@ module.exports = class Menu extends Component {
           <Text style={styles.buttonText}>Veggie Friendly</Text>
         </TouchableHighlight> 
 
-
-        <TouchableHighlight style={styles.button1} underlayColor='#99d9f4'>
+        <TouchableHighlight style={styles.button1} onPress={this.resetTraits.bind(this)}underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>submit</Text>
         </TouchableHighlight> 
         </View>
         <View>
         <Text
-          onPress={() => this.props.onItemSelected('Contacts')}
+          onPress={() => this.props.onItemSelected('logout')}
           style={styles.item}>
-          cancel
+          logout
         </Text>
         </View>
         </View>
-
-
-
       </ScrollView>
     );
   }

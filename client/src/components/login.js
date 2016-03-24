@@ -22,34 +22,34 @@ var {
 window.navigator.userAgent = "react-native"; //or any other string value
 
 
-const menuStyles = StyleSheet.create({
-  button: {
-    position: 'absolute',
-    top: 20,
-    padding: 10,
-  },
-  caption: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+// const mStyles = StyleSheet.create({
+//   button: {
+//     position: 'absolute',
+//     top: 20,
+//     padding: 10,
+//   },
+//   caption: {
+//     fontSize: 20,
+//     fontWeight: 'bold',
+//     alignItems: 'center',
+//   },
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     backgroundColor: '#F5FCFF',
+//   },
+//   welcome: {
+//     fontSize: 20,
+//     textAlign: 'center',
+//     margin: 10,
+//   },
+//   instructions: {
+//     textAlign: 'center',
+//     color: '#333333',
+//     marginBottom: 5,
+//   },
+// });
 
 
 
@@ -69,15 +69,6 @@ var options = {
   }
 };
 
-
-
-
-
-
-
-
-
-
 class Button extends Component {
   handlePress(e) {
     if (this.props.onPress) {
@@ -95,10 +86,6 @@ class Button extends Component {
     );
   }
 }
-
-
-
-
 
 export default class Login extends Component {
   constructor(props) {
@@ -156,18 +143,13 @@ export default class Login extends Component {
         <View style={styles.topSpace}>
         </View>
 
-        <Button style={styles.button} onPress={() => this.toggle()}>
-          <Image
-            source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />
-        </Button>
-
-
-
         <Form
           ref="form"
           type={User}
           options={options}
         />
+
+
         <View style={styles.twoButtons}>
         <TouchableHighlight style={styles.button1} onPress={this.onLogin.bind(this)} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>login</Text>
@@ -177,6 +159,11 @@ export default class Login extends Component {
         </TouchableHighlight>
         </View>
         <Text style={styles.error}>{this.onError.call(this)}</Text>
+
+        <Button style={styles.button} onPress={() => this.toggle()}>
+          <Image
+            source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />
+        </Button>
       </View>  
       </View>
 
