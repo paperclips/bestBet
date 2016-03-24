@@ -50,34 +50,34 @@ const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-// Functions that will be moved:
-var processVoteData = function () {
-  votes.forEach(function(vote){
-    restaurants[vote.establishmentId].traits[vote.traitId].votes++;
-    if (vote.voteValue === true) {
-      restaurants[vote.establishmentId].traits[vote.traitId].pos++;
-    }
-    if(vote.voteValue.userId === 123) {
-      if(vote.voteValue === true) {
-        restaurants[vote.establishmentId].userVoted = 2;
-      } else {
-        restaurants[vote.establishmentId].userVoted = 1;
-      }
-    }
-  });
-};
+// // Functions that will be moved:
+// var processVoteData = function () {
+//   votes.forEach(function(vote){
+//     restaurants[vote.establishmentId].traits[vote.traitId].votes++;
+//     if (vote.voteValue === true) {
+//       restaurants[vote.establishmentId].traits[vote.traitId].pos++;
+//     }
+//     if(vote.voteValue.userId === 123) {
+//       if(vote.voteValue === true) {
+//         restaurants[vote.establishmentId].userVoted = 2;
+//       } else {
+//         restaurants[vote.establishmentId].userVoted = 1;
+//       }
+//     }
+//   });
+// };
 
-var addVotes = function (establishments) {
-  _.each(establishments, function (establishment) {
-    _.each(traitNames, function (trait, i) {
-      establishment.traits[i].pos += Math.floor(Math.random()*2);
-      establishment.traits[i].votes += 1;
-    });
-  });
-  return establishments;
-};
+// var addVotes = function (establishments) {
+//   _.each(establishments, function (establishment) {
+//     _.each(traitNames, function (trait, i) {
+//       establishment.traits[i].pos += Math.floor(Math.random()*2);
+//       establishment.traits[i].votes += 1;
+//     });
+//   });
+//   return establishments;
+// };
 
-processVoteData();
+// processVoteData();
 
 
 //THE ACTUAL map deal
@@ -96,9 +96,9 @@ export default class Map extends Component {
         longitude: LONGITUDE,
       },
       zone: zoneCalculator(37.7832096, -122.4091516),
-      establishments: restaurants,
+      establishments: [],
       userId:user.id,
-      uPrefs: uPrefs,
+      uPrefs: [],
       intervalId: -1
     }
   }
@@ -112,13 +112,43 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
-    this.setState({ region });
+    // console.log("INIT ESTS ===>",this.props.establishments,"INIT ENNND");
+    //  console.log("INIT USER ===>",this.props.user,"INIT ENNND");
+
+    var uP = this.props.user.traitCombo.toString().split("");
+    // console.log("UTRaITS ",uP);
     this.setState({ zone: this.calcZone()});
+    // this.setState({ establishments: this.props.establishments});
+    this.setState({ uPrefs: uP });
+    this.setState({ userId: this.props.user.id });
+
     var userId = this.props.user.id;
+    // console.log("AFT INIT STATE ",this.state, "STATE AFF INIT");
     var socket = this.props.socket;
     var oldUserZone = this.props.user.userZone;
     //Update userZone in store, get new Establishments, join/leave zones
-    this.props.userMoves(userId, socket, oldUserZone, this.state.region.latitude, this.state.region.longitude);
+    var liveLOC ={};
+    function gotLocation(position){
+      // console.log("CUR LIVE POS --->",position);
+      liveLOC = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      };
+      this.setState({ myLocation: {latitude: position.coords.latitude, longitude: position.coords.longitude} });
+      this.setState({ region:liveLOC });
+      // console.log("NEW STATE IN REGION --- > ",this.state.region);
+      return liveLOC;
+
+    };
+    function logError(error) {
+      console.log('Navigator \'getCurrentPosition\' error:', error);
+    };
+    navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
+
+    // this.props.userMoves(userId, socket, oldUserZone, this.state.region.latitude, this.state.region.longitude);
+  
   }
 
   calcZone() {
@@ -127,8 +157,9 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    console.log("est ",this.props);
-    this.setState({ uPrefs: [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)] });
+    // console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
+    // this.setState({ uPrefs: uP });
+    // this.setState({ establishments: this.props.establishments});
   }
 
   addVotesLive() {
@@ -162,7 +193,7 @@ export default class Map extends Component {
     if(totes === 0) {
       return 0;
     }
-    return Math.ceil(10*(cume/totes));   
+    // return Math.ceil(10*(cume/totes));   
   }
 
   inView (coords) {
@@ -179,7 +210,6 @@ export default class Map extends Component {
           mapType="terrain"
           style={styles.map}
           initialRegion={this.state.region}
-
           onRegionChange={this.onRegionChange.bind(this)}
         >
         <MapView.Marker coordinate={this.state.myLocation}>
@@ -188,30 +218,22 @@ export default class Map extends Component {
         <MapView.Marker coordinate={this.state.myLocation}>
           <OutlineMarkerView/>
         </MapView.Marker>
-        {_.map(this.state.establishments, (establishment) => (
+       
+        {_.map(this.props.establishments, (establishment) => (
           <MapView.Marker key={establishment.id} 
-            coordinate={establishment.coordinate}
+            coordinate={{latitude:establishment.latitude, longitude: establishment.longitude}}
             centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-              <View style={scoreStyles[this.calculateUserScores.bind(this, establishment.id)()]}>
-                <View style={userDot[establishment.userVoted]}/>
+              <View style={scoreStyles[4]}>
+                <View style={userDot[2]}/>
               </View>
 
               <MapView.Callout tooltip>
                 <InfoCallout>
                 <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
 
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.state.uPrefs[0]}:{establishment.traits[this.state.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
-                  </Text>
                 </InfoCallout>
               </MapView.Callout>
 
@@ -230,7 +252,7 @@ export default class Map extends Component {
         </View>
           <View style={[styles.bubble, styles.latlng]}>
             <Text style={{ textAlign: 'center'}}>
-              {`${this.state.uPrefs},${this.state.region.latitude.toPrecision(7)}, ${this.state.region.longitude.toPrecision(7)}, ${this.state.zone}`}
+              {`${this.state.uPrefs},${this.state.region.latitude}, ${this.state.region.longitude}, ${this.state.zone}`}
             </Text>
           </View>
         </View>
@@ -257,7 +279,7 @@ var userDot = {
     borderColor: 'white',
     borderWidth:2,
   },
-  1: {
+  2: {
     height:12,
     width:12,
     borderRadius: 6,
@@ -389,5 +411,32 @@ var scoreStyles = {
           <TouchableOpacity onPress={this.turnOffVoteFlux.bind(this)} style={[styles.bubble, styles.button]}>
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>stop</Text>
           </TouchableOpacity>
+
+
+
+
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    HHH// {this.props.uPrefs[0]}:{establishment.traits[this.props.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    HHH// {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                   HHH // {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
+                  </Text>
+
+
+ // <MapView.Marker key={this.props.establishments[0].id}> 
+        //   coordinate={{latitude:this.props.establishments[0].latitude, longitude: this.props.establishments[0].longitude}}
+        //       centerOffset={{x:0,y:0}}
+        //       calloutOffset={{ x: 0, y: 0 }}
+        //       calloutAnchor={{ x: 0, y: 0 }}
+        //       ref="m1">
+        //         <View style={scoreStyles[4]}>
+        //           <View style={userDot[2]}/>
+        //         </View>
+        // </MapView.Marker>
+
+
 */
   
