@@ -127,6 +127,7 @@ export default class Map extends Component {
   }
 
   changeTrait() {
+    console.log("est ",this.props);
     this.setState({ uPrefs: [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)] });
   }
 
@@ -140,7 +141,7 @@ export default class Map extends Component {
   }
 
   turnOffVoteFlux () {
-    clearInterval(this.state.intervalId);
+    // clearInterval(this.state.intervalId);
   }
 
   calculateUserScores (estabId) {

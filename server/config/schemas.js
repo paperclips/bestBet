@@ -24,6 +24,30 @@ module.exports = function(Sequelize, db){
       zoneNumber: {type: Sequelize.INTEGER}
     }, { timestamps: false });
 
+    var EstablishmentHistories= db.define('EstablishmentHistories', {
+      id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+      establishmentId: {type: Sequelize.INTEGER, notNull: true},
+      zoneNumber: {type: Sequelize.INTEGER},
+      trait1Pos: {type: Sequelize.INTEGER},
+      trait1Tot: {type: Sequelize.INTEGER},
+      trait2Pos: {type: Sequelize.INTEGER},
+      trait2Tot: {type: Sequelize.INTEGER},
+      trait3Pos: {type: Sequelize.INTEGER},
+      trait3Tot: {type: Sequelize.INTEGER},
+      trait4Pos: {type: Sequelize.INTEGER},
+      trait4Tot: {type: Sequelize.INTEGER},
+      trait5Pos: {type: Sequelize.INTEGER},
+      trait5Tot: {type: Sequelize.INTEGER},
+      trait6Pos: {type: Sequelize.INTEGER},
+      trait6Tot: {type: Sequelize.INTEGER},
+      trait7Pos: {type: Sequelize.INTEGER},
+      trait7Tot: {type: Sequelize.INTEGER},
+      trait8Pos: {type: Sequelize.INTEGER},
+      trait8Tot: {type: Sequelize.INTEGER},
+      trait9Pos: {type: Sequelize.INTEGER},
+      trait9Tot: {type: Sequelize.INTEGER},
+    }, { timestamps: false });
+
   var Traits = db.define('Traits', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
       name: {type: Sequelize.STRING, notNull: true},
@@ -64,6 +88,7 @@ module.exports = function(Sequelize, db){
 
   Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Establishments.hasMany(Votes, {foreignKey: 'establishmentId'});
+  EstablishmentHistories.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
   Users_Traits.belongsTo(Users, { foreignKey: 'userId' });
@@ -72,6 +97,7 @@ module.exports = function(Sequelize, db){
   return {
     Users: Users,
     Establishments: Establishments,
+    EstablishmentHistories: EstablishmentHistories,
     Traits: Traits,
     Votes: Votes,
     Users_Traits: Users_Traits,

@@ -20,7 +20,7 @@ var createFakeUsers = function(num) {
     var user = {};
     user.name = firstNames[x%10] +' '+ lastNames[y%10];
     user.userName = 'User' + x;
-    user.password = firstNames[x%10];
+    user.password = 'a';
     userCtrl.findUser(user.userName).then(function(oldUser){
       if(!oldUser){
         userCtrl.addUser(user).then(function(newUser){
@@ -34,4 +34,18 @@ var createFakeUsers = function(num) {
   })
 };
 
+function createTest () {
+      var user = {};
+
+  user.name = 'H';
+  user.userName = 'H';
+  user.password = 'h';
+  userCtrl.addUser(user).then(function(newUser){
+          user.userId = newUser.id;
+          user.traitCombo = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)].join('');
+          userCtrl.setUserTraits(user);
+        });
+};
+
+createTest();
 createFakeUsers(20);
