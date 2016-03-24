@@ -13,7 +13,8 @@ function signup (req, res) {
         var token = jwt.encode(user.userName, 'secret');
         console.log(user, 'NEW USER!!!');
         userCtrl.setUserTraits({userId: user.id, traitCombo: traitCombo});
-        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo});        })
+        res.status(200).send({id: user.id, name: user.name, userName: user.userName, token: token, traitCombo: traitCombo});        
+      })
     }
   })
 };
