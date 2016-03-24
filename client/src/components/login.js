@@ -45,7 +45,12 @@ export default class Login extends Component {
   }
 
   onSignup(){
+    this.props.clearError();
     this.props.navigator.push({ name: 'Signup' });
+  }
+
+  onError(){
+    return this.props.user.error;
   }
 
   render() {
@@ -66,6 +71,7 @@ export default class Login extends Component {
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableHighlight>
         </View>
+        <Text style={styles.error}>{this.onError.call(this)}</Text>
       </View>  
     )
   }

@@ -63,6 +63,10 @@ var signupStyles = StyleSheet.create({
     flexWrap: 'wrap', 
     alignItems: 'flex-start',
     flexDirection:'row'
+  },
+  error: {
+    fontSize: 12,
+    color: 'red',
   }
 });
 var mapStyles = StyleSheet.create({

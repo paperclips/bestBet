@@ -1,4 +1,4 @@
-import { LOGIN, UPDATE_USER_ZONE } from '../actions/constants';
+import { LOGIN, UPDATE_USER_ZONE, CLEAR_ERROR } from '../actions/constants';
 
 const INITIAL_STATE = {
   id: null,
@@ -16,6 +16,8 @@ export default function (state = INITIAL_STATE, action) {
       return action.payload;
     case UPDATE_USER_ZONE:
       return {...state, userZone: action.payload}
+    case CLEAR_ERROR:
+      return {...state, error: ''}
     default:
       return state;
   }

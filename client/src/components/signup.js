@@ -77,6 +77,10 @@ export default class Signup extends Component {
     this.setState({buttonPress: choices});
   }
 
+  onError(){
+    return this.props.user.error || this.state.error;
+  }
+
   render() {
     return (
       <View style={{backgroundColor: '#f7f6f3'}}>
@@ -141,6 +145,7 @@ export default class Signup extends Component {
         <Text style={styles.buttonText}>Signup</Text>
       </TouchableHighlight>
       </View>
+      <Text style={styles.error}>{this.onError.call(this)}</Text>
       </View>
     )
   }

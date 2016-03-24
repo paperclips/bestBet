@@ -3,6 +3,7 @@ import {sendReq,updateZoneSubscription, connectSocket} from './utils.js';
 
 import zoneHandler from './zoneHandler.js';
 import addSocket from './action_addSocket';
+import clearError from './action_clearError';
 
 function userLogin(userData) {
   return {
@@ -17,6 +18,7 @@ export default (user, reactNavigator, route) => {
       let body = JSON.parse(res._bodyText);
       if(res.status === 200){
         function gotLocation(position){
+          dispatch(clearError()); //Remove any login errors from store
           let userZone = zoneHandler.zoneCalculator(position.coords.latitude, position.coords.longitude);
           let estabZones = zoneHandler.getSurroundingZones(userZone);
           body.userZone = userZone;
