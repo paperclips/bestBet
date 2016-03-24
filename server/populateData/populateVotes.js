@@ -40,5 +40,5 @@ var createFakeVotes = function (numPerUser) {
   });
 };
 
-createFakeVotes(20);
+createFakeVotes(10);
 
