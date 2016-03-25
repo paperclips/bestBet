@@ -7,6 +7,7 @@ var getEstabsInZones = function(userId, zones) {
   return Establishments.findAll({where: {zoneNumber: {$in:zones}}, 
                                  include: [{model: Votes,
                                             required: false, //Votes are not required
+                                            attributes: ['userId', 'traitId', 'voteValue', 'time'],//Fields to include
                                             where: {$or: [{userId: userId},
                                                           {time: {$gt: new Date()-24*60*60*1000}}]}}]})
 };
