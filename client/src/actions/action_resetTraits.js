@@ -1,9 +1,4 @@
 import {RESET_TRAITS} from './constants.js';
-//import {sendReq,updateZoneSubscription, connectSocket} from './utils.js';
-
-import zoneHandler from './zoneHandler.js';
-import addSocket from './action_addSocket';
-import clearError from './action_clearError';
 
 function resetTraits(traitCombo) {
   return {

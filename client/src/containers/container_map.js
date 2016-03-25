@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import Map from '../components/map';
 
 import userMoves from '../actions/action_userMoves';
+import resetTraits from '../actions/action_resetTraits';
+
 
 function mapStateToProps({ user, socket, establishments}) {
   return { user, socket, establishments };
 }
 
-export default connect(mapStateToProps, { userMoves })(Map);
+export default connect(mapStateToProps, { userMoves, resetTraits })(Map);

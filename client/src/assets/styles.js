@@ -25,11 +25,11 @@ var signupStyles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 3
   },
-    button: {
-      position: 'absolute',
-      top: 10,
-      padding: 10,
-    },
+  button: {
+    position: 'absolute',
+    top: 10,
+    padding: 10,
+  },
   buttonText: {
     fontSize: 12,
     color: 'white',
@@ -84,6 +84,12 @@ var mapStyles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  button: {
+    marginTop: windowSize.height/20,
+    position: 'absolute',
+    top: 10,
+    padding: 10,
   },
   map: {
     position: 'absolute',

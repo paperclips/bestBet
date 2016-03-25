@@ -1,5 +1,9 @@
 import React, { Component } from 'react-native';
 
+var Dimensions = require('Dimensions');   
+var windowSize = Dimensions.get('window');    
+const SideMenu = require('./sideMenu');   
+const Menu = require('./menu');  
 
 var {
   PropTypes,
@@ -80,6 +84,26 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 // processVoteData();
 
 
+
+
+
+class Button extends Component {    
+  handlePress(e) {    
+    if (this.props.onPress) {   
+      this.props.onPress(e);    
+    }   
+  }   
+  render() {    
+    return (    
+      <TouchableOpacity   
+        onPress={this.handlePress.bind(this)}   
+        style={this.props.style}>   
+        <Text>{this.props.children}</Text>    
+      </TouchableOpacity>   
+    );    
+  }   
+}
+
 //THE ACTUAL map deal
 export default class Map extends Component {
   constructor(props) {
@@ -99,10 +123,21 @@ export default class Map extends Component {
       establishments: [],
       userId:user.id,
       uPrefs: [],
-      intervalId: -1
+      intervalId: -1,
+      isOpen: false 
     }
   }
   
+  toggle() {    
+    this.setState({   
+      isOpen: !this.state.isOpen,   
+    });   
+  }
+
+  updateMenuState(isOpen) {   
+    this.setState({ isOpen, });   
+  }
+
   show() {
         this.refs.m1.showCallout();
       }
@@ -203,7 +238,14 @@ export default class Map extends Component {
   }
 
   render() {
+    const menu = <Menu user={this.props.user.id} socket = {this.props.socket} resetTraits = {this.props.resetTraits} toggle = {this.toggle.bind(this)}/>;
     return (
+      <SideMenu   
+      menu={menu}   
+      isOpen={this.state.isOpen}    
+      onChange={(isOpen) => this.updateMenuState(isOpen)}>
+      <View style={{height: windowSize.height, backgroundColor: '#f7f6f3'}}>
+
       <View style={styles.container}>
         <MapView
           ref="map"
@@ -240,7 +282,7 @@ export default class Map extends Component {
               <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}:{this.calculateUserScores.bind(this, establishment.id)()}/10</Text>
           </MapView.Marker>
 
-          ))}
+        ))}
         </MapView>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this.changeTrait.bind(this)} style={[styles.bubble, styles.button]}>
@@ -256,6 +298,12 @@ export default class Map extends Component {
             </Text>
           </View>
         </View>
+        <View style={{marginTop: 20}}></View>
+          <Button style={styles.button} onPress={() => this.toggle()}>
+            <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />   
+          </Button>
+        </View> 
+      </SideMenu>
     );
   }
 

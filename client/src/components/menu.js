@@ -34,19 +34,16 @@ module.exports = class Menu extends Component {
     this.setState({buttonPress: choices});
   }
 
-  resetTraits() {
-    // var comboInteger = 1 * this.traitCombo.join('');
-    // this.setState({traitCombo: this.traitCombo}); // ['2', '5', '9']
-    console.log(this.traitCombo,'<-newcomboInteger');
+  setTraits() {
+    if(this.traitCombo.length){
+      this.props.resetTraits(this.props.user, this.props.socket, this.traitCombo);
+      console.log(this.props.user, "FULL OR ID");
+      this.props.toggle();
+
+    } else {
+      console.log('user didnt pick traits');
+    }
   }
-
-  static propTypes = {
-    onItemSelected: React.PropTypes.func.isRequired,
-  };
-
-          // <Image
-          //   style={styles.avatar}
-          //   source={{ uri, }}/>
 
   render() {
     return (
@@ -98,7 +95,7 @@ module.exports = class Menu extends Component {
           <Text style={styles.buttonText}>Veggie Friendly</Text>
         </TouchableHighlight> 
 
-        <TouchableHighlight style={styles.button1} onPress={this.resetTraits.bind(this)}underlayColor='#99d9f4'>
+        <TouchableHighlight style={styles.button1} onPress={this.setTraits.bind(this)} underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>submit</Text>
         </TouchableHighlight> 
         </View>
