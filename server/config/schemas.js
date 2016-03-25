@@ -84,6 +84,7 @@ module.exports = function(Sequelize, db){
   Votes.belongsTo(Establishments, { foreignKey: 'establishmentId' });
   Votes.belongsTo(Traits, { foreignKey: 'traitId' });
   Votes.belongsTo(Users, { foreignKey: 'userId' });
+  Establishments.hasMany(Votes, {as:'userVotes', foreignKey: 'establishmentId'}); //Needed for adding userVotes to getEstabsInZones query
   Users_Traits.belongsTo(Users, { foreignKey: 'userId' });
   YelpCategories_Genres.belongsTo(Genres, { foreignKey: 'genreId' });
 
