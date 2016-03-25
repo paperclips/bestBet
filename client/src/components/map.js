@@ -149,7 +149,6 @@ export default class Map extends Component {
   onRegionChange(region) {
     // console.log("INIT ESTS ===>",this.props.establishments,"INIT ENNND");
     //  console.log("INIT USER ===>",this.props.user,"INIT ENNND");
-
     var uP = this.props.user.traitCombo.toString().split("");
     // console.log("UTRaITS ",uP);
     this.setState({ zone: this.calcZone()});
@@ -192,8 +191,9 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    console.log("ESTABS IN PROPS--->",this.props.user, "EST ENNND");
-    console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
+    // console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
+    console.log("USE PROPS  --- ", this.props.user, "user");
+    // console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
     // this.setState({ uPrefs: uP });
     // this.setState({ establishments: this.props.establishments});
   }
@@ -210,27 +210,29 @@ export default class Map extends Component {
   turnOffVoteFlux () {
     // clearInterval(this.state.intervalId);
   }
-
+// MOVE THIS OUT?
   calculateUserScores (estabId) {
-    if (this.state.establishments[estabId] === undefined) {
+    if (this.props.establishments[estabId] === undefined) {
       return 0;
     } else {
-      var cume = 0.0;
-      var totes = 0;
-       for (var x = 0; x < 3; x++) {
-        if (this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes>0) {
-          cume += 
-          this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
-            this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes
-          totes++;
-        } 
-       }
+      var cume = 0;
+      var total = 0;
+      // temp conversion from integer until real array comes in from JACKIE
+      var traits = this.props.user.traitCombo.toString().split("");
+      console.log(this.props.establishments[estabId].name);
+      console.log(traits);
+      for (var x = 0; x < traits.length; x++) {
+        console.log("INDIV -TRAIT ->",(this.props.establishments[estabId]['trait'+traits[x]+'Pos']),
+          (this.props.establishments[estabId]['trait'+traits[x]+'Tot']));
+        cume += ((this.props.establishments[estabId]['trait'+traits[x]+'Pos'])/
+          (this.props.establishments[estabId]['trait'+traits[x]+'Tot']));
+          total++;
+      } 
     }
-    if(totes === 0) {
-      return 0;
-    }
-    // return Math.ceil(10*(cume/totes));   
+    console.log("SCR: ",cume/total);
+    return Math.round(10*cume/total);   
   }
+  
 
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
@@ -269,14 +271,22 @@ export default class Map extends Component {
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-              <View style={scoreStyles[4]}>
+              <View style={scoreStyles[this.calculateUserScores.bind(this, establishment.id)()]}>
                 <View style={userDot[2]}/>
               </View>
 
               <MapView.Callout tooltip>
                 <InfoCallout>
-                <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
-
+                  <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo.toString().split("")[0]}:{establishment['trait' + this.props.user.traitCombo.toString().split("")[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo.toString().split("")[0] +'Tot']}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo.toString().split("")[1]}:{establishment['trait' + this.props.user.traitCombo.toString().split("")[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo.toString().split("")[1] +'Tot']}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo.toString().split("")[2]}:{establishment['trait' + this.props.user.traitCombo.toString().split("")[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo.toString().split("")[2] + 'Tot']}
+                  </Text>
                 </InfoCallout>
               </MapView.Callout>
 
@@ -386,7 +396,7 @@ var scoreStyles = {
     height:60,
     width:60,
     backgroundColor:'transparent',
-    borderColor: 'rgba(230, 134, 0, 0.25)',
+    borderColor: 'rgba(209, 0, 0, 0.2)',
     borderWidth:24,
     borderRadius: 30,
   },
@@ -464,15 +474,7 @@ var scoreStyles = {
 
 
 
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    HHH// {this.props.uPrefs[0]}:{establishment.traits[this.props.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    HHH// {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                   HHH // {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
-                  </Text>
+                 
 
 
  // <MapView.Marker key={this.props.establishments[0].id}> 
