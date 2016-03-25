@@ -8,8 +8,7 @@ var getEstabsInZones = function(userId, zones) {
                                  include: [{model: Votes,
                                             required: false, //Votes are not required
                                             attributes: ['userId', 'traitId', 'voteValue', 'time'],//Fields to include
-                                            where: {$or: [{userId: userId},
-                                                          {time: {$gt: new Date()-24*60*60*1000}}]}},
+                                            where: {time: {$gt: new Date()-24*60*60*1000}}},
                                             {model: Votes, //Include userVotes on estab object
                                              as: 'userVotes',
                                              required: false, //Votes are not required
