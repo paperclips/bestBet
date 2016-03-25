@@ -210,48 +210,42 @@ export default class Map extends Component {
   }
 // MOVE THIS OUT?
   calculateHistScores (estabId) {
-    // console.log(estabId, "VOTES---> ",);
     if (this.props.establishments[estabId] === undefined) {
       return 0;
     } else {
       var cume = 0;
       var total = 0;
-      // temp conversion from integer until real array comes in from JACKIE
-      var traits = this.props.user.traitCombo.toString().split("");
-      // console.log(this.props.establishments[estabId].name);
-      // console.log(traits);
-      for (var x = 0; x < traits.length; x++) {
-        // console.log("INDIV -TRAIT ->",(this.props.establishments[estabId]['trait'+traits[x]+'Pos']),
-          // (this.props.establishments[estabId]['trait'+traits[x]+'Tot']));
-        cume += ((this.props.establishments[estabId]['trait'+traits[x]+'Pos'])/
-          (this.props.establishments[estabId]['trait'+traits[x]+'Tot']));
+      for (var x = 0; x < this.props.user.traitCombo.length; x++) {
+        cume += ((this.props.establishments[estabId]['trait'+this.props.user.traitCombo[x]+'Pos'])/
+          (this.props.establishments[estabId]['trait'+this.props.user.traitCombo[x]+'Tot']));
           total++;
       } 
     }
-    // console.log("SCR: ",cume/total);
-    return Math.round(10*cume/total);   
+    return Math.round(cume/total*10);   
   }
 
   calculateLiveScores (estabId) {
-    // console.log(this.props.user);
     var pos = 0;
     var total = 0;
-    var traits = this.props.user.traitCombo.toString().split("");
-    var numTraits = traits.map(function(trait){
-      return Number(trait);
-    });
-    this.props.establishments[estabId].Votes.forEach(function(vote){
-      if(numTraits.indexOf(vote.traitId) > -1) {
-        total++;
-        if (vote.voteValue === true) {
-          pos++;
+    // HERE: WHYYYYY???
+    // console.log("USE TRAIT COMBO-- >",this.props.user.traitCombo);
+    if(this.props.user.traitCombo) {
+      var traits = this.props.user.traitCombo;
+      this.props.establishments[estabId].Votes.forEach(function(vote){
+        if(traits.indexOf(vote.traitId) > -1) {
+          total++;
+          if (vote.voteValue === true) {
+            pos++;
+          }
         }
+      });
+      if(total === 0) {
+        return 0;
+      } else {
+        return Math.round(pos/total*10);
       }
-    });
-    if(total === 0) {
-      return 0;
     } else {
-      return Math.round(pos/total*10);
+      return 0;
     }
   }
 
@@ -301,13 +295,13 @@ export default class Map extends Component {
                 <InfoCallout>
                   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
                   <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo.toString().split("")[0]}:{establishment['trait' + this.props.user.traitCombo.toString().split("")[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo.toString().split("")[0] +'Tot']}
+                    {this.props.user.traitCombo[0]}:{establishment['trait' + this.props.user.traitCombo[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[0] +'Tot']}
                   </Text>
                   <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo.toString().split("")[1]}:{establishment['trait' + this.props.user.traitCombo.toString().split("")[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo.toString().split("")[1] +'Tot']}
+                    {this.props.user.traitCombo[1]}:{establishment['trait' + this.props.user.traitCombo[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[1] +'Tot']}
                   </Text>
                   <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo.toString().split("")[2]}:{establishment['trait' + this.props.user.traitCombo.toString().split("")[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo.toString().split("")[2] + 'Tot']}
+                    {this.props.user.traitCombo[2]}:{establishment['trait' + this.props.user.traitCombo[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo[2] + 'Tot']}
                   </Text>
                 </InfoCallout>
               </MapView.Callout>
@@ -328,7 +322,7 @@ export default class Map extends Component {
         </View>
           <View style={[styles.bubble, styles.latlng]}>
             <Text style={{ textAlign: 'center'}}>
-              {`${this.state.uPrefs},${this.state.region.latitude}, ${this.state.region.longitude}, ${this.state.zone}`}
+              {`${this.props.user.traitCombo},${this.state.region.latitude}, ${this.state.region.longitude}, ${this.state.zone}`}
             </Text>
           </View>
         </View>
