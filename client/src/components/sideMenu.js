@@ -105,6 +105,13 @@ class SideMenu extends Component {
       return withinEdgeHitWidth && touchMoved && swipingToOpen;
     }
 
+      // var x = gestureState.dx;
+      // var y = Math.round(Math.abs(gestureState.dy));
+
+      //   if (x != 0 && y < 10) {
+      //     return true;
+      //   }
+
     return false;
   }
 

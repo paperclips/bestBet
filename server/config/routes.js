@@ -10,7 +10,7 @@ var voteCtrl   = require('../controllers/voteController.js');
 var authCtrl   = require('../controllers/authController.js');
 var estabCtrl  = require('../controllers/estabController.js');
 
-//app.set('domain', '10.8.30.75');
+app.set('domain', '10.8.30.75');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
