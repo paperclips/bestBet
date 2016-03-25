@@ -124,11 +124,7 @@ export default class Map extends Component {
       userId:user.id,
       uPrefs: [],
       intervalId: -1,
-<<<<<<< 67c9d7288d6f5cae4d2512fcc2610893a6c699eb
-      isOpen: false 
-=======
       userVotes:{}
->>>>>>> add hist and live votes based on new server
     }
   }
   
