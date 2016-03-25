@@ -54,23 +54,6 @@ const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-// // Functions that will be moved:
-// var processVoteData = function () {
-//   votes.forEach(function(vote){
-//     restaurants[vote.establishmentId].traits[vote.traitId].votes++;
-//     if (vote.voteValue === true) {
-//       restaurants[vote.establishmentId].traits[vote.traitId].pos++;
-//     }
-//     if(vote.voteValue.userId === 123) {
-//       if(vote.voteValue === true) {
-//         restaurants[vote.establishmentId].userVoted = 2;
-//       } else {
-//         restaurants[vote.establishmentId].userVoted = 1;
-//       }
-//     }
-//   });
-// };
-
 // var addVotes = function (establishments) {
 //   _.each(establishments, function (establishment) {
 //     _.each(traitNames, function (trait, i) {
@@ -123,8 +106,9 @@ export default class Map extends Component {
       establishments: [],
       userId:user.id,
       uPrefs: [],
+      isOpen: false,
       intervalId: -1,
-      isOpen: false 
+      userVotes:{}
     }
   }
   
@@ -149,7 +133,6 @@ export default class Map extends Component {
   onRegionChange(region) {
     // console.log("INIT ESTS ===>",this.props.establishments,"INIT ENNND");
     //  console.log("INIT USER ===>",this.props.user,"INIT ENNND");
-
     var uP = this.props.user.traitCombo.toString().split("");
     // console.log("UTRaITS ",uP);
     this.setState({ zone: this.calcZone()});
@@ -192,7 +175,7 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    console.log("ESTABS IN PROPS--->",this.props.user, "EST ENNND");
+    console.log("USE PROPS  --- ", this.props.user, "user");
     // this.setState({ uPrefs: uP });
     // this.setState({ establishments: this.props.establishments});
   }
@@ -209,26 +192,43 @@ export default class Map extends Component {
   turnOffVoteFlux () {
     // clearInterval(this.state.intervalId);
   }
-
-  calculateUserScores (estabId) {
-    if (this.state.establishments[estabId] === undefined) {
+// MOVE THIS OUT?
+  calculateHistScores (estabId) {
+    if (this.props.establishments[estabId] === undefined) {
       return 0;
     } else {
-      var cume = 0.0;
-      var totes = 0;
-       for (var x = 0; x < 3; x++) {
-        if (this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes>0) {
-          cume += 
-          this.state.establishments[estabId].traits[this.state.uPrefs[x]].pos/
-            this.state.establishments[estabId].traits[this.state.uPrefs[x]].votes
-          totes++;
-        } 
-       }
+      var cume = 0;
+      var total = 0;
+      for (var x = 0; x < this.props.user.traitCombo.length; x++) {
+        cume += ((this.props.establishments[estabId]['trait'+this.props.user.traitCombo[x]+'Pos'])/
+          (this.props.establishments[estabId]['trait'+this.props.user.traitCombo[x]+'Tot']));
+          total++;
+      } 
     }
-    if(totes === 0) {
+    return Math.round(cume/total*10);   
+  }
+
+  calculateLiveScores (estabId) {
+    var pos = 0;
+    var total = 0;
+    if(this.props.user.traitCombo) {
+      var traits = this.props.user.traitCombo;
+      this.props.establishments[estabId].Votes.forEach(function(vote){
+        if(traits.indexOf(vote.traitId) > -1) {
+          total++;
+          if (vote.voteValue === true) {
+            pos++;
+          }
+        }
+      });
+      if(total === 0) {
+        return 0;
+      } else {
+        return Math.round(pos/total*10);
+      }
+    } else {
       return 0;
     }
-    // return Math.ceil(10*(cume/totes));   
   }
 
   inView (coords) {
@@ -268,18 +268,28 @@ export default class Map extends Component {
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-              <View style={scoreStyles[4]}>
-                <View style={userDot[2]}/>
+            <View style={liveStyles[this.calculateLiveScores.bind(this, establishment.id)()]}>
+              <View style={histStyles[this.calculateHistScores.bind(this, establishment.id)()]}>
+                <View style={userDot[1]}/>
               </View>
-
+            </View>
               <MapView.Callout tooltip>
                 <InfoCallout>
-                <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
-
+                  <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo[0]}:{establishment['trait' + this.props.user.traitCombo[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[0] +'Tot']}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo[1]}:{establishment['trait' + this.props.user.traitCombo[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[1] +'Tot']}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo[2]}:{establishment['trait' + this.props.user.traitCombo[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo[2] + 'Tot']}
+                  </Text>
                 </InfoCallout>
               </MapView.Callout>
 
-              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}:{this.calculateUserScores.bind(this, establishment.id)()}/10</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.bind(this, establishment.id)()}/10 HS: {this.calculateHistScores.bind(this, establishment.id)()}/10</Text>
           </MapView.Marker>
 
         ))}
@@ -294,7 +304,7 @@ export default class Map extends Component {
         </View>
           <View style={[styles.bubble, styles.latlng]}>
             <Text style={{ textAlign: 'center'}}>
-              {`${this.state.uPrefs},${this.state.region.latitude}, ${this.state.region.longitude}, ${this.state.zone}`}
+              {`${this.props.user.traitCombo},${this.state.region.latitude}, ${this.state.region.longitude}, ${this.state.zone}`}
             </Text>
           </View>
         </View>
@@ -309,53 +319,61 @@ export default class Map extends Component {
 
 };
 
-
+var userHW = 8;
 var userDot = {
-  1: {
-    height:12,
-    width:12,
-    borderRadius: 6,
+  0: {
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor:'red',
     borderColor: 'blue',
     borderWidth:1
   },
-  0: {
-    height:12,
-    width:12,
-    borderRadius: 6,
-    backgroundColor:'black',
-    borderColor: 'white',
-    borderWidth:2,
+  1: {
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'white',
+    borderColor: 'black',
+    borderWidth:1.5,
   },
   2: {
-    height:12,
-    width:12,
-    borderRadius: 6,
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor:'lime',
     borderColor: 'blue',
     borderWidth:1,
   }
 };
 
-var scoreStyles = {
+var histHW = 25;
+
+var histStyles = {
   0:{
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor:'rgba(0, 0, 0, 0.3)'
   },
   1:{
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:6,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(255, 0, 0, 0.5)',
 
   },
@@ -363,59 +381,60 @@ var scoreStyles = {
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(255, 0, 0, 0.5)',
   },
   3:{
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(209, 0, 0, 0.2)',
   },
   4:{
     alignSelf: 'center',
     justifyContent: 'center',
-    height:60,
-    width:60,
     backgroundColor:'transparent',
-    borderColor: 'rgba(230, 134, 0, 0.25)',
-    borderWidth:24,
-    borderRadius: 30,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  
   },
   5:{
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(245, 241, 0, 0.2)',
     
   },
   6:{
     justifyContent: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(163, 245, 0, 0.3)',
   },
   7:{
    justifyContent: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     alignSelf:'center',
     borderColor: 'rgba(34, 224, 0, 0.5)',
   },
@@ -423,32 +442,150 @@ var scoreStyles = {
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(34, 224, 0, 0.5)',
   },
   9:{
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(34, 224, 0, 0.6)',
   },
   10:{
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(34, 224, 0, 0.7)',
+  }
+  
+};
+
+var liveHW = 40;
+
+var liveStyles = {
+  0:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor:'rgba(0, 0, 0, 0.3)'
   },
+  1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+
+  },
+  2:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  },
+  4:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  
+  },
+  5:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(245, 241, 0, 0.2)',
+    
+  },
+  6:{
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(163, 245, 0, 0.3)',
+  },
+  7:{
+   justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    alignSelf:'center',
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  8:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  9:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.6)',
+  },
+  10:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.7)',
+  }
   
 };
 
@@ -463,15 +600,7 @@ var scoreStyles = {
 
 
 
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    HHH// {this.props.uPrefs[0]}:{establishment.traits[this.props.uPrefs[0]].pos}/{establishment.traits[this.state.uPrefs[0]].votes}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    HHH// {this.state.uPrefs[1]}:{establishment.traits[this.state.uPrefs[1]].pos}/{establishment.traits[this.state.uPrefs[1]].votes}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                   HHH // {this.state.uPrefs[2]}:{establishment.traits[this.state.uPrefs[2]].pos}/{establishment.traits[this.state.uPrefs[2]].votes}
-                  </Text>
+                 
 
 
  // <MapView.Marker key={this.props.establishments[0].id}> 
