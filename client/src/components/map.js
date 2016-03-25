@@ -49,7 +49,7 @@ const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 // a unique var for mapping user votes in callout
-let k = 1;
+let uniqueId = 0;
 
 // var addVotes = function (establishments) {
 //   _.each(establishments, function (establishment) {
@@ -293,7 +293,7 @@ export default class Map extends Component {
                   </Text>
                     {_.map(establishment.userVotes, (vote) => 
                       (
-                        <Text key={++k} style={{ fontWeight:'bold', color: 'white' }}>
+                        <Text key={uniqueId++} style={{ fontWeight:'bold', color: 'white' }}>
                           {vote.traitId}:{vote.voteValue.toString()}
                         </Text>
                       )
