@@ -55,21 +55,21 @@ const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 // // Functions that will be moved:
-// var processVoteData = function () {
-//   votes.forEach(function(vote){
-//     restaurants[vote.establishmentId].traits[vote.traitId].votes++;
-//     if (vote.voteValue === true) {
-//       restaurants[vote.establishmentId].traits[vote.traitId].pos++;
-//     }
-//     if(vote.voteValue.userId === 123) {
-//       if(vote.voteValue === true) {
-//         restaurants[vote.establishmentId].userVoted = 2;
-//       } else {
-//         restaurants[vote.establishmentId].userVoted = 1;
-//       }
-//     }
-//   });
-// };
+var processVoteData = function () {
+  votes.forEach(function(vote){
+    restaurants[vote.establishmentId].traits[vote.traitId].votes++;
+    if (vote.voteValue === true) {
+      restaurants[vote.establishmentId].traits[vote.traitId].pos++;
+    }
+    if(vote.voteValue.userId === 123) {
+      if(vote.voteValue === true) {
+        restaurants[vote.establishmentId].userVoted = 2;
+      } else {
+        restaurants[vote.establishmentId].userVoted = 1;
+      }
+    }
+  });
+};
 
 // var addVotes = function (establishments) {
 //   _.each(establishments, function (establishment) {
@@ -124,7 +124,11 @@ export default class Map extends Component {
       userId:user.id,
       uPrefs: [],
       intervalId: -1,
+<<<<<<< 67c9d7288d6f5cae4d2512fcc2610893a6c699eb
       isOpen: false 
+=======
+      userVotes:{}
+>>>>>>> add hist and live votes based on new server
     }
   }
   
@@ -191,9 +195,7 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    // console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
     console.log("USE PROPS  --- ", this.props.user, "user");
-    // console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
     // this.setState({ uPrefs: uP });
     // this.setState({ establishments: this.props.establishments});
   }
@@ -211,7 +213,8 @@ export default class Map extends Component {
     // clearInterval(this.state.intervalId);
   }
 // MOVE THIS OUT?
-  calculateUserScores (estabId) {
+  calculateHistScores (estabId) {
+    // console.log(estabId, "VOTES---> ",);
     if (this.props.establishments[estabId] === undefined) {
       return 0;
     } else {
@@ -219,20 +222,42 @@ export default class Map extends Component {
       var total = 0;
       // temp conversion from integer until real array comes in from JACKIE
       var traits = this.props.user.traitCombo.toString().split("");
-      console.log(this.props.establishments[estabId].name);
-      console.log(traits);
+      // console.log(this.props.establishments[estabId].name);
+      // console.log(traits);
       for (var x = 0; x < traits.length; x++) {
-        console.log("INDIV -TRAIT ->",(this.props.establishments[estabId]['trait'+traits[x]+'Pos']),
-          (this.props.establishments[estabId]['trait'+traits[x]+'Tot']));
+        // console.log("INDIV -TRAIT ->",(this.props.establishments[estabId]['trait'+traits[x]+'Pos']),
+          // (this.props.establishments[estabId]['trait'+traits[x]+'Tot']));
         cume += ((this.props.establishments[estabId]['trait'+traits[x]+'Pos'])/
           (this.props.establishments[estabId]['trait'+traits[x]+'Tot']));
           total++;
       } 
     }
-    console.log("SCR: ",cume/total);
+    // console.log("SCR: ",cume/total);
     return Math.round(10*cume/total);   
   }
-  
+
+  calculateLiveScores (estabId) {
+    // console.log(this.props.user);
+    var pos = 0;
+    var total = 0;
+    var traits = this.props.user.traitCombo.toString().split("");
+    var numTraits = traits.map(function(trait){
+      return Number(trait);
+    });
+    this.props.establishments[estabId].Votes.forEach(function(vote){
+      if(numTraits.indexOf(vote.traitId) > -1) {
+        total++;
+        if (vote.voteValue === true) {
+          pos++;
+        }
+      }
+    });
+    if(total === 0) {
+      return 0;
+    } else {
+      return Math.round(pos/total*10);
+    }
+  }
 
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
@@ -271,10 +296,11 @@ export default class Map extends Component {
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-              <View style={scoreStyles[this.calculateUserScores.bind(this, establishment.id)()]}>
-                <View style={userDot[2]}/>
+            <View style={liveStyles[this.calculateLiveScores.bind(this, establishment.id)()]}>
+              <View style={histStyles[this.calculateHistScores.bind(this, establishment.id)()]}>
+                <View style={userDot[1]}/>
               </View>
-
+            </View>
               <MapView.Callout tooltip>
                 <InfoCallout>
                   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
@@ -290,7 +316,8 @@ export default class Map extends Component {
                 </InfoCallout>
               </MapView.Callout>
 
-              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}:{this.calculateUserScores.bind(this, establishment.id)()}/10</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.bind(this, establishment.id)()}/10 HS: {this.calculateHistScores.bind(this, establishment.id)()}/10</Text>
           </MapView.Marker>
 
         ))}
@@ -320,53 +347,61 @@ export default class Map extends Component {
 
 };
 
-
+var userHW = 8;
 var userDot = {
-  1: {
-    height:12,
-    width:12,
-    borderRadius: 6,
+  0: {
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor:'red',
     borderColor: 'blue',
     borderWidth:1
   },
-  0: {
-    height:12,
-    width:12,
-    borderRadius: 6,
-    backgroundColor:'black',
-    borderColor: 'white',
-    borderWidth:2,
+  1: {
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'white',
+    borderColor: 'black',
+    borderWidth:1.5,
   },
   2: {
-    height:12,
-    width:12,
-    borderRadius: 6,
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
     backgroundColor:'lime',
     borderColor: 'blue',
     borderWidth:1,
   }
 };
 
-var scoreStyles = {
+var histHW = 25;
+
+var histStyles = {
   0:{
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor:'rgba(0, 0, 0, 0.3)'
   },
   1:{
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:6,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(255, 0, 0, 0.5)',
 
   },
@@ -374,59 +409,60 @@ var scoreStyles = {
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(255, 0, 0, 0.5)',
   },
   3:{
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(209, 0, 0, 0.2)',
   },
   4:{
     alignSelf: 'center',
     justifyContent: 'center',
-    height:60,
-    width:60,
     backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(209, 0, 0, 0.2)',
-    borderWidth:24,
-    borderRadius: 30,
+  
   },
   5:{
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(245, 241, 0, 0.2)',
     
   },
   6:{
     justifyContent: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(163, 245, 0, 0.3)',
   },
   7:{
    justifyContent: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     alignSelf:'center',
     borderColor: 'rgba(34, 224, 0, 0.5)',
   },
@@ -434,32 +470,150 @@ var scoreStyles = {
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(34, 224, 0, 0.5)',
   },
   9:{
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(34, 224, 0, 0.6)',
   },
   10:{
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor:'transparent',
-    height:60,
-    width:60,
-    borderRadius: 30,
-    borderWidth:24,
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(34, 224, 0, 0.7)',
+  }
+  
+};
+
+var liveHW = 40;
+
+var liveStyles = {
+  0:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor:'rgba(0, 0, 0, 0.3)'
   },
+  1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+
+  },
+  2:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  },
+  4:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  
+  },
+  5:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(245, 241, 0, 0.2)',
+    
+  },
+  6:{
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(163, 245, 0, 0.3)',
+  },
+  7:{
+   justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    alignSelf:'center',
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  8:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  9:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.6)',
+  },
+  10:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.7)',
+  }
   
 };
 
