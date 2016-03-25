@@ -1,5 +1,7 @@
 'use strict';
 var React = require('react-native');
+var Dimensions = require('Dimensions');
+var windowSize = Dimensions.get('window');
 var t = require('tcomb-form-native');
 var { 
   AppRegistry,

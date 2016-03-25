@@ -12,7 +12,7 @@ var signupStyles = StyleSheet.create({
     backgroundColor: '#f7f6f3',
   },
   topSpace: {
-    marginTop: windowSize.height/35,
+    marginTop: windowSize.height/20,
     backgroundColor: '#f7f6f3',
   },
   buttonContainer: {
@@ -24,6 +24,11 @@ var signupStyles = StyleSheet.create({
     fontSize: 10,
     alignSelf: 'center',
     marginBottom: 3
+  },
+  button: {
+    position: 'absolute',
+    top: 10,
+    padding: 10,
   },
   buttonText: {
     fontSize: 12,
@@ -69,6 +74,7 @@ var signupStyles = StyleSheet.create({
     color: 'red',
   }
 });
+
 var mapStyles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -78,6 +84,12 @@ var mapStyles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  button: {
+    marginTop: windowSize.height/20,
+    position: 'absolute',
+    top: 10,
+    padding: 10,
   },
   map: {
     position: 'absolute',
@@ -257,9 +269,74 @@ var calloutStyles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: -9,
   }
+});
 
-
-
+var menuStyles2 = StyleSheet.create({
+  nineButtons: {
+    flexDirection: 'column',
+    height: window.height, 
+    paddingLeft: window.width/100,
+    paddingRight: window.width/100,
+    alignItems: 'flex-start',
+    // justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 12,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  menu: {
+    flex: 1,
+    backgroundColor: '#f3f5f4',
+    padding: 10,
+  },
+  avatarContainer: {
+    marginBottom: 10,
+    marginTop: 20,
+  },
+  avatar: {
+    width: window.height/20,
+    height: window.height/20,
+    borderRadius: 24,
+    flex: 1,
+  },
+  name: {
+    position: 'absolute',
+    left: 20,
+    top: 20,
+  },
+  item: {
+    fontSize: 14,
+    paddingTop: 5,
+  },
+  button1: {
+    height: windowSize.height/20,
+    width: windowSize.width/3.5,
+    backgroundColor: '#48BBEC',
+    borderColor: '#48BBEC',
+    borderWidth: 2,
+    borderRadius: 5,
+    margin: windowSize.width/80,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap', 
+    alignItems: 'flex-start',
+    flexDirection:'row'
+  },
+  button2: {
+    height: windowSize.height/16,
+    width: windowSize.width/3.5,
+    backgroundColor: '#09a5ff',
+    borderColor: '#007dc1',
+    borderWidth: 2,
+    borderRadius: 10,
+    margin: windowSize.width/80,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap', 
+    alignItems: 'flex-start',
+    flexDirection:'row'
+  }
 });
 
 module.exports = {
@@ -267,5 +344,6 @@ module.exports = {
   mapStyles: mapStyles,
   markerStyles: markerStyles,
   signupStyles: signupStyles,
-  calloutStyles, calloutStyles
+  calloutStyles: calloutStyles,
+  menuStyles2: menuStyles2
 };

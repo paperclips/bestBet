@@ -10,7 +10,7 @@ var voteCtrl   = require('../controllers/voteController.js');
 var authCtrl   = require('../controllers/authController.js');
 var estabCtrl  = require('../controllers/estabController.js');
 
-//app.set('domain', 'domain name here');
+//app.set('domain', '10.8.30.75');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -36,7 +36,7 @@ io.on('connect', function(socket){
   });
 
   socket.on('setUserTraits', function (data){
-    // data is an object {userId, traitCombo}
+    // data is an object {userId, traitCombo as integer}
     userCtrl.setUserTraits(data);
   });
 
