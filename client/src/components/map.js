@@ -54,23 +54,6 @@ const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-// // Functions that will be moved:
-var processVoteData = function () {
-  votes.forEach(function(vote){
-    restaurants[vote.establishmentId].traits[vote.traitId].votes++;
-    if (vote.voteValue === true) {
-      restaurants[vote.establishmentId].traits[vote.traitId].pos++;
-    }
-    if(vote.voteValue.userId === 123) {
-      if(vote.voteValue === true) {
-        restaurants[vote.establishmentId].userVoted = 2;
-      } else {
-        restaurants[vote.establishmentId].userVoted = 1;
-      }
-    }
-  });
-};
-
 // var addVotes = function (establishments) {
 //   _.each(establishments, function (establishment) {
 //     _.each(traitNames, function (trait, i) {
@@ -123,6 +106,7 @@ export default class Map extends Component {
       establishments: [],
       userId:user.id,
       uPrefs: [],
+      isOpen: false,
       intervalId: -1,
       userVotes:{}
     }
@@ -227,8 +211,6 @@ export default class Map extends Component {
   calculateLiveScores (estabId) {
     var pos = 0;
     var total = 0;
-    // HERE: WHYYYYY???
-    // console.log("USE TRAIT COMBO-- >",this.props.user.traitCombo);
     if(this.props.user.traitCombo) {
       var traits = this.props.user.traitCombo;
       this.props.establishments[estabId].Votes.forEach(function(vote){
