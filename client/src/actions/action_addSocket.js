@@ -8,7 +8,7 @@ function addSocketToState(socket) {
 };
 
 function addEstabToState(estabs,dispatch,socket) {
-  // console.log("ESTABS ---- >", estabs);
+  console.log("ESTABS ---- >", estabs);
   dispatch(saveEstabsToState(estabs));
   socket.on('voteAdded', (voteData) => {dispatch(saveVoteToState(voteData))});
 };
@@ -21,9 +21,19 @@ function saveEstabsToState(estabs){
 }
 
 function saveVoteToState(voteData){
+  //voteData is an object {establishmentId, userId, time, zoneNumber, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
+  var votesArray = Object.keys(voteData.votes).map(function(traitId){
+    return {userId: voteData.userId,
+            traitId: traitId,
+            voteValue: Boolean(voteData.votes[traitId]),
+            time: voteData.time}
+  });
+  var voteObject = {establishmentId: voteData.establishmentId, votes: votesArray};
+  console.log('VOTE OBJECT:', voteObject);
+  
   return {
     type: ADD_VOTE,
-    payload: voteData
+    payload: voteObject
   }
 };
 

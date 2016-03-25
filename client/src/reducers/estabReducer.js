@@ -1,10 +1,13 @@
 import { UPDATE_ALL, ADD_VOTE, REPLACE_ESTABS } from '../actions/constants';
-import Immutable from 'immutable';
 
 export default function (state = {}, action) {
   switch (action.type) {
     case ADD_VOTE:
-      return state;//Update this when votint functionality is ready
+      var newState = Object.assign({},state);
+      var voteEstId = action.payload.establishmentId;
+      var newVotesArr = action.payload.votes;
+      newState.establishments[voteEstId].votes.concat(newVotesArr);
+      return newState;
     case REPLACE_ESTABS:
       return action.payload;
     default:
