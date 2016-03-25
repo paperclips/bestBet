@@ -1,9 +1,9 @@
 import React, { Component } from 'react-native';
+import Menu from './menu';  
 
 var Dimensions = require('Dimensions');   
 var windowSize = Dimensions.get('window');    
 const SideMenu = require('./sideMenu');   
-const Menu = require('./menu');  
 
 var {
   PropTypes,
@@ -244,7 +244,7 @@ export default class Map extends Component {
   }
 
   render() {
-    const menu = <Menu user={this.props.user.id} socket = {this.props.socket} resetTraits = {this.props.resetTraits} toggle = {this.toggle.bind(this)}/>;
+    const menu = <Menu user = {this.props.user.id} socket = {this.props.socket} reactNavigator = {this.props.navigator} logOut = {this.props.logOut.bind(this)} resetTraits = {this.props.resetTraits} toggle = {this.toggle.bind(this)}/>;
     return (
       <SideMenu   
       menu={menu}   

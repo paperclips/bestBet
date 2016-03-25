@@ -271,7 +271,7 @@ var calloutStyles = StyleSheet.create({
   }
 });
 
-var menuStyles2 = StyleSheet.create({
+var menuStyles = StyleSheet.create({
   nineButtons: {
     flexDirection: 'column',
     height: window.height, 
@@ -336,6 +336,20 @@ var menuStyles2 = StyleSheet.create({
     flexWrap: 'wrap', 
     alignItems: 'flex-start',
     flexDirection:'row'
+  },
+  buttonLogout: {
+    height: windowSize.height/16,
+    width: windowSize.width/3.5,
+    backgroundColor: '#ff5050',
+    borderColor: '#007dc1',
+    borderWidth: 2,
+    borderRadius: 10,
+    margin: windowSize.width/80,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap', 
+    alignItems: 'flex-start',
+    flexDirection:'row'
   }
 });
 
@@ -345,5 +359,5 @@ module.exports = {
   markerStyles: markerStyles,
   signupStyles: signupStyles,
   calloutStyles: calloutStyles,
-  menuStyles2: menuStyles2
+  menuStyles: menuStyles
 };

@@ -12,12 +12,6 @@ const store = createStoreWithMiddleware(rootReducer);
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
-// function printStore () {
-//   console.log("STORRRRRRE :",store.getState());
-// };
-
-// setTimeout(printStore, 15000);
-
 export default class client extends Component {
   render() {
     return ( 
