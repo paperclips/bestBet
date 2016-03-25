@@ -19,20 +19,14 @@ var {
 var _ = require('underscore');
 
 var MapView = require('react-native-maps');
-var restaurants = require('./dummyEstablishments.js').dummyData;
 var RestaurantMarkerView = require('./restaurantMarker.js');
 var UserMarkerView = require('./userMarker.js');
 var OutlineMarkerView = require('./outlineMarker.js');
 var UserVotedView = require('./userVoted.js');
 
-var votes = require('./dummyVotes.js').dummyVotes;
 var InfoCallout = require('./infoCallout');
 var zoneCalculator = require('../actions/zoneHandler.js').zoneCalculator;
 var styles = require('../assets/styles.js').mapStyles;
-
-// SAMPLE DATA:
-var user = {id: 123, name: 'bribri', token:'abfe45'};
-var uPrefs = [2,5,4];
 
 var traitNames = {
   1:'Good Food', 
@@ -53,6 +47,9 @@ const LATITUDE = 37.7832096;
 const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+// a unique var for
+var k = 1;
 
 // var addVotes = function (establishments) {
 //   _.each(establishments, function (establishment) {
@@ -104,11 +101,8 @@ export default class Map extends Component {
       },
       zone: zoneCalculator(37.7832096, -122.4091516),
       establishments: [],
-      userId:user.id,
-      uPrefs: [],
       isOpen: false,
       intervalId: -1,
-      userVotes:{}
     }
   }
   
@@ -231,6 +225,21 @@ export default class Map extends Component {
     }
   }
 
+  calculateUserVoted (estabId) {
+    if(this.props.establishments[estabId].userVotes.length === 0) {
+      return 2;
+    } else {
+      var pos = 0;
+      var total = 0;
+      this.props.establishments[estabId].userVotes.forEach(function(vote){
+        console.log("VOTE ->  ",vote );
+        total++;
+        if(vote.voteValue === true) pos++;
+      });
+      return (Math.round(pos/total));
+    }
+  }
+
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
       && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
@@ -270,7 +279,7 @@ export default class Map extends Component {
             ref="m1">
             <View style={liveStyles[this.calculateLiveScores.bind(this, establishment.id)()]}>
               <View style={histStyles[this.calculateHistScores.bind(this, establishment.id)()]}>
-                <View style={userDot[1]}/>
+                <View style={userDot[this.calculateUserVoted.bind(this, establishment.id)()]}/>
               </View>
             </View>
               <MapView.Callout tooltip>
@@ -285,6 +294,13 @@ export default class Map extends Component {
                   <Text style={{ fontWeight:'bold', color: 'white' }}>
                     {this.props.user.traitCombo[2]}:{establishment['trait' + this.props.user.traitCombo[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo[2] + 'Tot']}
                   </Text>
+                    {_.map(establishment.userVotes, (vote) => 
+                      (
+                        <Text key={++k} style={{ fontWeight:'bold', color: 'white' }}>
+                          {vote.traitId}:{vote.voteValue.toString()}
+                        </Text>
+                      )
+                    )}
                 </InfoCallout>
               </MapView.Callout>
 
@@ -337,9 +353,9 @@ var userDot = {
     borderRadius: userHW/2,
     alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor:'white',
-    borderColor: 'black',
-    borderWidth:1.5,
+    backgroundColor:'lime',
+    borderColor: 'blue',
+    borderWidth:1,
   },
   2: {
     height:userHW,
@@ -347,9 +363,9 @@ var userDot = {
     borderRadius: userHW/2,
     alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor:'lime',
-    borderColor: 'blue',
-    borderWidth:1,
+    backgroundColor:'white',
+    borderColor: 'black',
+    borderWidth:1.5,
   }
 };
 
