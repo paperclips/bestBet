@@ -130,12 +130,10 @@ export default class Map extends Component {
     var uP = this.props.user.traitCombo.toString().split("");
     // console.log("UTRaITS ",uP);
     this.setState({ zone: this.calcZone()});
-    // this.setState({ establishments: this.props.establishments});
     this.setState({ uPrefs: uP });
     this.setState({ userId: this.props.user.id });
 
     var userId = this.props.user.id;
-    // console.log("AFT INIT STATE ",this.state, "STATE AFF INIT");
     var socket = this.props.socket;
     var oldUserZone = this.props.user.userZone;
     //Update userZone in store, get new Establishments, join/leave zones
@@ -232,7 +230,6 @@ export default class Map extends Component {
       var pos = 0;
       var total = 0;
       this.props.establishments[estabId].userVotes.forEach(function(vote){
-        console.log("VOTE ->  ",vote );
         total++;
         if(vote.voteValue === true) pos++;
       });
@@ -277,9 +274,9 @@ export default class Map extends Component {
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
             ref="m1">
-            <View style={liveStyles[this.calculateLiveScores.bind(this, establishment.id)()]}>
-              <View style={histStyles[this.calculateHistScores.bind(this, establishment.id)()]}>
-                <View style={userDot[this.calculateUserVoted.bind(this, establishment.id)()]}/>
+            <View style={liveStyles[this.calculateLiveScores.call(this, establishment.id)]}>
+              <View style={histStyles[this.calculateHistScores.call(this, establishment.id)]}>
+                <View style={userDot[this.calculateUserVoted.call(this, establishment.id)]}/>
               </View>
             </View>
               <MapView.Callout tooltip>
