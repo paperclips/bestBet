@@ -11,9 +11,9 @@ const {
 } = React;
 
 const window = Dimensions.get('window');
-const styles = require('../assets/styles.js').menuStyles2;
+const styles = require('../assets/styles.js').menuStyles;
 
-module.exports = class Menu extends Component {
+export default class Menu extends Component {
 
   constructor(props) {
     super(props);
@@ -37,12 +37,12 @@ module.exports = class Menu extends Component {
   setTraits() {
     if(this.traitCombo.length){
       this.props.resetTraits(this.props.user, this.props.socket, this.traitCombo);
-      console.log(this.props.user, "FULL OR ID");
       this.props.toggle();
-
-    } else {
-      console.log('user didnt pick traits');
     }
+  }
+
+  logOut() {
+    this.props.logOut(this.props.reactNavigator);
   }
 
   render() {
@@ -100,11 +100,9 @@ module.exports = class Menu extends Component {
         </TouchableHighlight> 
         </View>
         <View>
-        <Text
-          onPress={() => this.props.onItemSelected('logout')}
-          style={styles.item}>
-          logout
-        </Text>
+          <TouchableHighlight style={styles.buttonLogout} onPress={this.logOut.bind(this)}>
+            <Text style={styles.buttonText}>Logout</Text>
+          </TouchableHighlight>
         </View>
         </View>
       </ScrollView>
