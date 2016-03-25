@@ -48,8 +48,8 @@ const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-// a unique var for
-var k = 1;
+// a unique var for mapping user votes in callout
+let k = 1;
 
 // var addVotes = function (establishments) {
 //   _.each(establishments, function (establishment) {
