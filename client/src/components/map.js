@@ -125,12 +125,7 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
-    // console.log("INIT ESTS ===>",this.props.establishments,"INIT ENNND");
-    //  console.log("INIT USER ===>",this.props.user,"INIT ENNND");
-    var uP = this.props.user.traitCombo.toString().split("");
-    // console.log("UTRaITS ",uP);
     this.setState({ zone: this.calcZone()});
-    this.setState({ uPrefs: uP });
     this.setState({ userId: this.props.user.id });
 
     var userId = this.props.user.id;

@@ -9,8 +9,8 @@ function logOut() {
 
 export default (reactNavigator) => {
   return (dispatch) => {
+    reactNavigator.immediatelyResetRouteStack([{ name: 'Login' }]);
     dispatch(logOut());
     dispatch(clearSocket());
-    reactNavigator.immediatelyResetRouteStack([{ name: 'Login' }]);
   }
 }
