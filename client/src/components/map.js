@@ -192,7 +192,7 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    // console.log("ESTABS IN PROPS--->",this.props.establishments, "EST ENNND");
+    console.log("ESTABS IN PROPS--->",this.props.user, "EST ENNND");
     // this.setState({ uPrefs: uP });
     // this.setState({ establishments: this.props.establishments});
   }
