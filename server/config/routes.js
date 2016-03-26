@@ -26,7 +26,7 @@ io.on('connect', function(socket){
     //data is an object {userId, zones: [array of zones]}
     estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabs){
       console.log('ZONE', data.zones);
-      console.log('ESTABS0:', estabs[0]);
+      // console.log('ESTABS0:', estabs[0]);
       var estabObject = {};
       for(var i = 0; i<estabs.length;i++){
         estabObject[estabs[i].id] = estabs[i];

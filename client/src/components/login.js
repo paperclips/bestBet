@@ -139,7 +139,7 @@ export default class Login extends Component {
 
       <View style={styles.container}>
         <View style={styles.topSpace}>
-        </View>
+      </View>
 
         <Form
           ref="form"

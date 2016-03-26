@@ -11,8 +11,10 @@ var {
   Text,
   Dimensions,
   TouchableOpacity,
+  TouchableHighlight,
   StyleSheet,
   ScrollView,
+  Animated,
   Image
 } = React;
 
@@ -20,10 +22,9 @@ var _ = require('underscore');
 
 var MapView = require('react-native-maps');
 var RestaurantMarkerView = require('./restaurantMarker.js');
-var UserMarkerView = require('./userMarker.js');
 var OutlineMarkerView = require('./outlineMarker.js');
 var UserVotedView = require('./userVoted.js');
-
+var DetailModal = require('./detailModal.js')
 var InfoCallout = require('./infoCallout');
 var styles = require('../assets/styles.js').mapStyles;
 
@@ -79,12 +80,11 @@ export default class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      myLocation: {
-        latitude: this.props.user.latitude, 
-        longitude: this.props.user.longitude,
-      },
       establishments: [],
-      isOpen: false
+      isOpen: false,
+      selectedEstab: -1,
+      showDetails: false,
+      modal:true
     }
   }
   
@@ -106,7 +106,12 @@ export default class Map extends Component {
     this.refs.m1.hideCallout();
   }
 
-  onRegionChange(region) {
+  onMarkerPress (markerId) {
+    console.log("ever?");
+  }
+
+  onRegionChangeComplete(region) {
+    console.log("CHANGE COMPLETE");
     this.setState({ region }); //Must be set first
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
@@ -123,6 +128,7 @@ export default class Map extends Component {
   }
 
   changeTrait() {
+    console.log("chh trait");
     // console.log("USE PROPS  --- ", this.props.user, "user");
   }
 
@@ -184,6 +190,12 @@ export default class Map extends Component {
     }
   }
 
+  displayDetails (id) {
+    this.setState({selectedEstab:id});
+    this.setState({showDetails: true});
+    console.log("DISP ->",this.state);
+  }
+
   inView (coords) {
     return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
       && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
@@ -204,57 +216,35 @@ export default class Map extends Component {
           ref="map"
           mapType="terrain"
           style={styles.map}
+          showsUserLocation={true}
+          showsPointsOfInterest={false}
           initialRegion = {this.state.region}
-          onRegionChange={this.onRegionChange.bind(this)}
+          onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
         >
-        <MapView.Marker coordinate={this.state.myLocation}>
-          <UserMarkerView/>
-        </MapView.Marker>
-        <MapView.Marker coordinate={this.state.myLocation}>
-          <OutlineMarkerView/>
-        </MapView.Marker>
-       
+        
         {_.map(this.props.establishments, (establishment) => (
           <MapView.Marker key={establishment.id} 
             coordinate={{latitude:establishment.latitude, longitude: establishment.longitude}}
             centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
+            onPress={this.displayDetails.bind(this, establishment.id)}
             ref="m1">
             <View style={liveStyles[this.calculateLiveScores.call(this, establishment.id)]}>
               <View style={histStyles[this.calculateHistScores.call(this, establishment.id)]}>
                 <View style={userDot[this.calculateUserVoted.call(this, establishment.id)]}/>
               </View>
             </View>
-              <MapView.Callout tooltip>
-                <InfoCallout>
-                  <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[0]}:{establishment['trait' + this.props.user.traitCombo[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[0] +'Tot']}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[1]}:{establishment['trait' + this.props.user.traitCombo[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[1] +'Tot']}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[2]}:{establishment['trait' + this.props.user.traitCombo[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo[2] + 'Tot']}
-                  </Text>
-                    {_.map(establishment.userVotes, (vote) => 
-                      (
-                        <Text key={uniqueId++} style={{ fontWeight:'bold', color: 'white' }}>
-                          {vote.traitId}:{vote.voteValue.toString()}
-                        </Text>
-                      )
-                    )}
-                </InfoCallout>
-              </MapView.Callout>
-
-              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
-              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.bind(this, establishment.id)()}/10 HS: {this.calculateHistScores.bind(this, establishment.id)()}/10</Text>
+            <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
+            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.bind(this, establishment.id)()}/10 HS: {this.calculateHistScores.bind(this, establishment.id)()}/10</Text>
           </MapView.Marker>
 
         ))}
         </MapView>
         <View style={styles.buttonContainer}>
+          <TouchableHighlight onPress={this.changeTrait.bind(this)} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>Details</Text>
+          </TouchableHighlight>
           <TouchableOpacity onPress={this.changeTrait.bind(this)} style={[styles.bubble, styles.button]}>
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>Trait</Text>
           </TouchableOpacity>
@@ -273,11 +263,35 @@ export default class Map extends Component {
             <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />   
           </Button>
         </View> 
+        
+        <View style={modalStyles.container}>
+        {this.state.modal ? <DetailModal goToOtherRoute={this.goToOtherRoute} closeModal={() => this.setState({modal: false}) }/> : null }
+        </View>
       </SideMenu>
     );
   }
 
 };
+
+var modalStyles = StyleSheet.create({
+  container: {
+    backgroundColor: 'blue',
+    flex: 1,
+  },
+  flexCenter: {
+    flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  modal: {
+    backgroundColor: 'rgba(0,200,0,.8)',
+    position: 'absolute',
+    top: 300,
+    right: 0,
+    bottom: 0,
+    left: 0
+  }
+});
 
 var userHW = 8;
 var userDot = {
@@ -548,3 +562,39 @@ var liveStyles = {
   }
   
 };
+
+/*
+<View style={modalStyles.container}>
+          {this.state.showDetails ? <DetailModal goToOtherRoute={this.goToOtherRoute} closeModal={() => this.setState({modal: false}) }/> : null }
+        </View>
+
+
+// <MapView.Marker coordinate={this.state.myLocation}>
+        //   <UserMarkerView/>
+        // </MapView.Marker>
+        // <MapView.Marker coordinate={this.state.myLocation}>
+        //   <OutlineMarkerView/>
+        // </MapView.Marker>
+
+   <MapView.Callout tooltip>
+                <InfoCallout>
+                  <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo[0]}:{establishment['trait' + this.props.user.traitCombo[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[0] +'Tot']}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo[1]}:{establishment['trait' + this.props.user.traitCombo[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[1] +'Tot']}
+                  </Text>
+                  <Text style={{ fontWeight:'bold', color: 'white' }}>
+                    {this.props.user.traitCombo[2]}:{establishment['trait' + this.props.user.traitCombo[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo[2] + 'Tot']}
+                  </Text>
+                    {_.map(establishment.userVotes, (vote) => 
+                      (
+                        <Text key={uniqueId++} style={{ fontWeight:'bold', color: 'white' }}>
+                          {vote.traitId}:{vote.voteValue.toString()}
+                        </Text>
+                      )
+                    )}
+                </InfoCallout>
+              </MapView.Callout>      
+*/
