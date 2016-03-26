@@ -18,6 +18,18 @@ var {
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
+var traitNames = {
+  1:'Good Food', 
+  2:'Good Drinks', 
+  3:'Good Deal', 
+  4:'Not Noisy', 
+  5:'Not Crowded', 
+  6:'No Wait',
+  7:'Good Service',
+  8:'Upscale', 
+  9:'Veggie Friendly'
+};
+
 var styles = require('../assets/styles.js'); // mapStyles
 
 var { width, height } = Dimensions.get('window');
@@ -46,7 +58,11 @@ var DetailModal = React.createClass({
   render: function() {
     return (
       <View style={modalStyles.modal} onPress={this.closeModal}>
-       <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} {this.props.estab.address}</Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text>
+</Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
 
 
       </View>

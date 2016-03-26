@@ -103,7 +103,8 @@ export default class Map extends Component {
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
-      modal:true
+      modal:true,
+      userTraits: []
     }
   }
   
@@ -134,7 +135,10 @@ export default class Map extends Component {
     var oldUserZone = this.props.user.userZone;
     var userId = this.props.user.id;
     var socket = this.props.socket;
-    this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);  
+    this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);
+    if(!this.state.userTraits.length) {
+      this.setState({userTraits: this.props.user.traitCombo})  
+    }
   }
      //Run getEstabs one second after moving stopped;
   clearTimeout(timeout)
@@ -142,7 +146,12 @@ export default class Map extends Component {
 }
 
 changeTrait() {
-  console.log("chh trait");
+  console.log("BEF ",this.state.userTraits);
+
+  var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
+  this.setState({userTraits:newTraits});
+  console.log("AFT ",this.state.userTraits);
+
   // console.log("USE PROPS  --- ", this.props.user, "user");
 }
 
@@ -158,9 +167,9 @@ addVotesLive() {
     } else {
       var cume = 0;
       var total = 0;
-      for (var x = 0; x < this.props.user.traitCombo.length; x++) {
-        cume += ((this.props.establishments[estabId]['trait'+this.props.user.traitCombo[x]+'Pos'])/
-          (this.props.establishments[estabId]['trait'+this.props.user.traitCombo[x]+'Tot']));
+      for (var x = 0; x < this.state.userTraits.length; x++) {
+        cume += ((this.props.establishments[estabId]['trait'+this.state.userTraits[x]+'Pos'])/
+          (this.props.establishments[estabId]['trait'+this.state.userTraits[x]+'Tot']));
           total++;
       } 
     }
@@ -171,7 +180,7 @@ addVotesLive() {
     var pos = 0;
     var total = 0;
     if(this.props.user.traitCombo) {
-      var traits = this.props.user.traitCombo;
+      var traits = this.state.userTraits;
       this.props.establishments[estabId].Votes.forEach(function(vote){
         if(traits.indexOf(vote.traitId) > -1) {
           total++;
@@ -205,7 +214,7 @@ addVotesLive() {
   }
 
   displayDetails (id) {
-    console.log("DISP ESTAB ->", this.props.establishments[id]);
+    // console.log("DISP ESTAB ->", this.props.establishments[id]);
     this.setState({selectedEstab:id});
     this.setState({showDetails: true});
   }
@@ -255,25 +264,33 @@ addVotesLive() {
               </View>
             </View>
             <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
-            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.bind(this, establishment.id)()}/10 HS: {this.calculateHistScores.bind(this, establishment.id)()}/10</Text>
+            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.call(this, establishment.id)}/10 HS: {this.calculateHistScores.call(this, establishment.id)}/10</Text>
           </MapView.Marker>
 
         ))}
         </MapView>
         <View style={styles.mapStyles.buttonContainer}>
           <TouchableHighlight onPress={this.changeTrait.bind(this)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[this.props.user.traitCombo[0]]}</Text>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[this.state.userTraits[0]]}</Text>
           </TouchableHighlight>
           <TouchableHighlight onPress={this.changeTrait.bind(this)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[this.props.user.traitCombo[1]]}</Text>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[this.state.userTraits[1]]}</Text>
           </TouchableHighlight>
           <TouchableHighlight onPress={this.changeTrait.bind(this)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[this.props.user.traitCombo[2]]}</Text>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[this.state.userTraits[2]]}</Text>
           </TouchableHighlight>
         </View>
 
         <View >
-          {this.state.showDetails && this.props.establishments[this.state.selectedEstab] ? <DetailModal estab={this.props.establishments[this.state.selectedEstab]} user={this.props.user} closeModal={() => this.hideDetails() }/> : null }
+          {this.state.showDetails && this.props.establishments[this.state.selectedEstab] ? 
+            <DetailModal 
+              estab={this.props.establishments[this.state.selectedEstab]} 
+              userTraits={this.state.userTraits} 
+              live={this.calculateLiveScores.call(this, this.state.selectedEstab)} 
+              hist={this.calculateHistScores.call(this, this.state.selectedEstab)}
+              closeModal={() => this.hideDetails() }
+            />
+            : null }
         </View>
         </View>
         <View style={{marginTop: 20}}></View>
