@@ -44,7 +44,7 @@ var DetailModal = React.createClass({
     console.log("render?");
     return (
       <View style={{width:500, width:500, backgroundColor:'red'}}>
-       <Text color='white'>HELLLOdfssdfdfsdfsdfsdfsdfsdfsdfsdfsdfffffffffdsddfsdfsdfsdfsdf</Text>
+       <Text color='black'>HELLLOdfssdfdfsdfsdfsdfsdfsdfsdfsdfsdfffffffffdsddfsdfsdfsdfsdf</Text>
       </View>
     )
   }

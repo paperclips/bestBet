@@ -211,6 +211,7 @@ export default class Map extends Component {
   }
 
   displayDetails (id) {
+    console.log("DISP ->", id);
     this.setState({selectedEstab:id});
     this.setState({showDetails: true});
   }
@@ -271,6 +272,9 @@ export default class Map extends Component {
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>voteOnce</Text>
           </TouchableOpacity>
         </View>
+        <View >
+        {this.state.showDetails ? <DetailModal closeModal={() => this.setState({showDetails: false}) }/> : null }
+        </View>
           <View style={[styles.bubble, styles.latlng]}>
             <Text style={{ textAlign: 'center'}}>
               {`${this.props.user.traitCombo} \n ${this.state.region.latitude.toPrecision(6)} , ${this.state.region.longitude.toPrecision(7)} \n ${this.props.user.userZone}`}
@@ -283,9 +287,6 @@ export default class Map extends Component {
           </Button>
         </View> 
         
-        <View >
-        {this.state.showDetails ? <DetailModal closeModal={() => this.setState({showDetails: false}) }/> : null }
-        </View>
       </SideMenu>
     );
   }
