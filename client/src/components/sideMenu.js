@@ -39,6 +39,7 @@ class SideMenu extends Component {
      */
     this.prevLeft = 0;
     this.isOpen = props.isOpen;
+    // this.menuPosition = props.menuPosition;
 
     this.state = {
       width: deviceScreen.width,
@@ -104,7 +105,6 @@ class SideMenu extends Component {
       const swipingToOpen = this.menuPositionMultiplier() * gestureState.dx > 0;
       return withinEdgeHitWidth && touchMoved && swipingToOpen;
     }
-
     return false;
   }
 
@@ -144,6 +144,7 @@ class SideMenu extends Component {
    * @return {Number}
    */
   menuPositionMultiplier() {
+    //return this.props.menuPosition === 'right' ? -1 : 1;
     return this.props.menuPosition === 'right' ? -1 : 1;
   }
 
