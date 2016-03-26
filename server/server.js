@@ -12,11 +12,12 @@ console.log('Server listening on port ' + port);
 // Uncomment and re-comment in this order:
 // 1) populateEstablishements
 // 2) populateUsers
-// 1) populateVotes
 
 // var populateEstablishements = require('./populateData/populateEstablishments');
 // var populateUsers           = require('./populateData/populateUsers');
-// var populateVotes           = require('./populateData/populateVotes');
+ 
+//This function will generate new votes if previous votes are > 24 hours old
+ var populateVotes           = require('./populateData/populateVotes');
 
 
 
