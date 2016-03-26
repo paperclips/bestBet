@@ -1,6 +1,6 @@
 'use strict';
 var React = require('react-native');
-import Drawer from 'react-native-drawer';
+// import Drawer from 'react-native-drawer';
 // var drawer = require('react-native-drawer');
 var t = require('tcomb-form-native');
 var { 
