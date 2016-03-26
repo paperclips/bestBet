@@ -7,6 +7,8 @@ const INITIAL_STATE = {
   token: null,
   traitCombo: null,
   userZone: null,
+  latitude: null,
+  longitude: null,
   error: ''
 };
 

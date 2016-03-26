@@ -22,6 +22,8 @@ export default (user, reactNavigator, route) => {
           let userZone = zoneHandler.zoneCalculator(position.coords.latitude, position.coords.longitude);
           let estabZones = zoneHandler.getSurroundingZones(userZone);
           body.userZone = userZone;
+          body.latitude = position.coords.latitude;
+          body.longitude = position.coords.longitude;
           var socket = connectSocket();
           addSocket(dispatch, socket);//saves socket into state, adds listeners for ('New Establishments', 'voteAdded')
           dispatch(userLogin(body)); //save user info to user state
@@ -30,9 +32,14 @@ export default (user, reactNavigator, route) => {
           reactNavigator.immediatelyResetRouteStack([{ name: 'Map' }]);//then redirect user to mapview
         };
         function logError(error) {
-          console.log('Navigator \'getCurrentPosition\' error:', error);
+          console.log("Navigator 'getCurrentPosition' error:", error);
         };
-        navigator.geolocation.getCurrentPosition(position => gotLocation(position), logError);
+        var geo_options = {
+          enableHighAccuracy: true, 
+          maximumAge        : 30000, 
+          timeout           : 27000
+        };
+        navigator.geolocation.getCurrentPosition(position => gotLocation(position), logError, geo_options);
       } else {
         dispatch(userLogin(body)) //add error to user state
       }

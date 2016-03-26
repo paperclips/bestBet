@@ -25,7 +25,6 @@ var OutlineMarkerView = require('./outlineMarker.js');
 var UserVotedView = require('./userVoted.js');
 
 var InfoCallout = require('./infoCallout');
-var zoneCalculator = require('../actions/zoneHandler.js').zoneCalculator;
 var styles = require('../assets/styles.js').mapStyles;
 
 var traitNames = {
@@ -43,29 +42,14 @@ var traitNames = {
 
 var { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.7832096;
-const LONGITUDE = -122.4091516;
+// const LATITUDE = 37.7832096;
+// const LONGITUDE = -122.4091516;
 const LATITUDE_DELTA = 0.0122;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 // a unique var for mapping user votes in callout
 let uniqueId = 0;
-
-// var addVotes = function (establishments) {
-//   _.each(establishments, function (establishment) {
-//     _.each(traitNames, function (trait, i) {
-//       establishment.traits[i].pos += Math.floor(Math.random()*2);
-//       establishment.traits[i].votes += 1;
-//     });
-//   });
-//   return establishments;
-// };
-
-// processVoteData();
-
-
-
-
+let timeout = null; //Needed for userMove debounce
 
 class Button extends Component {    
   handlePress(e) {    
@@ -90,19 +74,17 @@ export default class Map extends Component {
     super(props);
     this.state = {
       region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
+        latitude: this.props.user.latitude, 
+        longitude: this.props.user.longitude,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
       myLocation: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
+        latitude: this.props.user.latitude, 
+        longitude: this.props.user.longitude,
       },
-      zone: zoneCalculator(37.7832096, -122.4091516),
       establishments: [],
-      isOpen: false,
-      intervalId: -1,
+      isOpen: false
     }
   }
   
@@ -117,54 +99,31 @@ export default class Map extends Component {
   }
 
   show() {
-        this.refs.m1.showCallout();
-      }
+    this.refs.m1.showCallout();
+  }
 
   hide() {
     this.refs.m1.hideCallout();
   }
 
   onRegionChange(region) {
-    this.setState({ zone: this.calcZone()});
-    this.setState({ userId: this.props.user.id });
+    this.setState({ region }); //Must be set first
+    //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
+    function getEstabs(){
+      this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);  
+    }
 
     var userId = this.props.user.id;
     var socket = this.props.socket;
     var oldUserZone = this.props.user.userZone;
-    //Update userZone in store, get new Establishments, join/leave zones
-    var liveLOC ={};
-    function gotLocation(position){
-      // console.log("CUR LIVE POS --->",position);
-      liveLOC = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      };
-      this.setState({ myLocation: {latitude: position.coords.latitude, longitude: position.coords.longitude} });
-      this.setState({ region:liveLOC });
-      // console.log("NEW STATE IN REGION --- > ",this.state.region);
-      return liveLOC;
-
-    };
-    function logError(error) {
-      console.log('Navigator \'getCurrentPosition\' error:', error);
-    };
-    navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
-
-    // this.props.userMoves(userId, socket, oldUserZone, this.state.region.latitude, this.state.region.longitude);
-  
-  }
-
-  calcZone() {
-    var curRegion = this.state.region;
-    return zoneCalculator(curRegion.latitude, curRegion.longitude);
+    
+    //Run getEstabs one second after moving stopped;
+    clearTimeout(timeout)
+    timeout = setTimeout(getEstabs.bind(this),100);
   }
 
   changeTrait() {
-    console.log("USE PROPS  --- ", this.props.user, "user");
-    // this.setState({ uPrefs: uP });
-    // this.setState({ establishments: this.props.establishments});
+    // console.log("USE PROPS  --- ", this.props.user, "user");
   }
 
   addVotesLive() {
@@ -172,13 +131,6 @@ export default class Map extends Component {
     this.calculateUserScores();
   }
 
-  turnOnVoteFlux () {
-    // this.setState({intervalId:window.setInterval(addVotesLive, 500)});
-  }
-
-  turnOffVoteFlux () {
-    // clearInterval(this.state.intervalId);
-  }
 // MOVE THIS OUT?
   calculateHistScores (estabId) {
     if (this.props.establishments[estabId] === undefined) {
@@ -252,7 +204,7 @@ export default class Map extends Component {
           ref="map"
           mapType="terrain"
           style={styles.map}
-          initialRegion={this.state.region}
+          initialRegion = {this.state.region}
           onRegionChange={this.onRegionChange.bind(this)}
         >
         <MapView.Marker coordinate={this.state.myLocation}>
@@ -312,7 +264,7 @@ export default class Map extends Component {
         </View>
           <View style={[styles.bubble, styles.latlng]}>
             <Text style={{ textAlign: 'center'}}>
-              {`${this.props.user.traitCombo},${this.state.region.latitude}, ${this.state.region.longitude}, ${this.state.zone}`}
+              {`${this.props.user.traitCombo} \n ${this.state.region.latitude.toPrecision(6)} , ${this.state.region.longitude.toPrecision(7)} \n ${this.props.user.userZone}`}
             </Text>
           </View>
         </View>
@@ -596,32 +548,3 @@ var liveStyles = {
   }
   
 };
-
-/*
-<TouchableOpacity onPress={this.turnOnVoteFlux.bind(this)} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>fluxVotes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.turnOffVoteFlux.bind(this)} style={[styles.bubble, styles.button]}>
-            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>stop</Text>
-          </TouchableOpacity>
-
-
-
-
-                 
-
-
- // <MapView.Marker key={this.props.establishments[0].id}> 
-        //   coordinate={{latitude:this.props.establishments[0].latitude, longitude: this.props.establishments[0].longitude}}
-        //       centerOffset={{x:0,y:0}}
-        //       calloutOffset={{ x: 0, y: 0 }}
-        //       calloutAnchor={{ x: 0, y: 0 }}
-        //       ref="m1">
-        //         <View style={scoreStyles[4]}>
-        //           <View style={userDot[2]}/>
-        //         </View>
-        // </MapView.Marker>
-
-
-*/
-  
