@@ -1,7 +1,5 @@
 'use strict';
 var React = require('react-native');
-import Drawer from 'react-native-drawer';
-// var drawer = require('react-native-drawer');
 var t = require('tcomb-form-native');
 var { 
   AppRegistry,
@@ -34,21 +32,6 @@ var options = {
     }
   }
 };
-
-
-
-
-// var React = require('react-native');
-// var {
-//   AppRegistry,
-//   StyleSheet,
-//   Text,
-//   View,
-//   Navigator,
-//   TouchableOpacity,
-//   Animated,
-//   Dimensions
-// } = React;
 
 var {
   height: deviceHeight
@@ -98,37 +81,6 @@ var RouteStack = {
     component: App 
   }
 }
-
-// var ModalApp = React.createClass({
-//   // getInitialState: function() {
-//   //   return {
-//   //     modal: false 
-//   //   };
-//   // },
-//   // renderScene: function(route, navigator) {
-//   //   var Component = route.component;
-//   //   return (
-//   //       <Component openModal={() => this.setState({modal: true})}/>
-//   //   )
-//   // },
-//   goToOtherRoute: function() {
-//     //this.refs.navigator.push({newRoute})
-//   },
-//   render: function() {
-//     return (
-//       <View style={styles.container}>
-//         <Navigator
-//           ref="navigator"
-//           initialRoute={RouteStack.app}
-//           renderScene={this.renderScene}
-//         />
-//         {this.state.modal ? <TopModal goToOtherRoute={this.goToOtherRoute} closeModal={() => this.setState({modal: false}) }/> : null }
-//       </View>
-//     );
-//   }
-// });
-
-
 
 var modalstyles = StyleSheet.create({
   container: {
