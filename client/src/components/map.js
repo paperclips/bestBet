@@ -79,10 +79,6 @@ export default class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      myLocation: {
-        latitude: this.props.user.latitude, 
-        longitude: this.props.user.longitude,
-      },
       establishments: [],
       isOpen: false
     }
@@ -107,19 +103,20 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
-    this.setState({ region }); //Must be set first
+    //this.setState({ region });
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
+      console.log('Got into region change');
+      this.setState({ region });
+      var oldUserZone = this.props.user.userZone;
+      var userId = this.props.user.id;
+      var socket = this.props.socket;
       this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);  
     }
 
-    var userId = this.props.user.id;
-    var socket = this.props.socket;
-    var oldUserZone = this.props.user.userZone;
-    
     //Run getEstabs one second after moving stopped;
     clearTimeout(timeout)
-    timeout = setTimeout(getEstabs.bind(this),100);
+    timeout = setTimeout(getEstabs.bind(this),1000);
   }
 
   changeTrait() {
@@ -184,12 +181,6 @@ export default class Map extends Component {
     }
   }
 
-  inView (coords) {
-    return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
-      && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
-      )
-  }
-
   render() {
     const menu = <Menu user = {this.props.user.id} socket = {this.props.socket} reactNavigator = {this.props.navigator} logOut = {this.props.logOut.bind(this)} resetTraits = {this.props.resetTraits} toggle = {this.toggle.bind(this)}/>;
     return (
@@ -205,14 +196,10 @@ export default class Map extends Component {
           mapType="terrain"
           style={styles.map}
           initialRegion = {this.state.region}
-          onRegionChange={this.onRegionChange.bind(this)}
+          showsUserLocation = {true}
+          showsCompass = {true}
+          onRegionChange = {this.onRegionChange.bind(this)}
         >
-        <MapView.Marker coordinate={this.state.myLocation}>
-          <UserMarkerView/>
-        </MapView.Marker>
-        <MapView.Marker coordinate={this.state.myLocation}>
-          <OutlineMarkerView/>
-        </MapView.Marker>
        
         {_.map(this.props.establishments, (establishment) => (
           <MapView.Marker key={establishment.id} 
