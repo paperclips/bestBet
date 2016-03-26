@@ -5,15 +5,17 @@ var windowSize = Dimensions.get('window');
 var {StyleSheet} = React;
 var signupStyles = StyleSheet.create({
   container: {
+    flex:2,
+    height: windowSize.height/2,
     justifyContent: 'center',
     paddingLeft: windowSize.height/40,
     paddingRight: windowSize.height/40,
     marginTop: windowSize.height/45,
-    backgroundColor: '#f7f6f3',
+    backgroundColor: '#f3f5f4',
   },
   topSpace: {
     marginTop: windowSize.height/20,
-    backgroundColor: '#f7f6f3',
+    backgroundColor: 'black',
   },
   buttonContainer: {
     flexDirection: 'row',
