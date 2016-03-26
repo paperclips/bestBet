@@ -126,10 +126,6 @@ export default class Map extends Component {
     this.refs.m1.hideCallout();
   }
 
-  onMarkerPress (markerId) {
-    console.log("ever?");
-  }
-
  onRegionChange(region) {
    //this.setState({ region });     
    //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
