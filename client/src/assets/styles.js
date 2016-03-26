@@ -166,6 +166,276 @@ var appStyles = StyleSheet.create({
  },
 });
 
+var userHW = 8;
+var userDot = {
+  0: {
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'red',
+    borderColor: 'blue',
+    borderWidth:1
+  },
+  1: {
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'lime',
+    borderColor: 'blue',
+    borderWidth:1,
+  },
+  2: {
+    height:userHW,
+    width:userHW,
+    borderRadius: userHW/2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'white',
+    borderColor: 'black',
+    borderWidth:1.5,
+  }
+};
+
+var histHW = 25;
+
+var histStyles = {
+  0:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor:'rgba(0, 0, 0, 0.3)'
+  },
+  1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+
+  },
+  2:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  },
+  4:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  
+  },
+  5:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(245, 241, 0, 0.2)',
+    
+  },
+  6:{
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(163, 245, 0, 0.3)',
+  },
+  7:{
+   justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    alignSelf:'center',
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  8:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  9:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.6)',
+  },
+  10:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:histHW,
+    width:histHW,
+    borderRadius: histHW/2,
+    borderWidth:(histHW-userHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.7)',
+  }
+  
+};
+
+var liveHW = 40;
+
+var liveStyles = {
+  0:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor:'rgba(0, 0, 0, 0.3)'
+  },
+  1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+
+  },
+  2:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(255, 0, 0, 0.5)',
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  },
+  4:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(209, 0, 0, 0.2)',
+  
+  },
+  5:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(245, 241, 0, 0.2)',
+    
+  },
+  6:{
+    justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(163, 245, 0, 0.3)',
+  },
+  7:{
+   justifyContent: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    alignSelf:'center',
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  8:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.5)',
+  },
+  9:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.6)',
+  },
+  10:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor:'transparent',
+    height:liveHW,
+    width:liveHW,
+    borderRadius: liveHW/2,
+    borderWidth:(liveHW-histHW)/2,
+    borderColor: 'rgba(34, 224, 0, 0.7)',
+  }
+  
+};
+
 var markerStyles = StyleSheet.create({
   container: {
     backgroundColor:'black',
@@ -357,9 +627,12 @@ var menuStyles = StyleSheet.create({
 
 module.exports = {
   appStyles: appStyles,
+  histStyles: histStyles,
   mapStyles: mapStyles,
   markerStyles: markerStyles,
   signupStyles: signupStyles,
   calloutStyles: calloutStyles,
-  menuStyles: menuStyles
+  menuStyles: menuStyles,
+  liveStyles: liveStyles,
+  userDot: userDot
 };
