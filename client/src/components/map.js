@@ -6,13 +6,16 @@ var windowSize = Dimensions.get('window');
 const SideMenu = require('./sideMenu');   
 
 var {
+  AppRegistry,
   PropTypes,
   View,
   Text,
   Dimensions,
   TouchableOpacity,
+  TouchableHighlight,
   StyleSheet,
   ScrollView,
+  Animated,
   Image
 } = React;
 
@@ -20,10 +23,9 @@ var _ = require('underscore');
 
 var MapView = require('react-native-maps');
 var RestaurantMarkerView = require('./restaurantMarker.js');
-var UserMarkerView = require('./userMarker.js');
 var OutlineMarkerView = require('./outlineMarker.js');
 var UserVotedView = require('./userVoted.js');
-
+var DetailModal = require('./detailModal.js')
 var InfoCallout = require('./infoCallout');
 var styles = require('../assets/styles.js').mapStyles;
 
@@ -68,6 +70,25 @@ class Button extends Component {
   }   
 }
 
+var App = React.createClass({
+    render: function() {
+      return (
+        <View style={modalstyles.flexCenter}>
+          <TouchableOpacity onPress={this.props.displayDetails}>
+            <Text>Open Modal</Text>  
+          </TouchableOpacity>
+        </View>
+      )
+    }
+});
+
+var RouteStack = {
+  app: {
+    component: App 
+  }
+}
+
+
 //THE ACTUAL map deal
 export default class Map extends Component {
   constructor(props) {
@@ -80,7 +101,10 @@ export default class Map extends Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
       establishments: [],
-      isOpen: false
+      isOpen: false,
+      selectedEstab: -1,
+      showDetails: false,
+      modal:true
     }
   }
   
@@ -102,31 +126,31 @@ export default class Map extends Component {
     this.refs.m1.hideCallout();
   }
 
-  onRegionChange(region) {
-    //this.setState({ region });
-    //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
-    function getEstabs(){
-      console.log('Got into region change');
-      this.setState({ region });
-      var oldUserZone = this.props.user.userZone;
-      var userId = this.props.user.id;
-      var socket = this.props.socket;
-      this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);  
-    }
-
-    //Run getEstabs one second after moving stopped;
-    clearTimeout(timeout)
-    timeout = setTimeout(getEstabs.bind(this),1000);
+ onRegionChange(region) {
+   //this.setState({ region });     
+   //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
+  function getEstabs(){
+    console.log('Got into region change');
+    this.setState({ region });
+    var oldUserZone = this.props.user.userZone;
+    var userId = this.props.user.id;
+    var socket = this.props.socket;
+    this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);  
   }
+     //Run getEstabs one second after moving stopped;
+  clearTimeout(timeout)
+  timeout = setTimeout(getEstabs.bind(this),1000);
+}
 
-  changeTrait() {
-    // console.log("USE PROPS  --- ", this.props.user, "user");
-  }
+changeTrait() {
+  console.log("chh trait");
+  // console.log("USE PROPS  --- ", this.props.user, "user");
+}
 
-  addVotesLive() {
-    this.setState({establishments: addVotes(this.state.establishments)});
-    this.calculateUserScores();
-  }
+addVotesLive() {
+  this.setState({establishments: addVotes(this.state.establishments)});
+  this.calculateUserScores();
+}
 
 // MOVE THIS OUT?
   calculateHistScores (estabId) {
@@ -181,6 +205,18 @@ export default class Map extends Component {
     }
   }
 
+  displayDetails (id) {
+    console.log("DISP ->", id);
+    this.setState({selectedEstab:id});
+    this.setState({showDetails: true});
+  }
+
+  inView (coords) {
+    return (LATITUDE - LATITUDE_DELTA > coords.latitude < LATITUDE + LATITUDE_DELTA 
+      && LONGITUDE - LONGITUDE_DELTA > coords.longitude < LONGITUDE + LONGITUDE_DELTA 
+      )
+  }
+
   render() {
     const menu = <Menu user = {this.props.user.id} socket = {this.props.socket} reactNavigator = {this.props.navigator} logOut = {this.props.logOut.bind(this)} resetTraits = {this.props.resetTraits} toggle = {this.toggle.bind(this)}/>;
     return (
@@ -195,53 +231,34 @@ export default class Map extends Component {
           ref="map"
           mapType="terrain"
           style={styles.map}
+          showsUserLocation={true}
+          showsPointsOfInterest={false}
           initialRegion = {this.state.region}
-          showsUserLocation = {true}
-          showsCompass = {true}
-          onRegionChange = {this.onRegionChange.bind(this)}
-        >
-       
+          onRegionChange={this.onRegionChange.bind(this)}
+        >        
         {_.map(this.props.establishments, (establishment) => (
           <MapView.Marker key={establishment.id} 
             coordinate={{latitude:establishment.latitude, longitude: establishment.longitude}}
             centerOffset={{x:0,y:0}}
             calloutOffset={{ x: 0, y: 0 }}
             calloutAnchor={{ x: 0, y: 0 }}
+            onPress={this.displayDetails.bind(this, establishment.id)}
             ref="m1">
             <View style={liveStyles[this.calculateLiveScores.call(this, establishment.id)]}>
               <View style={histStyles[this.calculateHistScores.call(this, establishment.id)]}>
                 <View style={userDot[this.calculateUserVoted.call(this, establishment.id)]}/>
               </View>
             </View>
-              <MapView.Callout tooltip>
-                <InfoCallout>
-                  <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[0]}:{establishment['trait' + this.props.user.traitCombo[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[0] +'Tot']}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[1]}:{establishment['trait' + this.props.user.traitCombo[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[1] +'Tot']}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[2]}:{establishment['trait' + this.props.user.traitCombo[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo[2] + 'Tot']}
-                  </Text>
-                    {_.map(establishment.userVotes, (vote) => 
-                      (
-                        <Text key={uniqueId++} style={{ fontWeight:'bold', color: 'white' }}>
-                          {vote.traitId}:{vote.voteValue.toString()}
-                        </Text>
-                      )
-                    )}
-                </InfoCallout>
-              </MapView.Callout>
-
-              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
-              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.bind(this, establishment.id)()}/10 HS: {this.calculateHistScores.bind(this, establishment.id)()}/10</Text>
+            <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
+            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.bind(this, establishment.id)()}/10 HS: {this.calculateHistScores.bind(this, establishment.id)()}/10</Text>
           </MapView.Marker>
 
         ))}
         </MapView>
         <View style={styles.buttonContainer}>
+          <TouchableHighlight onPress={this.changeTrait.bind(this)} style={[styles.bubble, styles.button]}>
+            <Text style={{ fontSize: 9, fontWeight: 'bold' }}>Details</Text>
+          </TouchableHighlight>
           <TouchableOpacity onPress={this.changeTrait.bind(this)} style={[styles.bubble, styles.button]}>
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>Trait</Text>
           </TouchableOpacity>
@@ -249,22 +266,46 @@ export default class Map extends Component {
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>voteOnce</Text>
           </TouchableOpacity>
         </View>
-          <View style={[styles.bubble, styles.latlng]}>
-            <Text style={{ textAlign: 'center'}}>
-              {`${this.props.user.traitCombo} \n ${this.state.region.latitude.toPrecision(6)} , ${this.state.region.longitude.toPrecision(7)} \n ${this.props.user.userZone}`}
-            </Text>
-          </View>
+        <View style={[styles.bubble, styles.latlng]}>
+          <Text style={{ textAlign: 'center'}}>
+            {`${this.props.user.traitCombo} \n ${this.state.region.latitude.toPrecision(6)} , ${this.state.region.longitude.toPrecision(7)} \n ${this.props.user.userZone}`}
+          </Text>
+        </View>
+        <View >
+          {this.state.showDetails && this.props.establishments[this.state.selectedEstab] ? <DetailModal estab={this.props.establishments[this.state.selectedEstab]} closeModal={() => this.setState({showDetails: false}) }/> : null }
+        </View>
         </View>
         <View style={{marginTop: 20}}></View>
           <Button style={styles.button} onPress={() => this.toggle()}>
             <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />   
           </Button>
         </View> 
+        
       </SideMenu>
     );
   }
 
 };
+
+// var modalStyles = StyleSheet.create({
+//   container: {
+//     backgroundColor: 'blue',
+//     flex: 1,
+//   },
+//   flexCenter: {
+//     flex: 1,
+//     justifyContent: 'center', 
+//     alignItems: 'center'
+//   },
+//   modal: {
+//     backgroundColor: 'rgba(0,200,0,.8)',
+//     position: 'absolute',
+//     top: 300,
+//     right: 0,
+//     bottom: 0,
+//     left: 0
+//   }
+// });
 
 var userHW = 8;
 var userDot = {
