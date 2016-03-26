@@ -16,7 +16,6 @@ var {
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
-
 var Form = t.form.Form;
 var styles = require('../assets/styles.js').signupStyles;
 var User   = t.struct({

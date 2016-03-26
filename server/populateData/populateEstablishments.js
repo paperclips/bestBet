@@ -33,14 +33,14 @@ popTraits();
 
 // Save 20 restaurants into Establishments
 var yelp = new Yelp({
-  consumer_key: 'FW8Mc7pREwM4wb6tDXCqQQ',
-  consumer_secret: 'NWuduUH_hygivccfEywP51nEzA0',
-  token: 'SEDzj2ONG-liWR0U-0MfmWlYXl2NM-tP',
-  token_secret: 'YcJRVQiAt4m9unwCH_VK1JhLAjo'
+  consumer_key: 'gsjk0o7MGSveWE1fl3XDJQ',
+  consumer_secret: 'jENexVIGC2-ho2MPKDCvISyRfPU',
+  token: 'uosUcU25he8AlgqM8paqwzj-j4mpkIhl',
+  token_secret: 'myAMTAkatscCizvq2z3cSffp0uc'
 });
 
-var zipcodes = [94107];
-//, 94102,94103, 94104, 94105, 94107, 94108, 94109, 94110, 94111, 94112, 94114, 94115, 94116, 94117, 94118, 94121, 94122, 94123, 94124, 94127, 94129, 94130, 94131, 94132, 94133, 94134, 94158];
+var zipcodes = [94107,94108,94109];
+//94102,94103, 94104, 94105, 94107, 94108, 94109, 94110, 94111, 94112, 94114, 94115, 94116, 94117, 94118, 94121, 94122, 94123, 94124, 94127, 94129, 94130, 94131, 94132, 94133, 94134, 94158];
 var offsets = [0,20,40,60];
 //20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,420,440,460,480,500,520,540,560,580,600,620,640,660,680,700,720,740,760,780,800,820,840,860,880,900,920,940,960,980];
 

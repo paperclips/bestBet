@@ -8,6 +8,7 @@ function addSocketToState(socket) {
 };
 
 function addEstabToState(estabs,dispatch,socket) {
+  //console.log('ESTABS:', estabs.establishments);
   dispatch(saveEstabsToState(estabs));
   socket.on('voteAdded', (voteData) => {dispatch(saveVoteToState(voteData))});
 };
