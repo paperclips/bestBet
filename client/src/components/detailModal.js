@@ -18,9 +18,11 @@ var {
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
+var { width, height } = Dimensions.get('window');
 
 var {
-  height: deviceHeight
+  height: deviceHeight,
+  width: deviceWidth
 } = Dimensions.get('window');
 
 var DetailModal = React.createClass({
@@ -43,8 +45,9 @@ var DetailModal = React.createClass({
   render: function() {
     console.log("render?");
     return (
-      <View style={{width:500, width:500, backgroundColor:'red'}}>
-       <Text color='black'>HELLLOdfssdfdfsdfsdfsdfsdfsdfsdfsdfsdfffffffffdsddfsdfsdfsdfsdf</Text>
+      <View style={{opacity:.6, width:width, height:height/8, backgroundColor:'red'}}>
+       <Text color='white'>{this.props.estab.name}</Text>
+       
       </View>
     )
   }

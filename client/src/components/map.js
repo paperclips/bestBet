@@ -272,14 +272,14 @@ export default class Map extends Component {
             <Text style={{ fontSize: 9, fontWeight: 'bold' }}>voteOnce</Text>
           </TouchableOpacity>
         </View>
-        <View >
-        {this.state.showDetails ? <DetailModal closeModal={() => this.setState({showDetails: false}) }/> : null }
+        <View style={[styles.bubble, styles.latlng]}>
+          <Text style={{ textAlign: 'center'}}>
+            {`${this.props.user.traitCombo} \n ${this.state.region.latitude.toPrecision(6)} , ${this.state.region.longitude.toPrecision(7)} \n ${this.props.user.userZone}`}
+          </Text>
         </View>
-          <View style={[styles.bubble, styles.latlng]}>
-            <Text style={{ textAlign: 'center'}}>
-              {`${this.props.user.traitCombo} \n ${this.state.region.latitude.toPrecision(6)} , ${this.state.region.longitude.toPrecision(7)} \n ${this.props.user.userZone}`}
-            </Text>
-          </View>
+        <View >
+          {this.state.showDetails ? <DetailModal estab={this.props.establishments[this.state.selectedEstab]} closeModal={() => this.setState({showDetails: false}) }/> : null }
+        </View>
         </View>
         <View style={{marginTop: 20}}></View>
           <Button style={styles.button} onPress={() => this.toggle()}>
