@@ -29,8 +29,7 @@ function saveVoteToState(voteData){
             time: voteData.time}
   });
   var voteObject = {establishmentId: voteData.establishmentId, votes: votesArray};
-  console.log('VOTE OBJECT:', voteObject);
-  
+
   return {
     type: ADD_VOTE,
     payload: voteObject
