@@ -62,4 +62,4 @@ var port = process.env.PORT || 8000;
 http.listen(port);
 console.log('botServer listening on port ' + port);
 setInterval(createNewVote,1000);
-setInterval(requestEstabs,1000);
+//setInterval(requestEstabs,1000);

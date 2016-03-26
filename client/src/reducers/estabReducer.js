@@ -7,7 +7,8 @@ export default function (state = {}, action) {
       var voteEstId = action.payload.establishmentId;
       var newVotesArr = action.payload.votes;
       if(newState[voteEstId]){
-        console.log('ESTAB NEW VOTES',newVotesArr)
+        //console.log('ESTAB NEW VOTES',newVotesArr)
+        console.log('VOTES FOR ASIAN BOX:',newState[voteEstId].Votes.length);
         newState[voteEstId].Votes = newState[voteEstId].Votes.concat(newVotesArr);
       }
       return newState;
