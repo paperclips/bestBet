@@ -6,6 +6,7 @@ var windowSize = Dimensions.get('window');
 const SideMenu = require('./sideMenu');   
 
 var {
+  AppRegistry,
   PropTypes,
   View,
   Text,
@@ -68,6 +69,25 @@ class Button extends Component {
     );    
   }   
 }
+
+var App = React.createClass({
+    render: function() {
+      return (
+        <View style={modalstyles.flexCenter}>
+          <TouchableOpacity onPress={this.props.displayDetails}>
+            <Text>Open Modal</Text>  
+          </TouchableOpacity>
+        </View>
+      )
+    }
+});
+
+var RouteStack = {
+  app: {
+    component: App 
+  }
+}
+
 
 //THE ACTUAL map deal
 export default class Map extends Component {
@@ -193,7 +213,6 @@ export default class Map extends Component {
   displayDetails (id) {
     this.setState({selectedEstab:id});
     this.setState({showDetails: true});
-    console.log("DISP ->",this.state);
   }
 
   inView (coords) {
@@ -264,8 +283,8 @@ export default class Map extends Component {
           </Button>
         </View> 
         
-        <View style={modalStyles.container}>
-        {this.state.modal ? <DetailModal goToOtherRoute={this.goToOtherRoute} closeModal={() => this.setState({modal: false}) }/> : null }
+        <View >
+        {this.state.showDetails ? <DetailModal closeModal={() => this.setState({showDetails: false}) }/> : null }
         </View>
       </SideMenu>
     );

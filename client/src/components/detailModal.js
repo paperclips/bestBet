@@ -43,18 +43,17 @@ var DetailModal = React.createClass({
   render: function() {
     console.log("render?");
     return (
-        <Animated.View style={[modalstyles.modal, {transform: [{translateY: this.state.offset}]}]}>
-          <TouchableOpacity onPress={this.closeModal}>
-            <Text style={{color: 'blue'}}>mymodal!</Text>
-          </TouchableOpacity>
-        </Animated.View>
+      <View style={{width:500, width:500, backgroundColor:'red'}}>
+       <Text color='white'>HELLLOdfssdfdfsdfsdfsdfsdfsdfsdfsdfsdfffffffffdsddfsdfsdfsdfsdf</Text>
+      </View>
     )
   }
 });
 
 var modalstyles = StyleSheet.create({
   container: {
-    flex: 1,
+    color:'black',
+    flex: 5,
   },
   flexCenter: {
     flex: 1,
@@ -62,7 +61,7 @@ var modalstyles = StyleSheet.create({
     alignItems: 'center'
   },
   modal: {
-    backgroundColor: 'rgba(0,200,0,.8)',
+    backgroundColor: 'red',
     position: 'absolute',
     top: 300,
     right: 0,
@@ -72,3 +71,11 @@ var modalstyles = StyleSheet.create({
 });
 
 module.exports = DetailModal;
+
+/*
+ <Animated.View style={[modalstyles.modal, {transform: [{translateY: this.state.offset}]}]}>
+          <TouchableOpacity onPress={this.closeModal}>
+            <Text style={{color: 'black'}}>mymodal!</Text>
+          </TouchableOpacity>
+        </Animated.View>
+*/
