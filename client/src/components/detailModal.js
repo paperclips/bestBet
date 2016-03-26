@@ -30,7 +30,6 @@ var DetailModal = React.createClass({
     return { offset: new Animated.Value(deviceHeight* 0.5) }
   },
   componentDidMount: function() {
-    console.log("compMOUNT");
     Animated.timing(this.state.offset, {
       duration: 300,
       toValue: 0
@@ -43,7 +42,6 @@ var DetailModal = React.createClass({
     }).start(this.props.closeModal);
   },
   render: function() {
-    console.log("render?");
     return (
       <View style={{opacity:.6, width:width, height:height/8, backgroundColor:'red'}}>
        <Text color='white'>{this.props.estab.name}</Text>

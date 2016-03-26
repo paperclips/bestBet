@@ -130,32 +130,31 @@ export default class Map extends Component {
     console.log("ever?");
   }
 
-  onRegionChangeComplete(region) {
-    console.log("CHANGE COMPLETE");
-    this.setState({ region }); //Must be set first
-    //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
-    function getEstabs(){
-      this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);  
-    }
-
+ onRegionChange(region) {
+   //this.setState({ region });     
+   //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
+  function getEstabs(){
+    console.log('Got into region change');
+    this.setState({ region });
+    var oldUserZone = this.props.user.userZone;
     var userId = this.props.user.id;
     var socket = this.props.socket;
-    var oldUserZone = this.props.user.userZone;
-    
-    //Run getEstabs one second after moving stopped;
-    clearTimeout(timeout)
-    timeout = setTimeout(getEstabs.bind(this),100);
+    this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);  
   }
+     //Run getEstabs one second after moving stopped;
+  clearTimeout(timeout)
+  timeout = setTimeout(getEstabs.bind(this),1000);
+}
 
-  changeTrait() {
-    console.log("chh trait");
-    // console.log("USE PROPS  --- ", this.props.user, "user");
-  }
+changeTrait() {
+  console.log("chh trait");
+  // console.log("USE PROPS  --- ", this.props.user, "user");
+}
 
-  addVotesLive() {
-    this.setState({establishments: addVotes(this.state.establishments)});
-    this.calculateUserScores();
-  }
+addVotesLive() {
+  this.setState({establishments: addVotes(this.state.establishments)});
+  this.calculateUserScores();
+}
 
 // MOVE THIS OUT?
   calculateHistScores (estabId) {
@@ -239,9 +238,8 @@ export default class Map extends Component {
           showsUserLocation={true}
           showsPointsOfInterest={false}
           initialRegion = {this.state.region}
-          onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-        >
-        
+          onRegionChange={this.onRegionChange.bind(this)}
+        >        
         {_.map(this.props.establishments, (establishment) => (
           <MapView.Marker key={establishment.id} 
             coordinate={{latitude:establishment.latitude, longitude: establishment.longitude}}
@@ -278,7 +276,7 @@ export default class Map extends Component {
           </Text>
         </View>
         <View >
-          {this.state.showDetails ? <DetailModal estab={this.props.establishments[this.state.selectedEstab]} closeModal={() => this.setState({showDetails: false}) }/> : null }
+          {this.state.showDetails && this.props.establishments[this.state.selectedEstab] ? <DetailModal estab={this.props.establishments[this.state.selectedEstab]} closeModal={() => this.setState({showDetails: false}) }/> : null }
         </View>
         </View>
         <View style={{marginTop: 20}}></View>
@@ -293,25 +291,25 @@ export default class Map extends Component {
 
 };
 
-var modalStyles = StyleSheet.create({
-  container: {
-    backgroundColor: 'blue',
-    flex: 1,
-  },
-  flexCenter: {
-    flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center'
-  },
-  modal: {
-    backgroundColor: 'rgba(0,200,0,.8)',
-    position: 'absolute',
-    top: 300,
-    right: 0,
-    bottom: 0,
-    left: 0
-  }
-});
+// var modalStyles = StyleSheet.create({
+//   container: {
+//     backgroundColor: 'blue',
+//     flex: 1,
+//   },
+//   flexCenter: {
+//     flex: 1,
+//     justifyContent: 'center', 
+//     alignItems: 'center'
+//   },
+//   modal: {
+//     backgroundColor: 'rgba(0,200,0,.8)',
+//     position: 'absolute',
+//     top: 300,
+//     right: 0,
+//     bottom: 0,
+//     left: 0
+//   }
+// });
 
 var userHW = 8;
 var userDot = {
@@ -582,39 +580,3 @@ var liveStyles = {
   }
   
 };
-
-/*
-<View style={modalStyles.container}>
-          {this.state.showDetails ? <DetailModal goToOtherRoute={this.goToOtherRoute} closeModal={() => this.setState({modal: false}) }/> : null }
-        </View>
-
-
-// <MapView.Marker coordinate={this.state.myLocation}>
-        //   <UserMarkerView/>
-        // </MapView.Marker>
-        // <MapView.Marker coordinate={this.state.myLocation}>
-        //   <OutlineMarkerView/>
-        // </MapView.Marker>
-
-   <MapView.Callout tooltip>
-                <InfoCallout>
-                  <Text style={{ fontWeight:'bold', fontSize: 12, color: 'white' }}>{establishment.id}:{establishment.name}</Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[0]}:{establishment['trait' + this.props.user.traitCombo[0] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[0] +'Tot']}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[1]}:{establishment['trait' + this.props.user.traitCombo[1] + 'Pos']}/{establishment['trait'+ this.props.user.traitCombo[1] +'Tot']}
-                  </Text>
-                  <Text style={{ fontWeight:'bold', color: 'white' }}>
-                    {this.props.user.traitCombo[2]}:{establishment['trait' + this.props.user.traitCombo[2] + 'Pos']}/{establishment['trait' + this.props.user.traitCombo[2] + 'Tot']}
-                  </Text>
-                    {_.map(establishment.userVotes, (vote) => 
-                      (
-                        <Text key={uniqueId++} style={{ fontWeight:'bold', color: 'white' }}>
-                          {vote.traitId}:{vote.voteValue.toString()}
-                        </Text>
-                      )
-                    )}
-                </InfoCallout>
-              </MapView.Callout>      
-*/
