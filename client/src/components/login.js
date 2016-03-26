@@ -101,47 +101,17 @@ var modalstyles = StyleSheet.create({
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = { userName: '', password: '', modal: false  };
   }
 
-  // renderScene(route, navigator) {
-  //   var Component = route.component;
-  //   return (
-  //       <Component openModal={() => this.setState({modal: true})}/>
-  //   )
-  // }
-
   showModal() {
     console.log('triggered');
     this.setState({modal: true});
     console.log(this.state.modal);
   }
-
 
   goToOtherRoute() {
     //this.refs.navigator.push({newRoute})
