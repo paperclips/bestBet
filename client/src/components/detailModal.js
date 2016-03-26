@@ -58,12 +58,10 @@ var DetailModal = React.createClass({
   render: function() {
     return (
       <View style={modalStyles.modal} onPress={this.closeModal}>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text>
-</Text>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
-
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text></Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}: NOW: {this.props.liveScores[this.props.userTraits[0]].pos} / {this.props.liveScores[this.props.userTraits[0]].tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}: NOW: {this.props.liveScores[this.props.userTraits[1]].pos} / {this.props.liveScores[this.props.userTraits[1]].tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}: NOW: {this.props.liveScores[this.props.userTraits[2]].pos} / {this.props.liveScores[this.props.userTraits[2]].tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
 
       </View>
     )
@@ -71,6 +69,11 @@ var DetailModal = React.createClass({
 });
 
 var modalStyles = StyleSheet.create({
+  boo: {
+  backgroundColor: 'blue',
+  borderColor: 'red',
+  borderWidth: 50,
+},
   modal: {
     padding: 5,
     width:width, 
@@ -84,10 +87,20 @@ var modalStyles = StyleSheet.create({
 
 module.exports = DetailModal;
 
+
+
 /*
+
+  
+
  <Animated.View style={[modalstyles.modal, {transform: [{translateY: this.state.offset}]}]}>
           <TouchableOpacity onPress={this.closeModal}>
             <Text style={{color: 'black'}}>mymodal!</Text>
           </TouchableOpacity>
         </Animated.View>
+
+
+        <svg width="100" height="100">
+          <circle style={modalStyles.boo}r="25" cx="50" cy="50" />
+        </svg>
 */
