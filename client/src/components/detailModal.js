@@ -41,7 +41,9 @@ var {
 
 var DetailModal = React.createClass({
   getInitialState: function() {
-    return { offset: new Animated.Value(deviceHeight* 0.5) }
+    return { 
+      offset: new Animated.Value(deviceHeight* 0.5),
+    }
   },
   componentDidMount: function() {
     Animated.timing(this.state.offset, {
@@ -55,14 +57,27 @@ var DetailModal = React.createClass({
       toValue: deviceHeight
     }).start(this.props.closeModal);
   },
+  renderLiveScore: function (trait) {
+    var score = {pos:0, tot:0};
+    this.props.estab.Votes.forEach(function(vote){
+      console.log(vote);
+      if(trait === vote.traitId) {
+        score.tot++;
+        if (vote.voteValue === true) {
+          score.pos++;
+        }
+      }      
+    });
+    console.log(trait,score);
+    return score;
+  }, 
   render: function() {
     return (
       <View style={modalStyles.modal} onPress={this.closeModal}>
         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text></Text>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}: NOW: {this.props.liveScores[this.props.userTraits[0]].pos} / {this.props.liveScores[this.props.userTraits[0]].tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}: NOW: {this.props.liveScores[this.props.userTraits[1]].pos} / {this.props.liveScores[this.props.userTraits[1]].tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}: NOW: {this.props.liveScores[this.props.userTraits[2]].pos} / {this.props.liveScores[this.props.userTraits[2]].tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
-
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}: NOW: {this.renderLiveScore(this.props.userTraits[0]).pos} / {this.renderLiveScore(this.props.userTraits[0]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}: NOW: {this.renderLiveScore(this.props.userTraits[1]).pos} / {this.renderLiveScore(this.props.userTraits[1]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}: NOW: {this.renderLiveScore(this.props.userTraits[2]).pos} / {this.renderLiveScore(this.props.userTraits[2]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
       </View>
     )
   }

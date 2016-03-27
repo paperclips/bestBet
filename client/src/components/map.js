@@ -103,7 +103,6 @@ export default class Map extends Component {
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
-      selectedLives: {},
       modal:true,
       userTraits: []
     }
@@ -218,20 +217,8 @@ addVotesLive() {
   }
 
   displayDetails (id) {
-    var liveScores ={};
-    for (x = 1; x < 10; x++) {
-      liveScores[x] = {pos:0,tot:0};
-    }
-    this.props.establishments[id].Votes.forEach(function(vote){
-      liveScores[vote.traitId].tot++;
-      if (vote.voteValue === true) {
-        liveScores[vote.traitId].pos++;
-      }
-    });
-    this.setState({selectedLives:liveScores});
     this.setState({selectedEstab:id});
     this.setState({showDetails: true});
-    console.log("LV",this.state.selectedLives);
   }
   hideDetails () {
     console.log("hide ESTAB ->");
@@ -303,7 +290,6 @@ addVotesLive() {
               userTraits={this.state.userTraits} 
               live={this.calculateLiveScores.call(this, this.state.selectedEstab)} 
               hist={this.calculateHistScores.call(this, this.state.selectedEstab)}
-              liveScores={this.state.selectedLives}
               closeModal={() => this.hideDetails() }
             />
             : null }
