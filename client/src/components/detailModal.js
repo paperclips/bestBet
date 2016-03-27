@@ -52,6 +52,7 @@ var DetailModal = React.createClass({
     }).start();
   },
   closeModal: function() {
+    console.log("toooouch");
     Animated.timing(this.state.offset, {
       duration: 300,
       toValue: deviceHeight
