@@ -98,12 +98,15 @@ export default class Map extends Component {
     timeout = setTimeout(getEstabs.bind(this),1000);
   }
 
-  changeTrait() {
-    console.log("BEF ",this.state.userTraits);
-    var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-    this.setState({userTraits:newTraits});
-    console.log("AFT ",this.state.userTraits);
-  }
+changeTrait() {
+  console.log("CUR TRAITS BEF ",this.state.userTraits);
+
+  var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
+  this.setState({userTraits:newTraits});
+  console.log("CUR AFT ",this.state.userTraits);
+
+  // console.log("USE PROPS  --- ", this.props.user, "user");
+}
 
   calculateHistScores (estabId) {
     var cume = 0, total = 0;
@@ -219,6 +222,24 @@ export default class Map extends Component {
           <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20 }} />   
         </TouchableOpacity>
       </View> 
+
+        <View >
+          {this.state.showDetails && this.props.establishments[this.state.selectedEstab] ? 
+            <DetailModal 
+              estab={this.props.establishments[this.state.selectedEstab]} 
+              userTraits={this.state.userTraits} 
+              live={this.calculateLiveScores.call(this, this.state.selectedEstab)} 
+              hist={this.calculateHistScores.call(this, this.state.selectedEstab)}
+              closeModal={() => this.hideDetails }
+            />
+            : null }
+        </View>
+        </View>
+        <View style={{marginTop: 20}}></View>
+          <Button style={styles.mapStyles.button} onPress={() => this.toggle()}>
+            <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />   
+          </Button>
+        </View> 
       </SideMenu>
     );
   }
