@@ -39,10 +39,12 @@ var {
   width: deviceWidth
 } = Dimensions.get('window');
 
-var DetailModal = React.createClass({
+
+var DetailModal =  React.createClass({
   getInitialState: function() {
     return { 
       offset: new Animated.Value(deviceHeight* 0.5),
+      full: false
     }
   },
   componentDidMount: function() {
@@ -51,12 +53,14 @@ var DetailModal = React.createClass({
       toValue: 0
     }).start();
   },
-  closeModal: function() {
-    console.log("toooouch");
-    Animated.timing(this.state.offset, {
-      duration: 300,
-      toValue: deviceHeight
-    }).start(this.props.closeModal);
+  toggleFull: function() {
+    console.log("TOOOOOGGGGGLLLLLLE!!!");
+    var old = this.state.full;
+    this.setState({full:!old});
+    // Animated.timing(this.state.offset, {
+    //   duration: 300,
+    //   toValue: deviceHeight
+    // }).start(this.props.closeModal);
   },
   renderLiveScore: function (trait) {
     var score = {pos:0, tot:0};
@@ -70,29 +74,131 @@ var DetailModal = React.createClass({
     });
     return score;
   }, 
-  render: function() {
-    return (
-      <View style={modalStyles.modal} onPress={this.closeModal}>
+  renderFull: function () {
+    return(
+    <TouchableHighlight style={modalStyles.fullModal} onPress={this.toggleFull}>
+      <View>
+        <Text style={{ fontWeight:'bold', fontSize: 24, color: 'red' }}> FULL VIEW YAAAY! </Text>
         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text></Text>
         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}: NOW: {this.renderLiveScore(this.props.userTraits[0]).pos} / {this.renderLiveScore(this.props.userTraits[0]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}: NOW: {this.renderLiveScore(this.props.userTraits[1]).pos} / {this.renderLiveScore(this.props.userTraits[1]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}: NOW: {this.renderLiveScore(this.props.userTraits[2]).pos} / {this.renderLiveScore(this.props.userTraits[2]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
       </View>
+    </TouchableHighlight>
+    )
+  },
+  renderBrief: function () {
+    console.log("Rend brief?");
+    return (
+      <TouchableHighlight style={modalStyles.briefModal} onPress={this.toggleFull}>
+        <View>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text></Text>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}: NOW: {this.renderLiveScore(this.props.userTraits[0]).pos} / {this.renderLiveScore(this.props.userTraits[0]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}: NOW: {this.renderLiveScore(this.props.userTraits[1]).pos} / {this.renderLiveScore(this.props.userTraits[1]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}: NOW: {this.renderLiveScore(this.props.userTraits[2]).pos} / {this.renderLiveScore(this.props.userTraits[2]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
+        </View>
+      </TouchableHighlight>
+    )
+  },
+
+  render: function() {
+    console.log("render? ", this.state.full);
+
+    return (
+      <View>
+        {this.state.full ? this.renderFull() : this.renderBrief()}
+      </View>  
     )
   }
 });
+
+// var BriefDetail = React.createClass({
+//   getInitialState: function() {
+//     return { 
+//       offset: new Animated.Value(deviceHeight* 0.5),
+//     }
+//   },
+//   componentDidMount: function() {
+//     Animated.timing(this.state.offset, {
+//       duration: 300,
+//       toValue: 0
+//     }).start();
+//   },
+//    renderLiveScore: function (trait) {
+//     var score = {pos:0, tot:0};
+//     this.props.estab.Votes.forEach(function(vote){
+//       if(trait === vote.traitId) {
+//         score.tot++;
+//         if (vote.voteValue === true) {
+//           score.pos++;
+//         }
+//       }      
+//     });
+//     return score;
+//   }, 
+//   render: function() {
+//     return (
+
+//     )
+//   }
+// });
+
+
+// var FullDetail = React.createClass({
+//   getInitialState: function() {
+//     return { 
+//       offset: new Animated.Value(deviceHeight* 0.5),
+//     }
+//   },
+//   componentDidMount: function() {
+//     Animated.timing(this.state.offset, {
+//       duration: 300,
+//       toValue: 0
+//     }).start();
+//   },
+//   renderLiveScore: function (trait) {
+//     var score = {pos:0, tot:0};
+//     this.props.estab.Votes.forEach(function(vote){
+//       if(trait === vote.traitId) {
+//         score.tot++;
+//         if (vote.voteValue === true) {
+//           score.pos++;
+//         }
+//       }      
+//     });
+//     return score;
+//   }, 
+//   render: function() {
+//     return (
+//       <TouchableHighlight style={modalStyles.modal} onPress={this.toggle}>
+//         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text></Text>
+//         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[0]]}: NOW: {this.renderLiveScore(this.props.userTraits[0]).pos} / {this.renderLiveScore(this.props.userTraits[0]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
+//         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[1]]}: NOW: {this.renderLiveScore(this.props.userTraits[1]).pos} / {this.renderLiveScore(this.props.userTraits[1]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
+//         <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[this.props.userTraits[2]]}: NOW: {this.renderLiveScore(this.props.userTraits[2]).pos} / {this.renderLiveScore(this.props.userTraits[2]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
+//       </TouchableHighlight>
+//     )
+//   }
+// });
+
 
 var modalStyles = StyleSheet.create({
   boo: {
   backgroundColor: 'blue',
   borderColor: 'red',
-  borderWidth: 50,
 },
-  modal: {
+  briefModal: {
     padding: 5,
     width:width, 
     height:height/8, 
     backgroundColor:'white',
+    borderColor: 'rgba(34, 224, 0, 0.3)',
+    borderWidth:5,
+  },
+  fullModal: {
+    padding: 5,
+    width:width, 
+    height:height, 
+    backgroundColor:'blue',
     borderColor: 'rgba(34, 224, 0, 0.3)',
     borderWidth:5,
 
@@ -103,8 +209,23 @@ module.exports = DetailModal;
 
 
 
-/*
 
+
+/*
+ <FullDetail 
+            estab={this.props.estab}
+            userTraits={this.props.userTraits} 
+            live={this.props.live} 
+            hist={this.props.hist}
+            toggle={() => this.toggleFull }
+          /> :
+          <BriefDetail
+            estab={this.props.estab}
+            userTraits={this.props.userTraits} 
+            live={this.props.live} 
+            hist={this.props.hist}
+            toggle={() => this.toggleFull }
+          />
   
 
  <Animated.View style={[modalstyles.modal, {transform: [{translateY: this.state.offset}]}]}>

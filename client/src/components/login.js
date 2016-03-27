@@ -37,6 +37,12 @@ var {
   height: deviceHeight
 } = Dimensions.get('window');
 
+
+
+
+
+
+
 var TopModal = React.createClass({
   getInitialState: function() {
     return { offset: new Animated.Value(deviceHeight* 0.5) }

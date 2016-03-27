@@ -146,11 +146,11 @@ export default class Map extends Component {
 }
 
 changeTrait() {
-  console.log("BEF ",this.state.userTraits);
+  console.log("CUR TRAITS BEF ",this.state.userTraits);
 
   var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
   this.setState({userTraits:newTraits});
-  console.log("AFT ",this.state.userTraits);
+  console.log("CUR AFT ",this.state.userTraits);
 
   // console.log("USE PROPS  --- ", this.props.user, "user");
 }
@@ -290,7 +290,7 @@ addVotesLive() {
               userTraits={this.state.userTraits} 
               live={this.calculateLiveScores.call(this, this.state.selectedEstab)} 
               hist={this.calculateHistScores.call(this, this.state.selectedEstab)}
-              closeModal={() => this.hideDetails() }
+              closeModal={() => this.hideDetails }
             />
             : null }
         </View>
