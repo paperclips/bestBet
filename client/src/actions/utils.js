@@ -4,6 +4,7 @@ import zoneHandler from './zoneHandler.js';
 
 // const SERVER_URL = 'http://10.8.30.75:3000';
 const SERVER_URL = 'http://localhost:3000';
+// const SERVER_URL = 'http://104.131.12.172:3000';
 
 export function sendReq (method,route,body){
   const url = `${SERVER_URL}${route}`;

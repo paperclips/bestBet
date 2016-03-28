@@ -6,7 +6,10 @@ export default function (state = {}, action) {
       var newState = Object.assign({},state);
       var voteEstId = action.payload.establishmentId;
       var newVotesArr = action.payload.votes;
-      newState.establishments[voteEstId].votes.concat(newVotesArr);
+      if(newState[voteEstId]){
+        console.log('VOTES FOR ASIAN BOX:',newState[voteEstId].Votes.length);
+        newState[voteEstId].Votes = newState[voteEstId].Votes.concat(newVotesArr);
+      }
       return newState;
     case REPLACE_ESTABS:
       return action.payload;
