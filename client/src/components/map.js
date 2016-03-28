@@ -69,24 +69,6 @@ class Button extends Component {
   }   
 }
 
-var App = React.createClass({
-    render: function() {
-      return (
-        <View style={modalstyles.flexCenter}>
-          <TouchableOpacity onPress={this.props.displayDetails}>
-            <Text>Open Modal</Text>  
-          </TouchableOpacity>
-        </View>
-      )
-    }
-});
-
-var RouteStack = {
-  app: {
-    component: App 
-  }
-}
-
 
 //THE ACTUAL map deal
 export default class Map extends Component {
@@ -247,7 +229,7 @@ addVotesLive() {
           ref="map"
           mapType="terrain"
           style={styles.mapStyles.map}
-          showsUserLocation={true}
+          // showsUserLocation={true}
           showsPointsOfInterest={false}
           initialRegion = {this.state.region}
           onRegionChange={this.onRegionChange.bind(this)}
