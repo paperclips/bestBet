@@ -60,7 +60,6 @@ var DetailModal = React.createClass({
   renderLiveScore: function (trait) {
     var score = {pos:0, tot:0};
     this.props.estab.Votes.forEach(function(vote){
-      console.log(vote);
       if(trait === vote.traitId) {
         score.tot++;
         if (vote.voteValue === true) {
@@ -68,7 +67,6 @@ var DetailModal = React.createClass({
         }
       }      
     });
-    console.log(trait,score);
     return score;
   }, 
   render: function() {

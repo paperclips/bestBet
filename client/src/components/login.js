@@ -1,126 +1,31 @@
 'use strict';
-var React = require('react-native');
-var t = require('tcomb-form-native');
-var { 
-  AppRegistry,
-  Component, 
-  Text, 
-  View, 
+import React, { Component } from 'react-native';
+import background from '../assets/background.jpg';
+import logo from '../assets/directions-icon.png';
+var Dimensions = require('Dimensions');
+var windowSize = Dimensions.get('window');
+var styles = require('../assets/styles.js').signupStyles;
+
+var {
   TouchableHighlight,
-  Image,
-  Animated,
-  Dimensions,
   StyleSheet,
-  TouchableOpacity
+  View,
+  Text,
+  TextInput,
+  Image
 } = React;
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
-var Form = t.form.Form;
-var styles = require('../assets/styles.js').signupStyles;
-var User   = t.struct({
-  userName: t.String,
-  password: t.String
-});
-
-var options = {
-  fields: {
-    password: {
-      password: true,
-      secureTextEntry: true
-    }
-  }
-};
-
-var {
-  height: deviceHeight
-} = Dimensions.get('window');
-
-var TopModal = React.createClass({
-  getInitialState: function() {
-    return { offset: new Animated.Value(deviceHeight* 0.5) }
-  },
-  componentDidMount: function() {
-    Animated.timing(this.state.offset, {
-      duration: 500,
-      toValue: 0
-    }).start();
-  },
-  closeModal: function() {
-    Animated.timing(this.state.offset, {
-      duration: 500,
-      toValue: deviceHeight
-    }).start(this.props.closeModal);
-  },
-  render: function() {
-    return (
-        <Animated.View style={[modalstyles.modal, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
-          <TouchableOpacity onPress={this.closeModal}>
-            <Text style={{color: 'green'}}>Close Menu</Text>
-          </TouchableOpacity>
-        </Animated.View>
-    )
-  }
-});
-
-var App = React.createClass({
-    render: function() {
-      return (
-        <View style={modalstyles.flexCenter}>
-          <TouchableOpacity onPress={this.props.openModal}>
-            <Text>Open Modal</Text>  
-          </TouchableOpacity>
-        </View>
-      )
-    }
-});
-
-var RouteStack = {
-  app: {
-    component: App 
-  }
-}
-
-var modalstyles = StyleSheet.create({
-  container: {
-    flex: 5
-  },
-  flexCenter: {
-    flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center'
-  },
-  modal: {
-    backgroundColor: 'rgba(0,0,0,.8)',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  }
-});
-
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { userName: '', password: '', modal: false  };
-  }
-
-  showModal() {
-    console.log('triggered');
-    this.setState({modal: true});
-    console.log(this.state.modal);
-  }
-
-  goToOtherRoute() {
-    //this.refs.navigator.push({newRoute})
+    this.state = {userName: '', password: ''};
   }
 
   onLogin(){
-    var value = this.refs.form.getValue();
-    if(value){
-      this.setState({userName: value.userName, password: value.password});
+    if(this.state.userName && this.state.password){
       this.props.authUser(this.state, this.props.navigator, '/login');
     }
   }
@@ -133,39 +38,46 @@ export default class Login extends Component {
   onError(){
     return this.props.user.error;
   }
-
+  
   render() {
     return (
-
       <View style={styles.container}>
-        <View style={styles.topSpace}>
+        <Image style={styles.bg} source={background} resizeMode='cover' />
+        <View style={styles.header}>
+          <Image style={styles.mark} source={logo} />
+          <Text style={styles.logoText}>Best Bet</Text>
         </View>
-
-        <Form
-          ref="form"
-          type={User}
-          options={options}
-        />
-        <View style={styles.twoButtons}>
-        <TouchableHighlight style={styles.button1} onPress={this.showModal.bind(this)} underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>drawer</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight style={styles.button1} onPress={this.onLogin.bind(this)} underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>login</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.button1} onPress={this.onSignup.bind(this)} underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>Signup</Text>
-        </TouchableHighlight>
+        <View style={styles.inputs}>
+          <View style={styles.inputContainer}>
+            <Image style={styles.inputUsername} source={{uri: 'http://i.imgur.com/iVVVMRX.png'}}/>
+            <TextInput
+              style={[styles.input, styles.whiteFont]}
+              placeholder="Username"
+              placeholderTextColor="#FFF"
+              onChangeText={(userName) => this.setState({userName})}
+              value={this.state.userName}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image style={styles.inputPassword} source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+            <TextInput
+              password={true}
+              style={[styles.input, styles.whiteFont]}
+              placeholder="Password"
+              placeholderTextColor="#FFF"
+              onChangeText={(password) => this.setState({password})}
+              value={this.state.password}
+            />
+          </View>
+          <Text style={styles.error}>{this.onError.call(this)}</Text>
         </View>
-
-        <Text style={styles.error}>{this.onError.call(this)}</Text>
-
-        <Text>123</Text>
-        <View style={modalstyles.container}>
-        {this.state.modal ? <TopModal goToOtherRoute={this.goToOtherRoute} closeModal={() => this.setState({modal: false}) }/> : null }
-        </View>
+        <TouchableHighlight style={styles.signin} onPress={this.onLogin.bind(this)}>
+          <Text style={styles.whiteFont}>Sign In</Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.signup} onPress={this.onSignup.bind(this)}>
+          <Text style={styles.greyFont}>Don't have an account?<Text style={styles.whiteFont}>  Sign Up</Text></Text>
+        </TouchableHighlight>
       </View>
-      )
-  }
+    );
+  };
 };

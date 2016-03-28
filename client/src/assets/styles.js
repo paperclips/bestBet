@@ -5,75 +5,120 @@ var windowSize = Dimensions.get('window');
 var {StyleSheet} = React;
 var signupStyles = StyleSheet.create({
   container: {
-    flex:2,
-    height: windowSize.height/2,
-    justifyContent: 'center',
-    paddingLeft: windowSize.height/40,
-    paddingRight: windowSize.height/40,
-    marginTop: windowSize.height/45,
-    backgroundColor: '#f3f5f4',
+    flexDirection: 'column',
+    flex: 1,
+    backgroundColor: 'transparent'
   },
-  topSpace: {
-    marginTop: windowSize.height/20,
-    backgroundColor: 'black',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    height: windowSize.height/15,
-    padding: windowSize.height/45
-  },
-  title: {
-    fontSize: 10,
-    alignSelf: 'center',
-    marginBottom: 3
-  },
-  button: {
+  bg: {
     position: 'absolute',
-    top: 10,
-    padding: 10,
+    left: 0,
+    top: 0,
+    width: windowSize.width,
+    height: windowSize.height
   },
-  buttonText: {
-    fontSize: 12,
-    color: 'white',
-    alignSelf: 'center'
+  header: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: .5,
+    backgroundColor: 'transparent',
   },
-  twoButtons: {
+  mark: {
+    width: 150,
+    height: 150
+  },
+  signInHeader:{
     flexDirection: 'row',
-    height: windowSize.height/15, 
-    paddingLeft: windowSize.height/20,
-    paddingRight: windowSize.height/20
-
-  },
-  button1: {
-    flex:1,
-    height: windowSize.height/20,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 2,
-    borderRadius: 5,
-    margin: windowSize.width/80,
-    alignSelf: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap', 
-    alignItems: 'flex-start',
-    flexDirection:'row'
+    alignItems: 'center',
+    flex: .2,
+    backgroundColor: 'transparent'
   },
-  button2: {
-    height: windowSize.height/16,
-    backgroundColor: '#09a5ff',
-    borderColor: '#007dc1',
-    borderWidth: 2,
-    borderRadius: 10,
-    margin: windowSize.width/80,
-    alignSelf: 'center',
+  signInInputs: {
+      marginTop: 50,
+      marginBottom: 50,
+  },
+  topText:{
+    marginTop: 40,
+    fontSize: 20,
+    fontFamily: 'Palatino',
+    fontStyle: 'italic',
+    fontWeight: '900',
+    color: '#FFF'
+  },
+  logoText: {
+    fontSize: 100,
+    fontFamily: 'Palatino',
+    fontStyle: 'italic',
+    fontWeight: '900',
+    color: '#000'
+  },
+  signin: {
+    backgroundColor: '#FF3366',
+    padding: 20,
+    alignItems: 'center'
+  },
+  signup: {
     justifyContent: 'center',
-    flexWrap: 'wrap', 
-    alignItems: 'flex-start',
-    flexDirection:'row'
+    alignItems: 'center',
+    flex: .15
+  },
+  traits: {
+    backgroundColor: '#FF3366',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 100,
+    flex: .2
+  },
+  pressed: {
+    backgroundColor: '#33ffcc',
+  },
+  inputs: {
+    marginTop: 10,
+    marginBottom: 10,
+    flex: .15
+  },
+  inputPassword: {
+    marginLeft: 15,
+    width: 20,
+    height: 21
+  },
+  inputUsername: {
+    marginLeft: 15,
+    width: 20,
+    height: 20
+  },
+  inputContainer: {
+    padding: 10,
+    borderWidth: 1,
+    borderBottomColor: '#CCC',
+    borderColor: 'transparent',
+  },
+  input: {
+    position: 'absolute',
+    left: 61,
+    top: 12,
+    right: 0,
+    height: 20,
+    fontSize: 18
+  },
+  forgotContainer: {
+    alignItems: 'flex-end',
+    padding: 15,
+  },
+  greyFont: {
+    color: '#D8D8D8'
+  },
+  whiteFont: {
+    color: '#FFF'
   },
   error: {
-    fontSize: 12,
-    color: 'red',
+    marginTop: 15,
+    paddingLeft: 10,
+    fontSize: 16,
+    color: '#FFF'
   }
 });
 
