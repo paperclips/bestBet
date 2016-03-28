@@ -138,6 +138,11 @@ var mapStyles = StyleSheet.create({
     top: 10,
     padding: 10,
   },
+  sandwichButton: {
+    marginTop: 20,
+    marginLeft: 20,
+    position: 'absolute'
+  },
   map: {
     position: 'absolute',
     top: 0,
