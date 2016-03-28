@@ -136,7 +136,7 @@ export default class Map extends Component {
       total++;
       vote.voteValue && pos++;
     });
-    return total === 0 ? 2 : Math.round(pos/total);
+    return total === 0 ? 2 : Math.round(pos/total*10);
   }
 
   displayDetails (id) {
