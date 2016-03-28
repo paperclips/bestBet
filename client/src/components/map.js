@@ -190,7 +190,6 @@ changeTrait() {
       isOpen={this.state.isOpen}
       onChange={(isOpen) => this.updateMenuState(isOpen)}>
       <View style={{height: windowSize.height, backgroundColor: '#f7f6f3'}}>
-
         <View style={styles.mapStyles.container}>
           <MapView
             ref="map"
@@ -222,24 +221,6 @@ changeTrait() {
           <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20 }} />   
         </TouchableOpacity>
       </View> 
-
-        <View >
-          {this.state.showDetails && this.props.establishments[this.state.selectedEstab] ? 
-            <DetailModal 
-              estab={this.props.establishments[this.state.selectedEstab]} 
-              userTraits={this.state.userTraits} 
-              live={this.calculateLiveScores.call(this, this.state.selectedEstab)} 
-              hist={this.calculateHistScores.call(this, this.state.selectedEstab)}
-              closeModal={() => this.hideDetails }
-            />
-            : null }
-        </View>
-        </View>
-        <View style={{marginTop: 20}}></View>
-          <Button style={styles.mapStyles.button} onPress={() => this.toggle()}>
-            <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20, }} />   
-          </Button>
-        </View> 
       </SideMenu>
     );
   }
