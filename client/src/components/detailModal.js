@@ -34,7 +34,7 @@ var traitNames = {
 };
 
 var nums = [1,2,3,4,5,6,7,8,9];
-
+var count = 1;
 var styles = require('../assets/styles.js'); // mapStyles
 
 var { width, height } = Dimensions.get('window');
@@ -74,28 +74,40 @@ var DetailModal =  React.createClass({
     });
     return score;
   }, 
+  renderFullUserVotes: function () {
+    return (
+      <View style={modalStyles.myVotes}>
+        <Text> You visited on {}</Text>
+      </View>
+    )
+  },
   renderFull: function () {
     console.log(this.props.estab);
+    var big = this.props.estab.imageUrl.replace('ms.','l.');
     return(
-    <TouchableHighlight style={modalStyles.fullModal} onPress={this.toggleFull}>
-      <View> 
-        <Image
-          style={modalStyles.fullImage}
-          source={{uri: this.props.estab.imageUrl}}/>
-        <View style={modalStyles.info}>  
-          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text></Text>
-          {_.map(this.props.userTraits,(trait) => (
-            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.renderLiveScore(trait).pos} / {this.renderLiveScore(trait).tot} USUAL:{this.props.estab['trait'+ trait +'Pos']} / {this.props.estab['trait'+ trait +'Tot']} </Text>
-          ))}
-          <Text> Other </Text>
-          {_.map(nums,(num) => (
-            <View key={num}>
-            {this.props.userTraits.indexOf(num) >= 0 ? null : <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.renderLiveScore(num).pos} / {this.renderLiveScore(num).tot} USUAL:{this.props.estab['trait'+ num +'Pos']} / {this.props.estab['trait'+ num +'Tot']} </Text>}
-            </View>
-          ))}
+      <TouchableHighlight style={modalStyles.fullModal} onPress={this.toggleFull}>
+        <View> 
+          <Image
+            style={modalStyles.fullImage}
+            source={{uri: big}}/>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
+          <Text> {this.props.estab.address} {this.props.estab.phoneNumber} </Text> 
+
+
+          <View style={modalStyles.info}>  
+            <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text>
+            {_.map(this.props.userTraits,(trait) => (
+              <Text key={trait} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.renderLiveScore(trait).pos} / {this.renderLiveScore(trait).tot} USUAL:{this.props.estab['trait'+ trait +'Pos']} / {this.props.estab['trait'+ trait +'Tot']} </Text>
+            ))}
+            <Text> Other </Text>
+            {_.map(nums,(num) => (
+              <View key={num}>
+              {this.props.userTraits.indexOf(num) >= 0 ? null : <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.renderLiveScore(num).pos} / {this.renderLiveScore(num).tot} USUAL:{this.props.estab['trait'+ num +'Pos']} / {this.props.estab['trait'+ num +'Tot']} </Text>}
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
-    </TouchableHighlight>
+      </TouchableHighlight>
     )
   },
   renderBrief: function () {
@@ -104,13 +116,13 @@ var DetailModal =  React.createClass({
       <TouchableHighlight  onPress={this.toggleFull}>
         <View style={modalStyles.briefModal}>
           <Image
-          style={modalStyles.restImage}
+          style={modalStyles.briefImage}
           source={{uri: this.props.estab.imageUrl}}/>  
           <View style={modalStyles.briefInfo}> 
             <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text></Text>
-            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>{traitNames[this.props.userTraits[0]]}: NOW: {this.renderLiveScore(this.props.userTraits[0]).pos} / {this.renderLiveScore(this.props.userTraits[0]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[0] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[0] +'Tot']} </Text>
-            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>{traitNames[this.props.userTraits[1]]}: NOW: {this.renderLiveScore(this.props.userTraits[1]).pos} / {this.renderLiveScore(this.props.userTraits[1]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[1] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[1] +'Tot']} </Text>
-            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>{traitNames[this.props.userTraits[2]]}: NOW: {this.renderLiveScore(this.props.userTraits[2]).pos} / {this.renderLiveScore(this.props.userTraits[2]).tot} USUAL:{this.props.estab['trait'+ this.props.userTraits[2] +'Pos']} / {this.props.estab['trait'+ this.props.userTraits[2] +'Tot']} </Text>
+            {_.map(this.props.userTraits,(trait) => (
+              <Text key={trait} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.renderLiveScore(trait).pos} / {this.renderLiveScore(trait).tot} USUAL:{this.props.estab['trait'+ trait +'Pos']} / {this.props.estab['trait'+ trait +'Tot']} </Text>
+            ))}
           </View>
         </View>
       </TouchableHighlight>
@@ -118,7 +130,7 @@ var DetailModal =  React.createClass({
   },
 
   render: function() {
-    console.log("render? ", this.state.full);
+    console.log("render? ", this.props);
     return (
       <View>
         {this.state.full ? this.renderFull() : this.renderBrief()}
@@ -128,10 +140,6 @@ var DetailModal =  React.createClass({
 });
 
 var modalStyles = StyleSheet.create({
-  boo: {
-    backgroundColor: 'blue',
-    borderColor: 'red',
-  },
   briefModal: {
     flexDirection:'row',
     width:width, 
@@ -160,7 +168,7 @@ var modalStyles = StyleSheet.create({
     borderWidth: 5
 
   },
-  restImage: {
+  briefImage: {
     alignSelf: 'flex-start',
     resizeMode: 'cover',
     height: height/8,
@@ -169,8 +177,8 @@ var modalStyles = StyleSheet.create({
   fullImage: {
     alignSelf: 'flex-start',
     resizeMode: 'cover',
-    height: height/3,
-    width: width
+    width:width,
+    height: height/3
   }
 });
 
