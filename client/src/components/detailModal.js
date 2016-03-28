@@ -22,15 +22,15 @@ var _ = require('underscore');
 window.navigator.userAgent = "react-native"; //or any other string value
 
 var traitNames = {
-  1:'Good Food', 
-  2:'Good Drinks', 
-  3:'Good Deal', 
+  1:'Food', 
+  2:'Drinks', 
+  3:'Value', 
   4:'Not Noisy', 
   5:'Not Crowded', 
   6:'No Wait',
-  7:'Good Service',
+  7:'Service',
   8:'Upscale', 
-  9:'Veggie Friendly'
+  9:'Veggie'
 };
 
 var nums = [1,2,3,4,5,6,7,8,9];
@@ -75,9 +75,16 @@ var DetailModal =  React.createClass({
     return score;
   }, 
   renderFullUserVotes: function () {
+    var traitTracker = {};
     return (
       <View style={modalStyles.myVotes}>
-        <Text> You visited on {}</Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'blue' }}> You visited on {this.props.estab.userVotes[this.props.estab.userVotes.length-1].time}</Text>
+          {_.map(this.props.estab.userVotes, (vote) => {
+            if(!traitTracker.hasOwnProperty(vote.traitId)) {
+              traitTracker[vote.traitId] = true;
+              return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'purple' }}>{traitNames[vote.traitId]}: {vote.voteValue.toString()} on {vote.time} </Text>
+            }
+          })}
       </View>
     )
   },
@@ -90,12 +97,15 @@ var DetailModal =  React.createClass({
           <Image
             style={modalStyles.fullImage}
             source={{uri: big}}/>
-          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
-          <Text> {this.props.estab.address} {this.props.estab.phoneNumber} </Text> 
-
-
-          <View style={modalStyles.info}>  
+          <View style={modalStyles.fullName}>  
+            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
+            <Text> {this.props.estab.address} {this.props.estab.phoneNumber} </Text> 
             <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text>
+          </View>
+
+          {this.props.estab.userVotes.length ? this.renderFullUserVotes() : null}
+          
+          <View style={modalStyles.info}>  
             {_.map(this.props.userTraits,(trait) => (
               <Text key={trait} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.renderLiveScore(trait).pos} / {this.renderLiveScore(trait).tot} USUAL:{this.props.estab['trait'+ trait +'Pos']} / {this.props.estab['trait'+ trait +'Tot']} </Text>
             ))}
@@ -166,7 +176,6 @@ var modalStyles = StyleSheet.create({
     backgroundColor:'white',
     borderColor: 'rgba(34, 224, 0, 0.4)',
     borderWidth: 5
-
   },
   briefImage: {
     alignSelf: 'flex-start',
@@ -179,6 +188,18 @@ var modalStyles = StyleSheet.create({
     resizeMode: 'cover',
     width:width,
     height: height/3
+  },
+  fullName: {
+    padding: 5,
+    backgroundColor:'white',
+    borderColor: 'red',
+    borderWidth: 5
+  },
+  myVotes: {
+    padding: 5,
+    backgroundColor:'white',
+    borderColor: 'blue',
+    borderWidth: 5
   }
 });
 
