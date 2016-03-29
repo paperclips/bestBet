@@ -14,11 +14,9 @@ var LOCAL_DB = {
 var sequelize = new Sequelize(LOCAL_DB.name, LOCAL_DB.username, LOCAL_DB.password, LOCAL_DB.options);
 var model        = require('../config/schemas.js')(Sequelize,sequelize);
  
-describe("should create an user if username not yet taken", function () {
-    var mockResponse = function (callback) { return { send: callback }; };
-    var newUser = { name: 'testuser13', userName: "jackiiiieeee", password:"jackiiiieeee" };
-
-    it("should find created users", function (done) {
+describe("user signup and signin", function () {
+    var newUser = { name: 'testuser1', userName: "Jackie", password:"jackiepw" };
+    it("should created a user in db if username is not taken", function (done) {
       userCtrl.findUser(newUser.userName).then(function(user){
         if(!user){
           console.log('userName not taken, will proceed with user registration');
@@ -30,6 +28,41 @@ describe("should create an user if username not yet taken", function () {
         }else{
           console.error('userName already taken, please change to a different username');
           done();
+        }
+      }, function(err){
+        console.error(err);
+      });
+    });
+
+    it("should allow user to login if username and password are entered correctly", function (done) {
+      userCtrl.findUser(newUser.userName).then(function(user){
+        if(!user){
+          console.log('you have not registered yet');
+        }else{
+          return userCtrl.checkPass(newUser.userName, newUser.password, function(){
+            console.log('password matched, user shall proceed');
+            done();
+          })
+        }
+      }, function(err){
+        console.error(err);
+      });
+    });
+
+    it("should allow throw error if password does not match", function (done) {
+      var newUser = { name: 'testuser1', userName: "Jackie", password:"wrongpw" };
+      userCtrl.findUser(newUser.userName).then(function(user){
+        if(!user){
+          console.log('you have not registered yet');
+        }else{
+          return userCtrl.checkPass(newUser.userName, newUser.password, function(n){
+            if(n != false){
+              console.log('password matched');
+            } else {
+              console.log("pw not matching");
+              done();
+            }
+          })
         }
       }, function(err){
         console.error(err);
