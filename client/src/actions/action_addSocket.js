@@ -1,4 +1,5 @@
 import {ADD_SOCKET, ADD_VOTE, REPLACE_ESTABS} from './constants.js';
+import {calcAllScores} from './utils.js';
 
 function addSocketToState(socket) {
   return {
@@ -8,8 +9,12 @@ function addSocketToState(socket) {
 };
 
 function addEstabToState(estabs,dispatch,socket) {
-  //console.log('ESTABS:', estabs.establishments);
   dispatch(saveEstabsToState(estabs));
+
+  //Calculate and save estab scores
+  
+
+
   socket.on('voteAdded', (voteData) => {dispatch(saveVoteToState(voteData))});
 };
 

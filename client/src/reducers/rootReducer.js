@@ -2,9 +2,11 @@ import { combineReducers } from 'redux';
 import userReducer from './userReducer';
 import estabReducer from './estabReducer';
 import socketReducer from './socketReducer';
+import scoreReducer from './scoreReducer';
 
-export default rootReducer = combineReducers({
+module.exports = combineReducers({
   user: userReducer,
   establishments: estabReducer,
-  socket: socketReducer
+  socket: socketReducer,
+  scores: scoreReducer
 })

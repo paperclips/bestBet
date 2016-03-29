@@ -5,7 +5,8 @@ var http        = require('http').Server(app);
 var io          = require('socket.io-client');
 //var io          = require('socket.io')(http);
 
-var SERVER_URL = 'http://104.131.12.172:3000';
+//var SERVER_URL = 'http://104.131.12.172:3000';
+var SERVER_URL = 'http://localhost:3000';
 
 // Connect to server via socket
 var socket = io.connect(SERVER_URL, { jsonp: false });

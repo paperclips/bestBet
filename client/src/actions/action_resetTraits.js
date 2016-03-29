@@ -9,7 +9,10 @@ function resetTraits(traitCombo) {
 
 export default (userId, socket, traitCombo) => {
   return (dispatch) => {
-    socket.emit('setUserTraits', {userId: userId, traitCombo: 1 * traitCombo.join('')});
+    //Save traits to store, emit event only if userId and socket are passed in
+    if(userId && socket){
+      socket.emit('setUserTraits', {userId: userId, traitCombo: 1 * traitCombo.join('')});
+    }
     dispatch(resetTraits(traitCombo));
   }
 }

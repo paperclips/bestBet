@@ -9,3 +9,4 @@ export const UPDATE_USER_ZONE = 'UPDATE_USER_ZONE';
 export const RESET_TRAITS = 'RESET_TRAITS';
 export const LOGOUT = 'LOGOUT';
 export const CLEAR_SOCKET = 'CLEAR_SOCKET';
+export const SAVE_SCORES = 'SAVE_SCORES';

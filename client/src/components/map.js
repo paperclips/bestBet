@@ -6,15 +6,11 @@ var windowSize = Dimensions.get('window');
 const SideMenu = require('./sideMenu');   
 
 var {
-  AppRegistry,
-  PropTypes,
   View,
   Text,
-  Dimensions,
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-  ScrollView,
   Animated,
   Image
 } = React;
@@ -22,9 +18,7 @@ var {
 var _ = require('underscore');
 
 var MapView = require('react-native-maps');
-var RestaurantMarkerView = require('./restaurantMarker.js');
 var OutlineMarkerView = require('./outlineMarker.js');
-var UserVotedView = require('./userVoted.js');
 var DetailModal = require('./detailModal.js')
 var styles = require('../assets/styles.js');
 
@@ -49,6 +43,31 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let uniqueId = 0;
 let timeout = null; //Needed for userMove debounce
 
+//Returns object {estId:{liveScore:(0-10), histScore:(0-10), userScore:(0,1,2), liveVotes: (total live votes)}
+let calcAllScores = function(estabObj,userTraits){
+  let results = {};
+  _.each(estabObj, (estab) => {
+    let allVotes = estab.Votes.filter((vote) => userTraits.indexOf(vote.traitId)>-1)
+    let posLive = allVotes.reduce((pos,vote) => pos+vote.voteValue,0);
+    let totLive = allVotes.length;
+    let allUserVotes = estab.userVotes.filter((vote) => userTraits.indexOf(vote.traitId)>-1)
+    let posUser = allUserVotes.reduce((pos,vote) => pos+vote.voteValue,0);
+    let totUser = allUserVotes.length;
+    let posHist = 0;
+    let totHist = 0;
+    _.each(userTraits, (traitId) => {
+      posHist += estab['trait'+traitId+'Pos'];
+      totHist += estab['trait'+traitId+'Tot'];
+    });
+    let liveScore = totLive === 0 ? 0 : Math.round(posLive/totLive*10);
+    let histScore = totHist === 0 ? 0 : Math.round(posHist/totHist*10);
+    let userScore = totUser === 0 ? 2 : Math.round(posUser/totUser);
+    let liveVotes = estab.Votes.length;
+    results[estab.id] = {liveScore, histScore, userScore, liveVotes}
+  })
+  return results;
+}
+
 //THE ACTUAL map deal
 export default class Map extends Component {
   constructor(props) {
@@ -60,12 +79,10 @@ export default class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
-      establishments: [],
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
-      modal:true,
-      userTraits: []
+      modal:true
     }
   }
   
@@ -83,88 +100,49 @@ export default class Map extends Component {
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
       console.log('Got into region change');
+      var scores = calcAllScores(this.props.establishments,this.props.user.traitCombo);
+      this.props.saveScores(scores);
       this.setState({ region });
       var oldUserZone = this.props.user.userZone;
       var userId = this.props.user.id;
       var socket = this.props.socket;
       this.props.userMoves(userId, socket, oldUserZone, region.latitude, region.longitude);
-      if(!this.state.userTraits.length) {
-        this.setState({userTraits: this.props.user.traitCombo})  
-      }
     }
     //Run getEstabs one second after moving stopped;
     clearTimeout(timeout);
     timeout = setTimeout(getEstabs.bind(this),1000);
   }
 
-changeTrait() {
-  console.log("BEF ",this.state.userTraits);
-  var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-  this.setState({userTraits:newTraits});
-  console.log("AFT ",this.state.userTraits);
-  var self = this;
-  // console.log("USE PROPS  --- ", this.props.user, "user");
-}
-
-  calculateHistScores (estabId) {
-    var cume = 0, total = 0;
-    this.props.establishments[estabId] && this.state.userTraits.forEach((traitId) => {
-      cume += ((this.props.establishments[estabId]['trait'+traitId+'Pos'])/
-              (this.props.establishments[estabId]['trait'+traitId+'Tot']));
-      total++;
-    })
-    return total === 0 ? 0 : Math.round(cume/total*10);
-  }
-
-  calculateLiveScores (estabId) {
-    var pos = 0, total = 0;
-    if(this.props.user.traitCombo) {
-      var traits = this.state.userTraits;
-      this.props.establishments[estabId].Votes.forEach((vote) => {
-        if(traits.indexOf(vote.traitId) > -1) {
-          total++;
-          vote.voteValue && pos++;
-        }
-      })
-    }
-    console.log('TOTAL:',this.props.user.traitCombo);
-    return total === 0 ? 0 : Math.round(pos/total*10);
-  }
-
-  calculateUserVoted (estabId) {
-    var pos = 0, total = 0;
-    this.props.establishments[estabId].userVotes.forEach((vote) => {
-      total++;
-      vote.voteValue && pos++;
-    });
-    return total === 0 ? 2 : Math.round(pos/total);
+  changeTrait() {
+    console.log(this.props.user.traitCombo);
+    var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
+    this.props.resetTraits(null,null,newTraits);
+    console.log(this.props.user.traitCombo);
   }
 
   displayDetails (id) {
-    this.setState({selectedEstab:id});
-    this.setState({showDetails: true});
+    this.setState({showDetails: true, selectedEstab:id});
   }
 
   hideDetails () {
-    console.log("hide ESTAB ->");
-    this.setState({selectedEstab:-1});
-    this.setState({showDetails: false});
+    this.setState({showDetails: false, selectedEstab:-1});
   }
 
   renderMarkers(){
     console.log('RERENDER');
-    return _.map(this.props.establishments, (establishment) => (
-      <MapView.Marker key={establishment.id} 
-        coordinate={{latitude:establishment.latitude, longitude: establishment.longitude}}
-        onPress={this.displayDetails.bind(this, establishment.id)}
+    return _.map(this.props.establishments, (est) => (
+      <MapView.Marker 
+        key={est.id}
+        coordinate={{latitude:est.latitude, longitude: est.longitude}}
+        onPress={this.displayDetails.bind(this, est.id)}
       >
-        <View style={styles.histStyles[this.calculateHistScores.call(this, establishment.id)]}>
-          <View style={styles.liveStyles[this.calculateLiveScores.call(this, establishment.id)]}>
-            <View style={styles.userDot[this.calculateUserVoted.call(this, establishment.id)]}/>
+        <View style={styles.histStyles[this.props.scores[est.id].histScore]}>
+          <View style={styles.liveStyles[this.props.scores[est.id].liveScore]}>
+            <View style={styles.userDot[this.props.scores[est.id].userScore]}/>
           </View>
         </View>
-        <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{establishment.name}</Text>
-        <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.calculateLiveScores.call(this, establishment.id)}/10 HS: {this.calculateHistScores.call(this, establishment.id)}/10</Text>
+        <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
+        <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.scores[est.id].liveScore}/10, HS: {this.props.scores[est.id].histScore}/10</Text>
       </MapView.Marker>
     ))
   }
@@ -172,11 +150,10 @@ changeTrait() {
   renderModal(){
     console.log('RERENDER MODAL');
     return <DetailModal 
-              estab={this.props.establishments[this.state.selectedEstab]}
-              userTraits={this.state.userTraits} 
-              live={this.calculateLiveScores.call(this, this.state.selectedEstab)} 
-              hist={this.calculateHistScores.call(this, this.state.selectedEstab)}
+              userTraits={this.props.user.traitCombo} 
+              estab = {this.props.establishments[this.state.selectedEstab]}
               closeModal={() => this.hideDetails() }
+              {...this.props}
             />
   }
 
@@ -184,9 +161,10 @@ changeTrait() {
     const menu = <Menu user = {this.props.user.id} socket = {this.props.socket} reactNavigator = {this.props.navigator} logOut = {this.props.logOut.bind(this)} resetTraits = {this.props.resetTraits} toggle = {this.toggle.bind(this)}/>;
     return (
       <SideMenu   
-      menu={menu}   
-      isOpen={this.state.isOpen}
-      onChange={(isOpen) => this.updateMenuState(isOpen)}>
+        menu={menu}   
+        isOpen={this.state.isOpen}
+        onChange={(isOpen) => this.updateMenuState(isOpen)}
+      >
       <View style={{height: windowSize.height, backgroundColor: '#f7f6f3'}}>
         <View style={styles.mapStyles.container}>
           <MapView
@@ -199,7 +177,7 @@ changeTrait() {
             onRegionChange={this.onRegionChange.bind(this)}
           >
 
-          {this.renderMarkers.call(this)}
+          {Object.keys(this.props.establishments).length !== 0 && Object.keys(this.props.scores).length !== 0 && this.renderMarkers.call(this)}
 
           </MapView>
 
