@@ -7,6 +7,7 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
+    "chai": "^3.5.0",
     "express": "^4.13.4",
     "http": "0.0.0",
     "jwt-simple": "^0.5.0",
@@ -17,8 +18,13 @@
     "underscore": "^1.8.3",
     "yelp": "^1.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+     "mocha": "^2.4.5",
+     "should": "^8.2.2",
+     "supertest": "^1.2.0"
+   },
   "scripts": {
+    "test": "mocha server/spec",
     "start": "npm install && nodemon server/server.js"
   },
   "repository": {
