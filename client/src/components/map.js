@@ -29,15 +29,15 @@ var DetailModal = require('./detailModal.js')
 var InfoCallout = require('./infoCallout');
 var styles = require('../assets/styles.js'); // mapStyles
 var traitNames = {
-  1:'Good Food', 
-  2:'Good Drinks', 
-  3:'Good Deal', 
+  1:'Food', 
+  2:'Drinks', 
+  3:'Value', 
   4:'Not Noisy', 
   5:'Not Crowded', 
   6:'No Wait',
-  7:'Good Service',
+  7:'Service',
   8:'Upscale', 
-  9:'Veggie Friendly'
+  9:'Veggie'
 };
 
 
@@ -128,11 +128,14 @@ export default class Map extends Component {
 }
 
 changeTrait() {
-  console.log("CUR TRAITS BEF ",this.state.userTraits);
+  var self = this;
+  setInterval(function (){
+    var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
+    self.setState({userTraits:newTraits});
+    console.log('changed traits to ', self.state.userTraits);
 
-  var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-  this.setState({userTraits:newTraits});
-  console.log("CUR AFT ",this.state.userTraits);
+  }, 1000)
+  
 
   // console.log("USE PROPS  --- ", this.props.user, "user");
 }
