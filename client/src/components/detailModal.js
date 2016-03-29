@@ -17,7 +17,6 @@ var {
 } = React;
 
 var _ = require('underscore');
-var SliderExample = require('./voteSlider.js')
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
@@ -39,7 +38,7 @@ var count = 1;
 var styles = require('../assets/styles.js'); // mapStyles
 var { width, height } = Dimensions.get('window');
 
-
+var VoteView = require('./voteView.js')
 
 var {
   height: deviceHeight,
@@ -118,40 +117,25 @@ var DetailModal =  React.createClass({
   },
   renderVoteScreen: function () {
     return (
-      <TouchableHighlight onPress={this.subMaskReturnPreventer}>
-         <View style={modalStyles.voteScreen}>  
-        {_.map(this.props.userTraits,(trait) => (
-          <View key ={trait}>
-            <SliderExample
+      <TouchableHighlight onPress={null}> 
+        
+        <View style={modalStyles.voteScreen}>  
+          {_.map(this.props.userTraits,(trait) => (
+            <VoteView key ={trait}
               traitNum={trait}
-              estab={this.props.estab.id}
-              minimumValue={1}
-              maximumValue={3}
-              step={1}
-              value={2}
-              maximumTrackTintColor={'green'}
-              minimumTrackTintColor={'red'}
-            />
-          </View>
-        ))}
-        <Text> Other </Text>
-        {_.map(nums,(num) => (
-          <View key ={num}>
+              estab={this.props.estab.id}/>
+          ))}
+          <Text> Other </Text>
+          {_.map(nums,(num) => (
+            <View>
             {this.props.userTraits.indexOf(num) >= 0 ? null : 
-              <SliderExample
+              <VoteView key ={num}
                 traitNum={num}
-                estab={this.props.estab.id}
-                minimumValue={1}
-                maximumValue={3}
-                step={1}
-                value={2}
-                maximumTrackTintColor={'green'}
-                minimumTrackTintColor={'red'}
-              />}
+                estab={this.props.estab.id}/>}
             </View>
-        ))}
-      </View>
-    </TouchableHighlight>
+          ))}
+        </View>
+      </TouchableHighlight>
     )
   },
   renderVoteButton: function () {
@@ -166,23 +150,26 @@ var DetailModal =  React.createClass({
   renderFull: function () {
     var big = this.props.estab.imageUrl.replace('ms.','l.');
     return (
-      <TouchableHighlight
- style={modalStyles.fullModal} onPress={this.toggleFull}>
-        <View onPress={this.toggleFull}> 
-          {this.state.voting ? null : <Image
-            onPress={this.toggleFull}
-            style={modalStyles.fullImage}
-            source={{uri: big}}/>}
-          <View style={modalStyles.fullName}
-            onPress={this.toggleFull}>  
-            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
-            <Text>{this.props.estab.address} ({this.props.estab.phoneNumber.slice(3)})</Text> 
-            <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text>
-          </View>
-          {this.state.voting ? this.renderVoteScreen() : this.renderVoteButton()}
-          <View  onPress={this.toggleFull}>
-            {this.props.estab.userVotes.length&&!this.state.voting ? this.renderFullUserVotes() : null}
-            {this.state.voting ? null : this.renderFullDetails()}
+      <TouchableHighlight onPress={this.toggleFull}>
+        <View style={modalStyles.fullModal}>
+          
+          <View> 
+            {this.state.voting ? null : <Image
+              onPress={this.toggleFull}
+              style={modalStyles.fullImage}
+              source={{uri: big}}/>}
+            <View style={modalStyles.fullName}
+              onPress={this.toggleFull}>  
+              <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
+              <Text>{this.props.estab.address} ({this.props.estab.phoneNumber.slice(3)})</Text> 
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text>
+            </View>
+            {this.state.voting ? this.renderVoteScreen() : this.renderVoteButton()}
+
+            <View  onPress={this.toggleFull}>
+              {this.props.estab.userVotes.length&&!this.state.voting ? this.renderFullUserVotes() : null}
+              {this.state.voting ? null : this.renderFullDetails()}
+            </View>
           </View>
         </View>
       </TouchableHighlight>
