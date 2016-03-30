@@ -38,9 +38,6 @@ var count = 1;
 
 var styles = require('../assets/styles.js'); // mapStyles
 var { width, height } = Dimensions.get('window');
-var count2 = 1
-
-var count3 = 1
 var VoteView = require('./voteView.js')
 
 var {
@@ -79,26 +76,14 @@ export default class DetailModal extends Component {
   }
   toggleVoting () {
     this.setState({voting:!this.state.voting});
-  }
-  renderLiveScore (trait) {
-    var score = {pos:0, tot:0};
-    this.props.estab.Votes.forEach(function(vote){
-      if(trait === vote.traitId) {
-        score.tot++;
-        if (vote.voteValue === true) {
-          score.pos++;
-        }
-      }      
-    });
-    return score;
   } 
   renderFullUserVotes () {
     var traitTracker = {};
     return (
       <View style={modalStyles.myVotes}
         onPress={this.toggleFull.bind(this)}>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'blue' }}> You visited on {this.props.estab.userVotes[this.props.estab.userVotes.length-1].time}</Text>
-          {_.map(this.props.estab.userVotes, (vote) => {
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'blue' }}> You visited on {this.props.allData.establishments[this.props.estab.id].userVotes[this.props.estab.userVotes.length-1].time}</Text>
+          {_.map(this.props.allData.establishments[this.props.estab.id].userVotes, (vote) => {
             if(!traitTracker.hasOwnProperty(vote.traitId)) {
               traitTracker[vote.traitId] = true;
               return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'purple' }}>{traitNames[vote.traitId]}: {vote.voteValue.toString()} on {vote.time} </Text>
@@ -113,11 +98,11 @@ export default class DetailModal extends Component {
       <View style={modalStyles.info}
         onPress={this.toggleFull.bind(this)}>  
         {_.map(this.props.userTraits,(trait) => (
-          <Text key={trait} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
+          <Text key={count++} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
         ))}
         <Text> Other </Text>
         {_.map(nums,(num) => (
-          <View key={num}>
+          <View key={count++}>
           {this.props.userTraits.indexOf(num) < 0 && <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.props.allData.allTraits[this.props.estab.id][num].lp} / {this.props.allData.allTraits[this.props.estab.id][num].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][num].hp} / {this.props.allData.allTraits[this.props.estab.id][num].ht} </Text>}
           </View>
         ))}
@@ -168,7 +153,7 @@ export default class DetailModal extends Component {
           <View> 
             <Text style={modalStyles.voteSectionHeader}> Your Preferences </Text>
             {_.map(this.props.userTraits,(trait) => (
-              <VoteView key={trait}
+              <VoteView key={count++}
                 traitNum={trait}
                 estab={this.props.estab.id}
                 vote={this.state.votes[trait]}
@@ -176,9 +161,9 @@ export default class DetailModal extends Component {
             ))}
             <Text style={modalStyles.voteSectionHeader}> Other Categories </Text>
             {_.map(nums,(num) => (
-              <View>
+              <View key={count++}>
                 {this.props.userTraits.indexOf(num) >= 0 ? null : 
-                  <VoteView key={num}
+                  <VoteView
                     traitNum={num}
                     estab={this.props.estab.id}
                     vote={this.state.votes[num]}
@@ -254,9 +239,9 @@ export default class DetailModal extends Component {
           style={modalStyles.briefImage}
           source={{uri: this.props.estab.imageUrl}}/>  
           <View style={modalStyles.briefInfo}> 
-            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore.liveScore} / 10 USUAL: {this.props.allData.userComboScore.liveScore} / 10</Text></Text>
+            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10</Text></Text>
             {_.map(this.props.userTraits,(trait) => (
-              <Text key={trait} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
+              <Text key={count++} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
             ))}
           </View>
         </View>
