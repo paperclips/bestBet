@@ -99,15 +99,11 @@ export default class Map extends Component {
   }
 
 changeTrait() {
+  console.log("BEF ",this.state.userTraits);
+  var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
+  this.setState({userTraits:newTraits});
+  console.log("AFT ",this.state.userTraits);
   var self = this;
-  setInterval(function (){
-    var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-    self.setState({userTraits:newTraits});
-    console.log('changed traits to ', self.state.userTraits);
-
-  }, 1000)
-  
-
   // console.log("USE PROPS  --- ", this.props.user, "user");
 }
 
