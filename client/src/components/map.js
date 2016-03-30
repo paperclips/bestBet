@@ -73,8 +73,8 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
-    region.longitudeDelta > .011 && this.setState({showNames: false});
-    region.longitudeDelta < .011 && this.setState({showNames: true});
+    region.longitudeDelta > .005 && this.setState({showNames: false});
+    region.longitudeDelta < .005 && this.setState({showNames: true});
 
     console.log("DELTA long--->",region.longitudeDelta);
 
