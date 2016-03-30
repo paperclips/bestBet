@@ -3,7 +3,8 @@ var express     = require('express');
 var app         = express();
 var http        = require('http').Server(app);
 var io          = require('socket.io-client');
-//var io          = require('socket.io')(http);
+var NUM_OF_ROWS = require('./services/zoneHandler').NUM_OF_ROWS;
+var NUM_OF_COLS = require('./services/zoneHandler').NUM_OF_COLS;
 
 //var SERVER_URL = 'http://104.131.12.172:3000';
 var SERVER_URL = 'http://localhost:3000';
@@ -45,7 +46,7 @@ var requestEstabs = function(){
   request.zones = [];
   for(var i=1;i<=9;i++){
     while(true){
-      var zone = Math.floor(Math.random()*13)*1000 + Math.floor(Math.random()*22);
+      var zone = Math.floor(Math.random()*NUM_OF_ROWS)*1000 + Math.floor(Math.random()*NUM_OF_COLS);
       if(request.zones.indexOf(zone) === -1){
         request.zones.push(zone);
         break;

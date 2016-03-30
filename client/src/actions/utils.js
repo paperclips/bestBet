@@ -53,16 +53,18 @@ export function calcAllScores(estabsObj,userCombo){
     allTraits[estab.id] = traitScores;
 
     //Combined scores for user traits
-    let hp = 0, lp = 0, up = 0;
+    let hp = 0, ht = 0, lp = 0, lt = 0, up = 0, ut = 0; 
     userCombo.forEach((traitId) => {
       traitScores[traitId].ht && (hp+=traitScores[traitId].hp/traitScores[traitId].ht);
       traitScores[traitId].lt && (lp+=traitScores[traitId].lp/traitScores[traitId].lt);
       traitScores[traitId].ut && (up+=traitScores[traitId].up/traitScores[traitId].ut);
+      ht += traitScores[traitId].ht
+      lt += traitScores[traitId].lt
+      ut += traitScores[traitId].ut;
     });
-    let histScore = hp === 0 ? 0 : Math.round(hp/userCombo.length*10);
-    let liveScore = lp === 0 ? 0 : Math.round(lp/userCombo.length*10);
-    let userScore = up === 0 ? 2 : Math.round(up);
-
+    let histScore = ht === 0 ? 0 : Math.round(hp/userCombo.length*10);
+    let liveScore = lt === 0 ? 0 : Math.round(lp/userCombo.length*10);
+    let userScore = ut === 0 ? 2 : Math.round(up/userCombo.length);
     userComboScore[estab.id] = {histScore, liveScore, userScore};
   });
 
@@ -83,15 +85,19 @@ export function updateScores(userId, allTraits, userTraitCombo, voteData){
       }
     });
   };
-  let hp = 0, lp = 0, up = 0;
+  let hp = 0, ht = 0, lp = 0, lt = 0, up = 0, ut = 0; 
   userTraitCombo.forEach((traitId) => {
     allTraits[traitId].ht && (hp+=allTraits[traitId].hp/allTraits[traitId].ht);
     allTraits[traitId].lt && (lp+=allTraits[traitId].lp/allTraits[traitId].lt);
     allTraits[traitId].ut && (up+=allTraits[traitId].up/allTraits[traitId].ut);
+    ht += allTraits[traitId].ht
+    lt += allTraits[traitId].lt
+    ut += allTraits[traitId].ut;
   });
-  let histScore = hp === 0 ? 0 : Math.round(hp/userTraitCombo.length*10);
-  let liveScore = lp === 0 ? 0 : Math.round(lp/userTraitCombo.length*10);
-  let userScore = up === 0 ? 2 : Math.round(up);
+  let histScore = ht === 0 ? 0 : Math.round(hp/userTraitCombo.length*10);
+  let liveScore = lt === 0 ? 0 : Math.round(lp/userTraitCombo.length*10);
+  let userScore = ut === 0 ? 2 : Math.round(up/userTraitCombo.length);
+
   let userComboScore = {histScore, liveScore, userScore};
   
   return {allTraits, userComboScore}
