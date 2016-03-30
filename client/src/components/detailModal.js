@@ -63,6 +63,7 @@ export default class DetailModal extends Component {
         8: {bad: false, good: false},
         9: {bad: false, good: false}
       },
+
     }
   }
   componentDidMount() {
@@ -119,7 +120,6 @@ export default class DetailModal extends Component {
     )
   }
   processVote (trait, value) {
-    console.log(this.state.votes);
     var voteVals = this.state.votes;
     if(value === 0) {// if it's a vote for bad
       if(voteVals[trait].bad) { // if bad was selected, all should be false
