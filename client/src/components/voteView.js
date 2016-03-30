@@ -52,17 +52,6 @@ var VoteView = React.createClass({
   }
 });
 
-      // <View style={styles.buttonContainer}>
-      // <TouchableHighlight style={[styles.button1, this.state.buttonPress[0] && styles.button2]} onPress={this.traitsClicked.bind(this, 1)} underlayColor={'black'} onPressIn={this.togglePressIn} onPressOut={this.togglePressIn}>
-      //   <Text style={styles.buttonText}>Good Food</Text>
-      // </TouchableHighlight>
-
-      // <TouchableHighlight style={[styles.button1, this.state.buttonPress[1] && styles.button2]} onPress={this.traitsClicked.bind(this, 2)} underlayColor='#99d9f4'>
-      //   <Text style={styles.buttonText}>Good Drinks</Text>
-      // </TouchableHighlight>        
-
-
-
 module.exports = VoteView;
 
 var voteStyles = StyleSheet.create({

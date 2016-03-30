@@ -26,7 +26,6 @@ var RestaurantMarkerView = require('./restaurantMarker.js');
 var OutlineMarkerView = require('./outlineMarker.js');
 var UserVotedView = require('./userVoted.js');
 var DetailModal = require('./detailModal.js')
-var InfoCallout = require('./infoCallout');
 var styles = require('../assets/styles.js');
 
 var traitNames = {

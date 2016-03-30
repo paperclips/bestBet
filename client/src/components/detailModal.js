@@ -75,13 +75,10 @@ export default class DetailModal extends Component {
       }).start();
     }
     toggleFull () {
-      console.log('togg?');
-      var old = this.state.full;
-      this.setState({full:!old});
+      this.setState({full:!this.state.full});
     }
     toggleVoting () {
-      var oldVote = this.state.voting;
-      this.setState({voting:!oldVote});
+      this.setState({voting:!this.state.voting});
     }
     renderLiveScore (trait) {
       var score = {pos:0, tot:0};
@@ -120,7 +117,7 @@ export default class DetailModal extends Component {
           <Text> Other </Text>
           {_.map(nums,(num) => (
             <View key={num}>
-            {this.props.userTraits.indexOf(num) >= 0 ? null : <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.renderLiveScore(num).pos} / {this.renderLiveScore(num).tot} USUAL:{this.props.estab['trait'+ num +'Pos']} / {this.props.estab['trait'+ num +'Tot']} </Text>}
+            {this.props.userTraits.indexOf(num) >= 0 && <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.renderLiveScore(num).pos} / {this.renderLiveScore(num).tot} USUAL:{this.props.estab['trait'+ num +'Pos']} / {this.props.estab['trait'+ num +'Tot']} </Text>}
             </View>
           ))}
         </View>
@@ -145,7 +142,7 @@ export default class DetailModal extends Component {
           voteVals[trait] = {bad: true, good: false};;
         }
       } else { // if it's a vote for good
-        if(voteVals[trait].good && !this.votes[trait].bad) { // if good was  selected, we should end up with everything false
+        if(voteVals[trait].good && !voteVals[trait].bad) { // if good was  selected, we should end up with everything false
           voteVals[trait].good = false;
         } else { // else, bad should be false and good should be true
           voteVals[trait] = {bad: false, good:true};

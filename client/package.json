@@ -9,7 +9,6 @@
     "immutable": "^3.7.6",
     "react-native": "^0.21.0",
     "react-native-maps": "^0.3.1",
-    "react-native-multi-slider": "^0.2.4",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
     "redux-thunk": "^2.0.1",
