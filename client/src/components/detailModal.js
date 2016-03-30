@@ -118,7 +118,7 @@ export default class DetailModal extends Component {
         <Text> Other </Text>
         {_.map(nums,(num) => (
           <View key={num}>
-          {this.props.userTraits.indexOf(num) >= 0 && <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.props.allData.allTraits[this.props.estab.id][num].lp} / {this.props.allData.allTraits[this.props.estab.id][num].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][num].hp} / {this.props.allData.allTraits[this.props.estab.id][num].ht} </Text>}
+          {this.props.userTraits.indexOf(num) < 0 && <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.props.allData.allTraits[this.props.estab.id][num].lp} / {this.props.allData.allTraits[this.props.estab.id][num].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][num].hp} / {this.props.allData.allTraits[this.props.estab.id][num].ht} </Text>}
           </View>
         ))}
       </View>
