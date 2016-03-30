@@ -3,7 +3,6 @@ import React, {
   Navigator
 } from 'react-native';
 import styles from '../assets/styles.js';
-
 import Login from '../containers/container_login';
 import Signup from '../containers/container_signup';
 import Map from '../containers/container_map';

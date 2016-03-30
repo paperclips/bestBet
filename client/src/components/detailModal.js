@@ -227,7 +227,7 @@ export default class DetailModal extends Component {
           style={modalStyles.briefImage}
           source={{uri: this.props.estab.imageUrl}}/>  
           <View style={modalStyles.voteHeader}> 
-            <Text style={{ fontWeight:'bold', fontSize: 20, alignSelf: 'center', color: 'black' }}> How was {this.props.estab.name}?</Text>
+            <Text style={{ flex:2, fontWeight:'bold', fontSize: 20, alignSelf: 'center', color: 'black' }}> How was {this.props.estab.name}?</Text>
           </View>
       </View>
     )  
@@ -285,9 +285,10 @@ export default class DetailModal extends Component {
 
 var modalStyles = StyleSheet.create({
   briefModal: {
+    flex: 2,
     flexDirection:'row',
     width:width, 
-    height:height/8 , 
+    // height:height/8 , 
     backgroundColor:'white',
   },
   briefInfo: {
@@ -336,7 +337,7 @@ var modalStyles = StyleSheet.create({
     borderWidth: 5
   },
   voteScreen: {
-    backgroundColor: 'grey',
+    // backgroundColor: 'grey',
   },
   voteButton: {
     width: width-width/6,
@@ -358,11 +359,11 @@ var modalStyles = StyleSheet.create({
     fontWeight:'bold',
   },
   voteHeader: {
-    flex:3, 
+    flex:2, 
     alignSelf: 'center',
     justifyContent: 'center',
     padding: 5,
-    height: height/8,
+    // height: height/8,
     width: width - (height/8)-20,
     backgroundColor: 'white',
     borderColor: 'rgba(34, 224, 0, 0.4)',
@@ -379,8 +380,9 @@ var modalStyles = StyleSheet.create({
     textAlign: 'center'
   },
   submitVote: {
+    flex: 1,
     width: width-width/6,
-    height: height/10,
+    // height: height/10,
     backgroundColor: 'blue',
     alignSelf: 'center',
     justifyContent: 'center',
