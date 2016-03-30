@@ -73,7 +73,6 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
-
     region.longitudeDelta > .011 && this.setState({showNames: false});
     region.longitudeDelta < .011 && this.setState({showNames: true});
 
@@ -131,8 +130,10 @@ export default class Map extends Component {
                 <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
               </View>
             </View>
-            <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
-            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
+            {this.state.showNames && <View>
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
+            </View>}
           </MapView.Marker>
         )
       }
