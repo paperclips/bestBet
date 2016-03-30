@@ -57,7 +57,8 @@ export default class Map extends Component {
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
-      modal:true
+      modal:true,
+      showNames: true
     }
   }
   
@@ -71,8 +72,12 @@ export default class Map extends Component {
     this.setState({ isOpen });   
   }
 
-  onRegionChangeComplete(region) {
-    console.log("DELTA --->",this.state.region.latitudeDelta);
+  onRegionChange(region) {
+
+    region.longitudeDelta > .011 && this.setState({showNames: false});
+    region.longitudeDelta < .011 && this.setState({showNames: true});
+
+    console.log("DELTA long--->",region.longitudeDelta);
 
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
@@ -161,7 +166,7 @@ export default class Map extends Component {
             showsUserLocation={true}
             showsPointsOfInterest={false}
             initialRegion = {this.state.region}
-            onRegionChangeComplete={this.onRegionChange.bind(this)}
+            onRegionChange={this.onRegionChange.bind(this)}
           >
 
           {this.props.allData.establishments && this.renderMarkers.call(this)}
