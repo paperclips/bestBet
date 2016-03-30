@@ -60,64 +60,36 @@ describe('Test server end points', function() {
        });
   });
 
-  xit('should be able to set settings', function(done) {
+  it('should be able to login if username and password are entered correctly', function(done) {
     chai.request(http)
-      .post('/settings')
+      .post('/login')
       .set('Content-Type', 'application/json')
-      .set('x-access-token', token)
-      .send({"tag1": "hiking", "tag2": "sleep", "tag3": "shopping", "isBroadcasting": true})
-      .end(function(err, res){
-         res.should.have.status(201);
-         res.should.be.json;
-         res.body.should.be.a('object');
-         res.body.should.have.property('success');
-         res.body.success.should.equal('Updated tags: hiking, sleep, shopping');
-         done();
-      });
-  });
-
-  xit('should be able to get settings', function(done) {
-    chai.request(http)
-      .get('/settings')
-      .set('Content-Type', 'application/json')
-      .set('x-access-token', token)
+      .send({name: "Pavel", "userName": "Pavel", "password": "12345"})
       .end(function(err, res){
          res.should.have.status(200);
          res.should.be.json;
          res.body.should.be.a('object');
-         res.body.should.have.property('tag1');
-         res.body.isBroadcasting.should.equal(true);
+         res.body.should.have.property('token');
          done();
       });
   });
 
-    after(function(done) {
-
-      model.Users.destroy({where: {"userName": "Brian"}})
-      .then(function(){
-        console.log('deleted tester Brian')
-      }, function(err) {
-        console.log("CANNOT DELETE Brian");
-        console.error(err)
-      })
-      
-      model.Users.destroy({where: {"userName": "Pavel"}})
-      .then(function(){
-        console.log('deleted tester Pavel')
-      }, function(err) {
-        console.log("CANNOT DELETE Pavel");
-        console.error(err)
-      })
-
-      model.Users.destroy({where: {"userName": "Jackie"}})
-      .then(function(){
-        console.log('deleted tester Jackie')
-      }, function(err) {
-        console.log("CANNOT DELETE Jackie");
-        console.error(err)
-      })
-
-      done();
-    });
-
+  after(function(done) {
+    model.Users.destroy({where: {"userName": "Brian"}})
+    .then(function(){
+      console.log('deleted tester Brian')
+    }, function(err) {
+      console.log("CANNOT DELETE Brian");
+      console.error(err)
+    })
+    
+    model.Users.destroy({where: {"userName": "Pavel"}})
+    .then(function(){
+      console.log('deleted tester Pavel')
+    }, function(err) {
+      console.log("CANNOT DELETE Pavel");
+      console.error(err)
+    })
+    done();
+  });
 });
