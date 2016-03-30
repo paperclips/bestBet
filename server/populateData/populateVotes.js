@@ -19,6 +19,24 @@ var createFakeVotes = function (numPerUser) {
         users.forEach(function(user){
           var numberArray = new Array(numPerUser+1).join('1').split('');
           //Find number of establishments in the database
+      // TEMP -> makes sure test user votes on 2/3 establishments
+          // Estab.findAll({raw:true}).then(function(estabs){
+          //   estabs.forEach(function(est){
+          //     if(est.id %6 !=0) {
+          //       var vote = {};
+          //       vote.establishmentId = est.id;
+          //       vote.traitId = Math.floor(Math.random()*9 + 1);
+          //       vote.zoneNumber = est.zoneNumber;
+          //       vote.userId = 1;
+          //       vote.voteValue = Boolean(Math.floor(Math.random()*2));
+          //       vote.time = new Date();
+          //       Votes.create(vote);
+          //       voteCtrl.addVoteToHistory(vote.establishmentId, vote.traitId, vote.voteValue);
+          //     }
+          //   });
+          // });
+      // END TEMP -> makes sure test user votes on 2/3 establishments
+
           Estab.max('id').then(function(max) {
             if(max>0){
               Estab.findById(Math.floor(Math.random()*max+1))

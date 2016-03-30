@@ -26,19 +26,18 @@ var RestaurantMarkerView = require('./restaurantMarker.js');
 var OutlineMarkerView = require('./outlineMarker.js');
 var UserVotedView = require('./userVoted.js');
 var DetailModal = require('./detailModal.js')
-var InfoCallout = require('./infoCallout');
 var styles = require('../assets/styles.js');
 
 var traitNames = {
-  1:'Good Food', 
-  2:'Good Drinks', 
-  3:'Good Deal', 
+  1:'Food', 
+  2:'Drinks', 
+  3:'Value', 
   4:'Not Noisy', 
   5:'Not Crowded', 
   6:'No Wait',
-  7:'Good Service',
+  7:'Service',
   8:'Upscale', 
-  9:'Veggie Friendly'
+  9:'Veggie'
 };
 
 var { width, height } = Dimensions.get('window');
@@ -98,12 +97,14 @@ export default class Map extends Component {
     timeout = setTimeout(getEstabs.bind(this),1000);
   }
 
-  changeTrait() {
-    console.log("BEF ",this.state.userTraits);
-    var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-    this.setState({userTraits:newTraits});
-    console.log("AFT ",this.state.userTraits);
-  }
+changeTrait() {
+  console.log("BEF ",this.state.userTraits);
+  var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
+  this.setState({userTraits:newTraits});
+  console.log("AFT ",this.state.userTraits);
+  var self = this;
+  // console.log("USE PROPS  --- ", this.props.user, "user");
+}
 
   calculateHistScores (estabId) {
     var cume = 0, total = 0;
@@ -136,7 +137,7 @@ export default class Map extends Component {
       total++;
       vote.voteValue && pos++;
     });
-    return total === 0 ? 2 : Math.round(pos/total*10);
+    return total === 0 ? 2 : Math.round(pos/total);
   }
 
   displayDetails (id) {
@@ -187,7 +188,6 @@ export default class Map extends Component {
       isOpen={this.state.isOpen}
       onChange={(isOpen) => this.updateMenuState(isOpen)}>
       <View style={{height: windowSize.height, backgroundColor: '#f7f6f3'}}>
-
         <View style={styles.mapStyles.container}>
           <MapView
             ref="map"
