@@ -15,7 +15,12 @@ var sequelize = new Sequelize(LOCAL_DB.name, LOCAL_DB.username, LOCAL_DB.passwor
 var model        = require('../config/schemas.js')(Sequelize,sequelize);
  
 describe("user signup and signin", function () {
-    var newUser = { name: 'testuser1', userName: "Jackie", password:"jackiepw" };
+  before(function (done) {
+    console.log('starting test...');
+    done();
+  })
+
+    var newUser = { name: 'testuser', userName: "Jackie", password:"jackiepw" };
     it("should created a user in db if username is not taken", function (done) {
       userCtrl.findUser(newUser.userName).then(function(user){
         if(!user){
@@ -68,5 +73,6 @@ describe("user signup and signin", function () {
         console.error(err);
       });
     });
+
 });
 
