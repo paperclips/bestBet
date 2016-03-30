@@ -16,6 +16,10 @@ var {
 
 } = React;
 
+
+var _ = require('underscore');
+var VoteView = require('./voteView.js');
+
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
@@ -40,6 +44,7 @@ var styles = require('../assets/styles.js'); // mapStyles
 var { width, height } = Dimensions.get('window');
 var VoteView = require('./voteView.js')
 
+
 var {
   height: deviceHeight,
   width: deviceWidth
@@ -63,7 +68,6 @@ export default class DetailModal extends Component {
         8: {bad: false, good: false},
         9: {bad: false, good: false}
       },
-
     }
   }
   componentDidMount() {
