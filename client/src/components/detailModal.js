@@ -18,7 +18,6 @@ var {
 
 var _ = require('underscore');
 var VoteView = require('./voteView.js');
-var Swiper = require('./testSwiper.js');
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value

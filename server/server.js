@@ -17,7 +17,7 @@ console.log('Server listening on port ' + port);
 // var populateUsers           = require('./populateData/populateUsers');
  
 //This function will generate new votes if previous votes are > 24 hours old
- var populateVotes           = require('./populateData/populateVotes');
+ // var populateVotes           = require('./populateData/populateVotes');
 
  module.exports = http;
 
