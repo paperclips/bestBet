@@ -57,7 +57,8 @@ export default class Map extends Component {
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
-      modal:true
+      modal:true,
+      showNames: true
     }
   }
   
@@ -72,6 +73,11 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
+    region.longitudeDelta > .005 && this.setState({showNames: false});
+    region.longitudeDelta < .005 && this.setState({showNames: true});
+
+    console.log("DELTA long--->",region.longitudeDelta);
+
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
       console.log('Got into region change');
@@ -124,8 +130,10 @@ export default class Map extends Component {
                 <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
               </View>
             </View>
-            <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
-            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
+            {this.state.showNames && <View>
+              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
+              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
+            </View>}
           </MapView.Marker>
         )
       }
