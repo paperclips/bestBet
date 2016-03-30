@@ -102,23 +102,31 @@ export default class Map extends Component {
     this.setState({showDetails: false, selectedEstab:-1});
   }
 
+  inView (latitude,longitude) {
+    var westLimit = this.state.region.longitude - this.state.region.longitudeDelta/2;
+    var eastLimit = this.state.region.longitude + this.state.region.longitudeDelta/2;
+    var southLimit = this.state.region.latitude - this.state.region.latitudeDelta/2;
+    var northLimit = this.state.region.latitude + this.state.region.latitudeDelta/2;
+    return longitude > westLimit && longitude < eastLimit && latitude > southLimit && latitude < northLimit;
+  }
+
   renderMarkers(){
     return _.map(this.props.allData.establishments, (est) => {
-      if(this.props.allData.userComboScore[est.id]){
+      if(this.inView(est.latitude,est.longitude)){
         return (
-        <MapView.Marker 
-          key={est.id}
-          coordinate={{latitude:est.latitude, longitude: est.longitude}}
-          onPress={this.displayDetails.bind(this, est.id)}
-        >
-          <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
-            <View style={styles.liveStyles[this.props.allData.userComboScore[est.id].liveScore]}>
-              <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
+          <MapView.Marker
+            key={est.id}
+            coordinate={{latitude:est.latitude, longitude: est.longitude}}
+            onPress={this.displayDetails.bind(this, est.id)}
+          >
+            <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
+              <View style={styles.liveStyles[this.props.allData.userComboScore[est.id].liveScore]}>
+                <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
+              </View>
             </View>
-          </View>
-          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
-          <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
-        </MapView.Marker>
+            <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
+            <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
+          </MapView.Marker>
         )
       }
     })

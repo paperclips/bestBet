@@ -2,16 +2,16 @@
 var _ = require('underscore');
 
 // these variables  represent the width/height of the theoretical zone Matrix
-var NUM_OF_ROWS = 13;
-var NUM_OF_COLS = 22;
+var NUM_OF_ROWS = 26;
+var NUM_OF_COLS = 46;
 
 var zoneCalculator = function(lat,long){
   var northLimit = 37.827747, //Northernmost latitude of SF
       southLimit = 37.700643, //Southernmost latitude of SF
       westLimit = -122.517591, //Westernmost longitude of SF
       eastLimit = -122.356817, //Easternmost longitude of SF
-      zoneVertical = 0.7, //Vertical size of the zone in miles
-      zoneHorizontal = 0.4, //Horizontal size of the zone in miles
+      zoneVertical = 0.34, //Vertical size of the zone in miles
+      zoneHorizontal = zoneVertical/16*9, //Horizontal size of the zone in miles.
       verticalLength = 8.78, //Total vertical length of SF
       horizontalLength = 8.79; //Total horizontal length of SF
 
@@ -20,8 +20,8 @@ var zoneCalculator = function(lat,long){
     return undefined; //User is outside San Francisco
   }
 
-  var verticalZones = Math.ceil(verticalLength / zoneVertical)-1; //13 vertical zones, zero indexed (0 to 12)
-  var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal)-1; //22 horizontal zones, zero indexed (0 to 21)
+  var verticalZones = Math.ceil(verticalLength / zoneVertical)-1; //26 vertical zones, zero indexed (0 to 25)
+  var horizontalZones = Math.ceil(horizontalLength / zoneHorizontal)-1; //46 horizontal zones, zero indexed (0 to 45)
 
   var verticalStep = (southLimit - northLimit) / verticalZones;
   var horizontalStep = (westLimit - eastLimit) / horizontalZones;
@@ -35,5 +35,7 @@ var zoneCalculator = function(lat,long){
 };
 
 module.exports = {
-  zoneCalculator: zoneCalculator
+  zoneCalculator: zoneCalculator,
+  NUM_OF_ROWS: NUM_OF_ROWS,
+  NUM_OF_COLS: NUM_OF_COLS
 };
