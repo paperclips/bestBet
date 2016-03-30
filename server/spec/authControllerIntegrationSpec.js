@@ -31,6 +31,23 @@ describe('Test server end points', function() {
         });
   })
 
+  after(function(done) {
+    model.Users.destroy({where: {"userName": "Brian"}})
+    .then(function(){
+      console.log('deleted tester Brian')
+      model.Users.destroy({where: {"userName": "Pavel"}})
+      .then(function(){
+        console.log('deleted tester Pavel')
+        done();
+      }, function(err) {
+        console.error(err)
+      })
+    }, function(err) {
+      console.log("CANNOT DELETE Brian");
+      console.error(err)
+    })
+  });
+
   it('should be able to sign up', function(done) {
     chai.request(http)
       .post('/signup')
@@ -72,24 +89,5 @@ describe('Test server end points', function() {
          res.body.should.have.property('token');
          done();
       });
-  });
-
-  after(function(done) {
-    model.Users.destroy({where: {"userName": "Brian"}})
-    .then(function(){
-      console.log('deleted tester Brian')
-    }, function(err) {
-      console.log("CANNOT DELETE Brian");
-      console.error(err)
-    })
-    
-    model.Users.destroy({where: {"userName": "Pavel"}})
-    .then(function(){
-      console.log('deleted tester Pavel')
-    }, function(err) {
-      console.log("CANNOT DELETE Pavel");
-      console.error(err)
-    })
-    done();
   });
 });
