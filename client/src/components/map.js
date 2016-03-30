@@ -142,7 +142,7 @@ changeTrait() {
       total++;
       vote.voteValue && pos++;
     });
-    return total === 0 ? 2 : Math.round(pos/total*10);
+    return total === 0 ? 2 : Math.round(pos/total);
   }
 
   displayDetails (id) {
