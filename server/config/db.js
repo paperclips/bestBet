@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 var LOCAL_DB = {
   name: 'paperclipsdb',
   username: 'postgres',
-  password: '',
+  password: '123',
   options: { dialect: 'postgres', logging: false}
 };
 
