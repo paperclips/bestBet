@@ -36,7 +36,7 @@ var traitNames = {
 
 var { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.0122;
+const LATITUDE_DELTA = 0.006834106338743595;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 // a unique var for mapping user votes in callout
@@ -87,10 +87,11 @@ export default class Map extends Component {
   }
 
   changeTrait() {
-    console.log(this.props.user.traitCombo);
-    var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-    this.props.resetTraits(null,null,newTraits);
-    console.log(this.props.user.traitCombo);
+    console.log(this.state.region);
+    // console.log(this.props.user.traitCombo);
+    // var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
+    // this.props.resetTraits(null,null,newTraits);
+    // console.log(this.props.user.traitCombo);
   }
 
   displayDetails (id) {
@@ -102,7 +103,6 @@ export default class Map extends Component {
   }
 
   renderMarkers(){
-    console.log('RERENDER');
     return _.map(this.props.allData.establishments, (est) => {
       if(this.props.allData.userComboScore[est.id]){
         return (

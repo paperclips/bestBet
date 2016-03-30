@@ -16,6 +16,9 @@ var {
 
 } = React;
 
+var _ = require('underscore');
+var VoteView = require('./voteView.js');
+
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
@@ -119,7 +122,6 @@ export default class DetailModal extends Component {
     )
   }
   processVote (trait, value) {
-    console.log(this.state.votes);
     var voteVals = this.state.votes;
     if(value === 0) {// if it's a vote for bad
       if(voteVals[trait].bad) { // if bad was selected, all should be false
@@ -190,8 +192,8 @@ export default class DetailModal extends Component {
       <View style={modalStyles.fullName}
         onPress={this.toggleFull.bind(this)}>  
           <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
-          <Text>{this.props.estab.address} ({this.props.estab.phoneNumber.slice(3)})</Text> 
-          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10</Text>
+          <Text>{this.props.estab.address} ({this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : "No Phone"})</Text> 
+          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text>
       </View>
     )
   }
@@ -239,7 +241,7 @@ export default class DetailModal extends Component {
           style={modalStyles.briefImage}
           source={{uri: this.props.estab.imageUrl}}/>  
           <View style={modalStyles.briefInfo}> 
-            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10</Text></Text>
+            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text></Text>
             {_.map(this.props.userTraits,(trait) => (
               <Text key={count++} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
             ))}
