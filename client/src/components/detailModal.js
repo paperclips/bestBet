@@ -104,9 +104,14 @@ export default class DetailModal extends Component {
               return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'purple' }}>{traitNames[vote.traitId]}: {vote.voteValue.toString()} on {vote.time} </Text>
             }
           })}
+        <View style={modalStyles.modal} onPress={this.closeModal}>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.scores.userComboScore[this.props.estab.id].liveScore}/ 10, USUAL: {this.props.scores.userComboScore[this.props.estab.id].histScore} / 10</Text></Text>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.scores.allTraits[this.props.estab.id]['1'].lt }</Text>
+        </View>
       </View>
     )
   }
+
   renderFullDetails () {
     return (
       <View style={modalStyles.info}

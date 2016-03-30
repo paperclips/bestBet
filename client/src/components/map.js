@@ -43,31 +43,6 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let uniqueId = 0;
 let timeout = null; //Needed for userMove debounce
 
-//Returns object {estId:{liveScore:(0-10), histScore:(0-10), userScore:(0,1,2), liveVotes: (total live votes)}
-let calcAllScores = function(estabObj,userTraits){
-  let results = {};
-  _.each(estabObj, (estab) => {
-    let allVotes = estab.Votes.filter((vote) => userTraits.indexOf(vote.traitId)>-1)
-    let posLive = allVotes.reduce((pos,vote) => pos+vote.voteValue,0);
-    let totLive = allVotes.length;
-    let allUserVotes = estab.userVotes.filter((vote) => userTraits.indexOf(vote.traitId)>-1)
-    let posUser = allUserVotes.reduce((pos,vote) => pos+vote.voteValue,0);
-    let totUser = allUserVotes.length;
-    let posHist = 0;
-    let totHist = 0;
-    _.each(userTraits, (traitId) => {
-      posHist += estab['trait'+traitId+'Pos'];
-      totHist += estab['trait'+traitId+'Tot'];
-    });
-    let liveScore = totLive === 0 ? 0 : Math.round(posLive/totLive*10);
-    let histScore = totHist === 0 ? 0 : Math.round(posHist/totHist*10);
-    let userScore = totUser === 0 ? 2 : Math.round(posUser/totUser);
-    let liveVotes = estab.Votes.length;
-    results[estab.id] = {liveScore, histScore, userScore, liveVotes}
-  })
-  return results;
-}
-
 //THE ACTUAL map deal
 export default class Map extends Component {
   constructor(props) {
@@ -100,8 +75,6 @@ export default class Map extends Component {
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
       console.log('Got into region change');
-      var scores = calcAllScores(this.props.establishments,this.props.user.traitCombo);
-      this.props.saveScores(scores);
       this.setState({ region });
       var oldUserZone = this.props.user.userZone;
       var userId = this.props.user.id;
@@ -136,13 +109,13 @@ export default class Map extends Component {
         coordinate={{latitude:est.latitude, longitude: est.longitude}}
         onPress={this.displayDetails.bind(this, est.id)}
       >
-        <View style={styles.histStyles[this.props.scores[est.id].histScore]}>
-          <View style={styles.liveStyles[this.props.scores[est.id].liveScore]}>
-            <View style={styles.userDot[this.props.scores[est.id].userScore]}/>
+        <View style={styles.histStyles[this.props.scores.userComboScore[est.id].histScore]}>
+          <View style={styles.liveStyles[this.props.scores.userComboScore[est.id].liveScore]}>
+            <View style={styles.userDot[this.props.scores.userComboScore[est.id].userScore]}/>
           </View>
         </View>
         <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
-        <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.scores[est.id].liveScore}/10, HS: {this.props.scores[est.id].histScore}/10</Text>
+        <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.scores.userComboScore[est.id].liveScore}/10, HS: {this.props.scores.userComboScore[est.id].histScore}/10</Text>
       </MapView.Marker>
     ))
   }
@@ -177,7 +150,7 @@ export default class Map extends Component {
             onRegionChange={this.onRegionChange.bind(this)}
           >
 
-          {Object.keys(this.props.establishments).length !== 0 && Object.keys(this.props.scores).length !== 0 && this.renderMarkers.call(this)}
+          {Object.keys(this.props.establishments).length !== 0 && this.props.scores.userComboScore && this.renderMarkers.call(this)}
 
           </MapView>
 

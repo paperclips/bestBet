@@ -13,7 +13,7 @@ function userLogin(userData) {
 }
 
 export default (user, reactNavigator, route) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     sendReq('POST', route, user).then(function(res){
       let body = JSON.parse(res._bodyText);
       if(res.status === 200){
@@ -25,7 +25,7 @@ export default (user, reactNavigator, route) => {
           body.latitude = position.coords.latitude;
           body.longitude = position.coords.longitude;
           var socket = connectSocket();
-          addSocket(dispatch, socket);//saves socket into state, adds listeners for ('New Establishments', 'voteAdded')
+          addSocket(dispatch, socket,getState);//saves socket into state, adds listeners for ('New Establishments', 'voteAdded')
           dispatch(userLogin(body)); //save user info to user state
           socket.emit('Get Establishments',{userId: body.id, zones: estabZones});
           updateZoneSubscription(socket,[],estabZones); //joins zones
