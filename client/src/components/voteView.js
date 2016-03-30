@@ -33,7 +33,6 @@ var VoteView = React.createClass({
     };
   },
   render() {
-    console.log(this.props.vote);
     return (
       <View style={voteStyles.buttonContainer}>
         <TouchableHighlight 
