@@ -103,28 +103,32 @@ export default class Map extends Component {
 
   renderMarkers(){
     console.log('RERENDER');
-    return _.map(this.props.establishments, (est) => (
-      <MapView.Marker 
-        key={est.id}
-        coordinate={{latitude:est.latitude, longitude: est.longitude}}
-        onPress={this.displayDetails.bind(this, est.id)}
-      >
-        <View style={styles.histStyles[this.props.scores.userComboScore[est.id].histScore]}>
-          <View style={styles.liveStyles[this.props.scores.userComboScore[est.id].liveScore]}>
-            <View style={styles.userDot[this.props.scores.userComboScore[est.id].userScore]}/>
+    return _.map(this.props.allData.establishments, (est) => {
+      if(this.props.allData.userComboScore[est.id]){
+        return (
+        <MapView.Marker 
+          key={est.id}
+          coordinate={{latitude:est.latitude, longitude: est.longitude}}
+          onPress={this.displayDetails.bind(this, est.id)}
+        >
+          <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
+            <View style={styles.liveStyles[this.props.allData.userComboScore[est.id].liveScore]}>
+              <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
+            </View>
           </View>
-        </View>
-        <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
-        <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.scores.userComboScore[est.id].liveScore}/10, HS: {this.props.scores.userComboScore[est.id].histScore}/10</Text>
-      </MapView.Marker>
-    ))
+          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
+          <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
+        </MapView.Marker>
+        )
+      }
+    })
   }
 
   renderModal(){
     console.log('RERENDER MODAL');
     return <DetailModal 
               userTraits={this.props.user.traitCombo} 
-              estab = {this.props.establishments[this.state.selectedEstab]}
+              estab = {this.props.allData.establishments[this.state.selectedEstab]}
               closeModal={() => this.hideDetails() }
               {...this.props}
             />
@@ -150,12 +154,12 @@ export default class Map extends Component {
             onRegionChange={this.onRegionChange.bind(this)}
           >
 
-          {Object.keys(this.props.establishments).length !== 0 && this.props.scores.userComboScore && this.renderMarkers.call(this)}
+          {this.props.allData.establishments && this.renderMarkers.call(this)}
 
           </MapView>
 
           <View style={styles.mapStyles.buttonContainer}>
-            {_.map(this.state.userTraits, (trait) => (
+            {_.map(this.props.user.traitCombo, (trait) => (
               <TouchableHighlight key = {trait} onPress={this.changeTrait.bind(this)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
                 <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
               </TouchableHighlight>
@@ -163,7 +167,7 @@ export default class Map extends Component {
           </View>
 
           <View >
-            {this.state.showDetails && this.props.establishments[this.state.selectedEstab] && this.renderModal.call(this)}
+            {this.state.showDetails && this.props.allData.establishments[this.state.selectedEstab] && this.renderModal.call(this)}
           </View>
         </View>
         <TouchableOpacity style={styles.mapStyles.sandwichButton} onPress={() => this.toggle()}>
@@ -174,3 +178,4 @@ export default class Map extends Component {
     );
   }
 };
+

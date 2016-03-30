@@ -6,7 +6,7 @@ import scoreReducer from './scoreReducer';
 
 module.exports = combineReducers({
   user: userReducer,
-  establishments: estabReducer,
-  socket: socketReducer,
-  scores: scoreReducer
+  allData: estabReducer,
+  socket: socketReducer
+  // scores: scoreReducer
 })
