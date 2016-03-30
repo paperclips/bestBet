@@ -71,7 +71,9 @@ export default class Map extends Component {
     this.setState({ isOpen });   
   }
 
-  onRegionChange(region) {
+  onRegionChangeComplete(region) {
+    console.log("DELTA --->",this.state.region.latitudeDelta);
+
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
       console.log('Got into region change');
@@ -151,7 +153,7 @@ export default class Map extends Component {
             showsUserLocation={true}
             showsPointsOfInterest={false}
             initialRegion = {this.state.region}
-            onRegionChange={this.onRegionChange.bind(this)}
+            onRegionChangeComplete={this.onRegionChange.bind(this)}
           >
 
           {this.props.allData.establishments && this.renderMarkers.call(this)}
