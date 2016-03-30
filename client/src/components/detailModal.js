@@ -67,6 +67,7 @@ export default class DetailModal extends Component {
       9: {bad: false, good: false}
     },
   }
+}
     componentDidMount() {
       Animated.timing(this.state.offset, {
         duration: 300,
@@ -127,7 +128,7 @@ export default class DetailModal extends Component {
     }
     renderSubmitButton () {
       return (
-        <TouchableHighlight  onPress={this.onVoteSubmit}>
+        <TouchableHighlight  onPress={this.onVoteSubmit.bind(this)}>
           <View style={modalStyles.submitVote}>
             <Text style={modalStyles.subText}> Submit Votes </Text>
           </View>
@@ -153,12 +154,13 @@ export default class DetailModal extends Component {
       this.setState({votes: voteVals});
     }
     onVoteSubmit () {
-      console.log('subbbb');
-      
+      console.log('IN on vote SUBMIT, this will send out the vote');
+
       // send votes up from state
       // reset votes in state
       // turn off voting
       // turn off full
+      // give ALERT thanking user
       this.setState({voting:false, full: false});
     }
     renderVoteScreen () {
@@ -168,7 +170,7 @@ export default class DetailModal extends Component {
             <View> 
               <Text style={modalStyles.voteSectionHeader}> Your Preferences </Text>
               {_.map(this.props.userTraits,(trait) => (
-                <VoteView key={count2++}
+                <VoteView key={trait}
                   traitNum={trait}
                   estab={this.props.estab.id}
                   vote={this.state.votes[trait]}
@@ -178,7 +180,7 @@ export default class DetailModal extends Component {
               {_.map(nums,(num) => (
                 <View>
                   {this.props.userTraits.indexOf(num) >= 0 ? null : 
-                    <VoteView key={count3++}
+                    <VoteView key={num}
                       traitNum={num}
                       estab={this.props.estab.id}
                       vote={this.state.votes[num]}
