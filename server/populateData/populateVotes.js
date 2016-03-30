@@ -14,7 +14,7 @@ var voteCtrl = require('../controllers/voteController.js');
 
 var createFakeVotes = function (numPerUser) {
   Votes.max('time').then(function(maxVoteDate){
-    if(maxVoteDate < new Date()-60*60*1000){
+    if(maxVoteDate < new Date()-24&60*60*1000){
       Users.findAll({raw: true}).then(function(users){
         users.forEach(function(user){
           var numberArray = new Array(numPerUser+1).join('1').split('');
