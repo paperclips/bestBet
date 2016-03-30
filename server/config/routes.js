@@ -29,7 +29,7 @@ io.on('connect', function(socket){
       for(var i = 0; i<estabs.length;i++){
         estabObject[estabs[i].id] = estabs[i];
         if(i === estabs.length-1){
-          socket.emit('New Establishments', {establishments:estabObject});
+          socket.emit('New Establishments', estabObject);
         }
       }
     })

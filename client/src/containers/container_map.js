@@ -7,8 +7,8 @@ import resetTraits from '../actions/action_resetTraits';
 import updateUserZone from '../actions/action_updateZone';
 import logOut from '../actions/action_logout.js';
 
-function mapStateToProps({ user, socket, establishments}) {
-  return { user, socket, establishments };
+function mapStateToProps({ user, socket, allData }) {
+  return { user, socket, allData };
 }
 
 export default connect(mapStateToProps, { userMoves, resetTraits, updateUserZone, logOut })(Map);
