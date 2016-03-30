@@ -16,7 +16,6 @@ var {
 
 } = React;
 
-
 var _ = require('underscore');
 var VoteView = require('./voteView.js');
 
@@ -43,7 +42,6 @@ var count = 1;
 var styles = require('../assets/styles.js'); // mapStyles
 var { width, height } = Dimensions.get('window');
 var VoteView = require('./voteView.js')
-
 
 var {
   height: deviceHeight,
@@ -195,7 +193,7 @@ export default class DetailModal extends Component {
         onPress={this.toggleFull.bind(this)}>  
           <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
           <Text>{this.props.estab.address} ({this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : "No Phone"})</Text> 
-          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.live} / 10 USUAL: {this.props.hist} / 10</Text>
+          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10</Text>
       </View>
     )
   }
