@@ -13,7 +13,7 @@ function userLogin(userData) {
 }
 
 export default (user, reactNavigator, route) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     sendReq('POST', route, user).then(function(res){
       let body = JSON.parse(res._bodyText);
       if(res.status === 200){

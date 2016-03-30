@@ -25,12 +25,6 @@ export function updateZoneSubscription(socket, oldZones, newZones){
   socket.emit('joinRooms', newZones);
 };
 
-
-// Must show 0-10 live, hist, user score for chosen traitCombo
-// Must show 0-10 score for all 9 traits individually
-// Must show total number of votes for 9 traits both live and historical
-// {estId: {1: {lp, lt, hp, ht, up, ut}, 2: {}, 3: {lp, lt, hp, ht, up, ut}, 4: {lp, lt, hp, ht, up, ut},...}
-
 export function calcAllScores(estabsObj,userCombo){
   
   let allTraits = {};
