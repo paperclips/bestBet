@@ -3,7 +3,7 @@ var React = require('react-native');
 // import Drawer from 'react-native-drawer';
 // var drawer = require('react-native-drawer');
 var { 
-  AppRegistry,
+  Alert,
   Component, 
   Text, 
   View, 
@@ -140,14 +140,37 @@ export default class DetailModal extends Component {
   }
   onVoteSubmit () {
     console.log('IN on vote SUBMIT, this will send out the vote');
+    //voteData is an object {establishmentId, userId, time, zoneNumber, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
+    var voteData = {establishmentId: this.props.estab.id, userId: this.props.user.id, time: new Date(), zoneNumber: this.props.user.userZone};
+    voteData.votes = {};
+    Object.keys(this.state.votes).forEach((traitId) => {
+      if(this.state.votes[traitId].good){
+        voteData.votes[traitId] = 1;
+      } else if(this.state.votes[traitId].bad){
+        voteData.votes[traitId] = 0;
+      }
+    });
 
-    // send votes up from state
-    // reset votes in state
-    // turn off voting
-    // turn off full
+    // Send votes thru socket
+    this.props.sendVote(this.props.socket, voteData);
+    
     // give ALERT thanking user
-    this.setState({voting:false, full: false});
+    Alert.alert('Thanks!','You votes has been counted!');
+
+    // reset votes in state, turn off voting, turn off full
+    this.setState({voting:false, 
+                   full: false, 
+                   votes:{1: {bad: false, good: false},
+                          2: {bad: false, good: false},
+                          3: {bad: false, good: false},
+                          4: {bad: false, good: false},
+                          5: {bad: false, good: false},
+                          6: {bad: false, good: false},
+                          7: {bad: false, good: false},
+                          8: {bad: false, good: false},
+                          9: {bad: false, good: false}}});
   }
+
   renderVoteScreen () {
     return (
       <TouchableHighlight onPress={null}> 
