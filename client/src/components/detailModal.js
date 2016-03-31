@@ -220,14 +220,16 @@ export default class DetailModal extends Component {
       </View>
     )
   }
+
+          //   <Image
+          // style={modalStyles.briefImage}
+          // source={{uri: this.props.estab.imageUrl}}/>  
   renderVoteHeader () {
     return (
      <View style={modalStyles.briefModal}>
-          <Image
-          style={modalStyles.briefImage}
-          source={{uri: this.props.estab.imageUrl}}/>  
           <View style={modalStyles.voteHeader}> 
-            <Text style={{ flex:2, fontWeight:'bold', fontSize: 20, alignSelf: 'center', color: 'black' }}> How was {this.props.estab.name}?</Text>
+            <Text style={{ paddingTop: 20, flex:2, fontWeight:'bold', fontSize: 20, alignSelf: 'center', color: '#0F172E' }}> How was {this.props.estab.name}?</Text>
+            <View style={{height: 2, margin: 10, backgroundColor: 'grey'}}></View>
           </View>
       </View>
     )  
@@ -345,7 +347,7 @@ var modalStyles = StyleSheet.create({
     backgroundColor: 'blue',
     alignSelf: 'center',
     justifyContent: 'center',
-    borderColor: 'grey',
+    borderColor: 'blue',
     borderWidth: 3,
     borderRadius: 50,
     margin: width/80,
@@ -358,37 +360,43 @@ var modalStyles = StyleSheet.create({
     textAlign: 'center',
     fontWeight:'bold',
   },
-  voteHeader: {
+  voteHeader: {  //voteview top question area
     flex:2, 
     alignSelf: 'center',
     justifyContent: 'center',
     padding: 5,
+    paddingTop: 20,
     // height: height/8,
     width: width - (height/8)-20,
     backgroundColor: 'white',
-    borderColor: 'rgba(34, 224, 0, 0.4)',
-    borderWidth: 5
+    // borderColor: 'rgba(34, 224, 0, 0.4)',
+    // borderWidth: 5
   },
   voteSectionHeader: {
+    padding: 10,
+    paddingLeft: 25,
     fontWeight:'bold',
-    backgroundColor: 'grey',
-    fontSize: 14,
-    color: 'black',
+    backgroundColor: 'white',
+    fontSize: 16,
+    // fontWeight: 'bold',
+    color: '#0F172E', //color for your preferences
     alignItems: 'center'
   },
   voteHeaderText: {
     textAlign: 'center'
   },
   submitVote: {
-    flex: 1,
-    width: width-width/6,
+    flex: 2,
+    width: 384,
+    padding: 20,
+    paddingTop: 20,
     // height: height/10,
-    backgroundColor: 'blue',
+    backgroundColor: '#5BA7C8', //universalblue
     alignSelf: 'center',
     justifyContent: 'center',
-    borderColor: 'white',
+    borderColor: '#2F56E9',
     borderWidth: 3,
-    borderRadius: 50,
+    borderRadius: 6,
     margin: width/80,
     justifyContent: 'center',
   },
