@@ -193,7 +193,10 @@ export default class Map extends Component {
               <TouchableHighlight key = {trait} onPress={this.changeTrait.bind(this)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
                 <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
               </TouchableHighlight>
-            ))}   
+            ))}
+            <TouchableOpacity style={styles.mapStyles.goToUser} onPress={() => this.resetToUser()}>
+              <Image source={{ uri: 'http://i.stack.imgur.com/SX0qW.png', width: windowSize.height/18, height: windowSize.height/18}} />   
+            </TouchableOpacity>   
           </View>
           <View >
             {this.state.showDetails && this.props.allData.establishments[this.state.selectedEstab] && this.renderModal.call(this)}
@@ -203,9 +206,6 @@ export default class Map extends Component {
         <TouchableOpacity style={styles.mapStyles.sandwichButton} onPress={() => this.toggle()}>
           <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20 }} />   
         </TouchableOpacity>
-        {!this.state.showDetails && <TouchableOpacity style={styles.mapStyles.goToUser} onPress={() => this.resetToUser()}>
-          <Image source={{ uri: 'http://i.stack.imgur.com/SX0qW.png', width: windowSize.height/18, height: windowSize.height/18}} />   
-        </TouchableOpacity>}
          
         </View> 
       </SideMenu>

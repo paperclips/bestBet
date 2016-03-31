@@ -124,12 +124,7 @@ var signupStyles = StyleSheet.create({
 
 var mapStyles = StyleSheet.create({
   goToUser: {
-    position: 'absolute',
-    marginTop: 20,
-    marginLeft: 20,
-    right: windowSize.width/20,
-    bottom: windowSize.height/50
-
+    backgroundColor: 'transparent',
   },
   container: {
     position: 'absolute',
