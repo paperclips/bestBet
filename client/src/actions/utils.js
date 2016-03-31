@@ -103,14 +103,3 @@ export function allEstUserComboScores(estabs,userTraitCombo,allTraits){
   })
   return userComboScores;
 };
-
-
-
-
-
-
-
-
-
-
-
