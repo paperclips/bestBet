@@ -54,26 +54,23 @@ export default class Map extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
     }, 
-      isOpen: false,
       selectedEstab: -1,
       showDetails: false,
       changingTraits: false,
       showNames: true,
       smallDots: false,
-      oldTrait: -1
+      oldTrait: -1,
+      logoutConfirm: false
     }
   }
   curInView = 0;
 
-  toggle() {    
-    this.setState({   
-      isOpen: !this.state.isOpen,   
-    });   
-  }
+  // toggle() {    
+  //   this.setState({   
+  //     isOpen: !this.state.isOpen,   
+  //   });   
+  // }
 
-  updateMenuState(isOpen) {   
-    this.setState({ isOpen });   
-  }
 
   onRegionChange(region) {
     this.curInView = 0;
@@ -151,7 +148,12 @@ export default class Map extends Component {
 
     return longitude > westLimit && longitude < eastLimit && latitude > southLimit && latitude < northLimit
   }
-
+  toggleLogoutConfirm() {
+    this.setState({logoutConfirm: !this.state.logoutConfirm});
+  }
+  logOut() {
+    this.props.logOut(this.props.navigator);
+  }
   renderMarkers(){
     this.curInView = 0;
     return _.map(this.props.allData.establishments, (est) => {
@@ -184,18 +186,11 @@ export default class Map extends Component {
               userTraits={this.props.user.traitCombo} 
               estab = {this.props.allData.establishments[this.state.selectedEstab]}
               closeModal={() => this.hideDetails() }
-              {...this.props}
-            />
+              {...this.props}/>
   }
 
   render() {
-    const menu = <Menu user = {this.props.user.id} socket = {this.props.socket} reactNavigator = {this.props.navigator} logOut = {this.props.logOut.bind(this)} resetTraits = {this.props.resetTraits.bind(this)} toggle = {this.toggle.bind(this)}/>;
     return (
-      <SideMenu   
-        menu={menu}   
-        isOpen={this.state.isOpen}
-        onChange={(isOpen) => this.updateMenuState(isOpen)}
-      >
       <View style={{height: windowSize.height, backgroundColor: '#f7f6f3'}}>
         <View style={styles.mapStyles.container}>
           <MapView
@@ -206,8 +201,7 @@ export default class Map extends Component {
             showsPointsOfInterest={false}
             initialRegion = {this.state.region}
             onRegionChange={this.onRegionChange.bind(this)}
-            onPress={(e) => this.onMapPress(e)}
-          >
+            onPress={(e) => this.onMapPress(e)}>
 
           {this.props.allData.establishments && this.renderMarkers.call(this)}
 
@@ -237,12 +231,20 @@ export default class Map extends Component {
           </View>
         </View>
     
-        <TouchableOpacity style={styles.mapStyles.sandwichButton} onPress={() => this.toggle()}>
-          <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20 }} />   
+        <TouchableOpacity style={styles.mapStyles.logoutButton} onPress={this.toggleLogoutConfirm.bind(this)}>
+          <Image source={{ uri: 'https://image.freepik.com/free-icon/login-symbol_318-9896.png', width: windowSize.height/35, height: windowSize.height/35, opacity: .3}} />   
         </TouchableOpacity>
+        {this.state.logoutConfirm && (<View style={styles.mapStyles.buttonContainer}>
+          <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={() => this.logOut()}>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>Logout</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={this.toggleLogoutConfirm.bind(this)}>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>cancel</Text>
+          </TouchableOpacity> 
+          </View>)
+            }
          
         </View> 
-      </SideMenu>
     );
   }
 };

@@ -39,7 +39,6 @@ var VoteView = React.createClass({
           onPress={this.props.processVote.bind(null, this.props.traitNum, 1)}
           style={[voteStyles.preGood, this.props.vote.good && voteStyles.good]}>
         <Text style={voteStyles.choiceGoodText}>GOOD</Text>
-
         </TouchableHighlight>        
       </View>
     );
