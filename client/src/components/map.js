@@ -102,7 +102,7 @@ export default class Map extends Component {
     _.map(traitNames, (trait, key) => (
       (this.props.user.traitCombo.indexOf(Number(key)) < 0) && 
         <TouchableHighlight key = {trait} onPress={this.sendNewTrait.bind(this, this.state.oldTrait, key)} style={styles.mapStyles.otherButton}>
-          <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{trait}</Text>
+          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{trait}</Text>
         </TouchableHighlight>
         )
       )
@@ -215,17 +215,17 @@ export default class Map extends Component {
           <View style={styles.mapStyles.otherTraitContainer}>
           {this.state.changingTraits && this.renderOtherTraits.call(this)}
           {this.state.changingTraits && this.props.user.traitCombo.length>1 && <TouchableHighlight key={-1} onPress={this.sendNewTrait.bind(this, this.state.oldTrait, -1)} style={styles.mapStyles.otherButton}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>-</Text>
-      </TouchableHighlight>}
+          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>-</Text>
+        </TouchableHighlight>}
           </View>
 
           <View style={styles.mapStyles.buttonContainer}>
             {this.props.user.traitCombo.length<3 && <TouchableHighlight key = {-1} onPress={this.toggleChangingTraits.bind(this, -1)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold' }}>+</Text>
+              <Text style={{ fontSize: 10, fontWeight: 'bold' }}>+</Text>
             </TouchableHighlight>}
             {_.map(this.props.user.traitCombo, (trait) => (
               <TouchableHighlight key={trait} onPress={this.toggleChangingTraits.bind(this, trait)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
-                <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
+                <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
               </TouchableHighlight>
             ))}
             <TouchableOpacity style={styles.mapStyles.goToUser} onPress={() => this.resetToUser()}>

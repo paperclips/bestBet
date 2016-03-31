@@ -125,6 +125,8 @@ var signupStyles = StyleSheet.create({
 var mapStyles = StyleSheet.create({
   goToUser: {
     backgroundColor: 'transparent',
+    alignItems: 'center',
+    marginHorizontal: 10
   },
   container: {
     position: 'absolute',
@@ -164,14 +166,14 @@ var mapStyles = StyleSheet.create({
     alignItems: 'stretch',
   },
   button: {
-    width: 80,
-    paddingHorizontal: 12,
+    width: 85,
+    paddingHorizontal: 8,
     alignItems: 'center',
     marginHorizontal: 10,
   },
   otherButton: {
     backgroundColor: 'rgba(255, 207, 87, 0.58)',
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
     paddingVertical: 12,
     borderRadius: 20,
     width: 80,
