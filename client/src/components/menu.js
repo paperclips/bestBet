@@ -2,7 +2,6 @@ const React = require('react-native');
 const {
   Dimensions,
   StyleSheet,
-  ScrollView,
   View,
   Image,
   Text,
@@ -47,7 +46,7 @@ export default class Menu extends Component {
 
   render() {
     return (
-      <ScrollView scrollsToTop={false} style={styles.menu}>
+      <View>
         <View style={styles.avatarContainer}>
           <Text>New Preferences</Text>
         </View>
@@ -105,7 +104,7 @@ export default class Menu extends Component {
           </TouchableHighlight>
         </View>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 };

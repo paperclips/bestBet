@@ -1,5 +1,5 @@
 import {ADD_SOCKET, ADD_VOTE, REPLACE_ESTABS} from './constants.js';
-import {calcAllScores, updateScores} from './utils.js';
+import {calcAllScores, calcEstScores} from './utils.js';
 import {store} from '../../App.js';
 
 function addSocketToState(socket) {
@@ -45,7 +45,7 @@ function saveVoteToState(voteData){
   var estId = voteData.establishmentId;
   var estAllTraits = allData.allTraits[estId];
   var userTraitCombo = user.traitCombo;
-  var scoreObj = updateScores(user.id, estAllTraits,userTraitCombo, voteData);//{allTraits, userComboScore}
+  var scoreObj = calcEstScores(user.id, estAllTraits,userTraitCombo, voteData);//{allTraits, userComboScore}
 
   var updateObject = {estId: estId, votes: votesArray, userVotes: userVotes, allTraits: scoreObj.allTraits, userComboScore: scoreObj.userComboScore};
 

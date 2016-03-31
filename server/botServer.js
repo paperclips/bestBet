@@ -25,7 +25,7 @@ socket.on('New Establishments',function(estabs){
 var createNewVote = function(){
   //vote object is {establishmentId, userId, time, zoneNumber, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
   var vote = {};
-  vote.establishmentId = Math.floor(Math.random()*1600); // 
+  vote.establishmentId = Math.floor(Math.random()*1500); // 
   vote.userId = Math.floor(Math.random()*40+1);
   vote.time = new Date();
   vote.votes = {};
@@ -63,5 +63,5 @@ var port = process.env.PORT || 8000;
 //Start the bot:
 http.listen(port);
 console.log('botServer listening on port ' + port);
-setInterval(createNewVote,500);
+setInterval(createNewVote,1000);
 //setInterval(requestEstabs,1000);
