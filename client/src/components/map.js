@@ -3,7 +3,6 @@ import Menu from './menu';
 
 var Dimensions = require('Dimensions');   
 var windowSize = Dimensions.get('window');    
-const SideMenu = require('./sideMenu');   
 
 var {
   View,
