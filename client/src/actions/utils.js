@@ -85,6 +85,7 @@ export function updateScores(userId, allTraits, userTraitCombo, voteData){
       }
     });
   };
+
   let hp = 0, ht = 0, lp = 0, lt = 0, up = 0, ut = 0; 
   userTraitCombo.forEach((traitId) => {
     allTraits[traitId].ht && (hp+=allTraits[traitId].hp/allTraits[traitId].ht);

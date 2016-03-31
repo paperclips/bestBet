@@ -216,6 +216,7 @@ var appStyles = StyleSheet.create({
  },
 });
 
+
 var userHW = 8;
 var userDot = {
   0: {
@@ -249,6 +250,122 @@ var userDot = {
     borderWidth:1.5,
   }
 };
+var zoomedOutHW = 7;
+var zoomedOut = {
+  0:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'white',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(255, 0, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  // repeat
+  2:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(255, 0, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(209, 0, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  4:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(209, 0, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  
+  },
+  5:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(245, 241, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+    
+  },
+  6:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(163, 245, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  7:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(34, 224, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  8:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(34, 224, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  9:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(34, 224, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  },
+  10:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:zoomedOutHW,
+    width:zoomedOutHW,
+    borderRadius: zoomedOutHW/2,
+    backgroundColor: 'rgb(34, 224, 0)',
+    borderWidth:1,
+    borderColor: 'black'
+  }
+}
 
 var histHW = 25;
 
@@ -367,6 +484,8 @@ var liveStyles = {
   }
   
 };
+
+
 
 var liveHW = 27;
 
@@ -684,5 +803,7 @@ module.exports = {
   calloutStyles: calloutStyles,
   menuStyles: menuStyles,
   liveStyles: liveStyles,
-  userDot: userDot
+  userDot: userDot,
+  zoomedOut: zoomedOut
+
 };
