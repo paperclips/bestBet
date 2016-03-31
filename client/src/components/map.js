@@ -52,8 +52,8 @@ export default class Map extends Component {
         latitude: this.props.user.latitude, 
         longitude: this.props.user.longitude,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
+        longitudeDelta: LONGITUDE_DELTA
+    }, 
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
@@ -101,13 +101,20 @@ export default class Map extends Component {
     // this.props.resetTraits(null,null,newTraits);
     // console.log(this.props.user.traitCombo);
   }
-
-  displayDetails (id) {
-    this.setState({showDetails: true, selectedEstab:id});
+  resetToUser() {
+    this.refs.map.animateToCoordinate({
+      latitude: this.props.user.latitude, 
+      longitude: this.props.user.longitude},
+      200
+    );  
   }
-
-  hideDetails () {
-    this.setState({showDetails: false, selectedEstab:-1});
+  toggleDetails (id) {
+    (this.state.showDetails && id === this.state.selectedEstab) ? this.setState({showDetails: false, selectedEstab:-1}) : this.setState({showDetails: true, selectedEstab:id});
+  }
+  onMapPress (e) {
+    if (e.nativeEvent.coordinate && this.state.showDetails) {
+      this.setState({showDetails: false, selectedEstab:-1});
+    }
   }
 
   inView (latitude,longitude) {
@@ -128,7 +135,7 @@ export default class Map extends Component {
           <MapView.Marker
             key={est.id}
             coordinate={{latitude:est.latitude, longitude: est.longitude}}
-            onPress={this.displayDetails.bind(this, est.id)}
+            onPress={this.toggleDetails.bind(this, est.id)}
           >
             {this.state.smallDots ? (this.props.allData.userComboScore[est.id].liveScore ? <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].liveScore]}/> : (this.props.allData.userComboScore[est.id].userScore!==2 ? <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/> : <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].histScore]}/>)) : 
               <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
@@ -138,7 +145,7 @@ export default class Map extends Component {
               </View>
              }
             {(this.state.showNames || this.state.selectedEstab === est.id || this.curInView < 10) && <View>
-              <Text style={{fontSize: 11, color: 'black'}}>{est.id}: {est.name}</Text>
+              <Text style={{fontSize: 11, color: 'black'}}>{est.name}</Text>
             </View>}
           </MapView.Marker>
         )
@@ -173,6 +180,7 @@ export default class Map extends Component {
             showsPointsOfInterest={false}
             initialRegion = {this.state.region}
             onRegionChange={this.onRegionChange.bind(this)}
+            onPress={(e) => this.onMapPress(e)}
           >
 
           {this.props.allData.establishments && this.renderMarkers.call(this)}
@@ -185,16 +193,20 @@ export default class Map extends Component {
                 <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
               </TouchableHighlight>
             ))}
+            <TouchableOpacity style={styles.mapStyles.goToUser} onPress={() => this.resetToUser()}>
+              <Image source={{ uri: 'http://i.stack.imgur.com/SX0qW.png', width: windowSize.height/18, height: windowSize.height/18}} />   
+            </TouchableOpacity>   
           </View>
-
           <View >
             {this.state.showDetails && this.props.allData.establishments[this.state.selectedEstab] && this.renderModal.call(this)}
           </View>
         </View>
+    
         <TouchableOpacity style={styles.mapStyles.sandwichButton} onPress={() => this.toggle()}>
           <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20 }} />   
         </TouchableOpacity>
-      </View> 
+         
+        </View> 
       </SideMenu>
     );
   }

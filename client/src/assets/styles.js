@@ -123,6 +123,9 @@ var signupStyles = StyleSheet.create({
 });
 
 var mapStyles = StyleSheet.create({
+  goToUser: {
+    backgroundColor: 'transparent',
+  },
   container: {
     position: 'absolute',
     top: 0,
