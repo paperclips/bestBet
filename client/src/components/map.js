@@ -57,9 +57,10 @@ export default class Map extends Component {
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
-      modal:true,
+      changingTraits: false,
       showNames: true,
-      smallDots: false
+      smallDots: false,
+      oldTrait: -1
     }
   }
   curInView = 0;
@@ -93,13 +94,34 @@ export default class Map extends Component {
     clearTimeout(timeout);
     timeout = setTimeout(getEstabs.bind(this),500);
   }
-
-  changeTrait() {
-    console.log(this.state.region);
-    // console.log(this.props.user.traitCombo);
-    // var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-    // this.props.resetTraits(null,null,newTraits);
-    // console.log(this.props.user.traitCombo);
+  toggleChangingTraits (old) {
+    this.setState({changingTraits: !this.state.changingTraits, oldTrait:Number(old)});
+  }
+  renderOtherTraits() {
+    return(
+    _.map(traitNames, (trait, key) => (
+      (this.props.user.traitCombo.indexOf(Number(key)) < 0) && 
+        <TouchableHighlight key = {trait} onPress={this.sendNewTrait.bind(this, this.state.oldTrait, key)} style={styles.mapStyles.otherButton}>
+          <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{trait}</Text>
+        </TouchableHighlight>
+        )
+      )
+    )
+  }
+  sendNewTrait (oldTrait, newTrait) {
+    console.log(oldTrait, newTrait);
+    console.log(this.props.user.traitCombo);
+    var traits = this.props.user.traitCombo;
+    traits.forEach(function (trait, key) {
+      console.log(trait, key);
+      if(trait === oldTrait) {
+        traits[key] = Number(newTrait)  ;
+      }
+    });
+    console.log(traits);
+    this.props.resetTraits(this.props.user, this.props.socket, traits);
+    this.setState({changingTraits:false});
+    console.log(this.props.user.traitCombo);
   }
   resetToUser() {
     this.refs.map.animateToCoordinate({
@@ -186,10 +208,13 @@ export default class Map extends Component {
           {this.props.allData.establishments && this.renderMarkers.call(this)}
 
           </MapView>
+          <View style={styles.mapStyles.otherTraitContainer}>
+          {this.state.changingTraits && this.renderOtherTraits.call(this)}
+          </View>
 
           <View style={styles.mapStyles.buttonContainer}>
             {_.map(this.props.user.traitCombo, (trait) => (
-              <TouchableHighlight key = {trait} onPress={this.changeTrait.bind(this)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
+              <TouchableHighlight key={trait} onPress={this.toggleChangingTraits.bind(this, trait)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
                 <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
               </TouchableHighlight>
             ))}
