@@ -55,7 +55,6 @@ export default class Map extends Component {
       selectedEstab: -1,
       showDetails: false,
       changingTraits: false,
-      showNames: true,
       smallDots: false,
       oldTrait: -1,
       logoutConfirm: false
@@ -72,8 +71,9 @@ export default class Map extends Component {
 
   onRegionChange(region) {
     this.curInView = 0;
-    region.longitudeDelta > .006 && this.setState({showNames: false, smallDots: true});
-    region.longitudeDelta < .006 && this.setState({showNames: true, smallDots: false});
+    console.log(region.longitudeDelta);
+    region.longitudeDelta > .006 && this.setState({smallDots: true});
+    region.longitudeDelta < .006 && this.setState({smallDots: false});
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
       this.setState({ region });
@@ -94,7 +94,7 @@ export default class Map extends Component {
     _.map(traitNames, (trait, key) => (
       (this.props.user.traitCombo.indexOf(Number(key)) < 0) && 
         <TouchableHighlight key = {trait} onPress={this.sendNewTrait.bind(this, this.state.oldTrait, key)} style={styles.mapStyles.otherButton}>
-          <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{trait}</Text>
+          <Text style={{ fontSize: 10, fontWeight: 'bold'}}>{trait}</Text>
         </TouchableHighlight>
         )
       )
@@ -167,7 +167,7 @@ export default class Map extends Component {
                 </View>
               </View>
              }
-            {(this.state.showNames || this.state.selectedEstab === est.id || this.curInView < 10) && <View>
+            {(this.state.selectedEstab === est.id || this.curInView < 10) && <View>
               <Text style={{fontSize: 11, color: 'black'}}>{est.name}</Text>
             </View>}
           </MapView.Marker>
@@ -229,12 +229,12 @@ export default class Map extends Component {
         <TouchableOpacity style={styles.mapStyles.logoutButton} onPress={this.toggleLogoutConfirm.bind(this)}>
           <Image source={{ uri: 'http://image005.flaticon.com/1/png/128/56/56805.png', width: windowSize.height/35, height: windowSize.height/35, opacity: .3}} />   
         </TouchableOpacity>
-        {this.state.logoutConfirm && (<View style={styles.mapStyles.buttonContainer}>
+        {this.state.logoutConfirm && (<View style={styles.mapStyles.menuContainer}>
           <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={() => this.logOut()}>
             <Text style={{ fontSize: 10, fontWeight: 'bold' }}>Logout</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={this.toggleLogoutConfirm.bind(this)}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>cancel</Text>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>Cancel</Text>
           </TouchableOpacity> 
           </View>)
             }

@@ -152,7 +152,9 @@ var mapStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginTop: 20,
     marginLeft: 20,
-    right: windowSize.width/30,
+    left: windowSize.width/150,
+    top: windowSize.width/100,
+
     position: 'absolute'
   },
   map: {
@@ -202,6 +204,13 @@ var mapStyles = StyleSheet.create({
     marginHorizontal: 5,
     marginBottom: 30
     // backgroundColor: 'pink',
+  },
+  menuContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    marginVertical: 20,
+    marginHorizontal: 100
   },
   otherTraitContainer: {
     width: windowSize.width-50,
