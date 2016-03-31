@@ -229,7 +229,7 @@ export default class Map extends Component {
         </View>
     
         <TouchableOpacity style={styles.mapStyles.logoutButton} onPress={this.toggleLogoutConfirm.bind(this)}>
-          <Image source={{ uri: 'https://image.freepik.com/free-icon/login-symbol_318-9896.png', width: windowSize.height/35, height: windowSize.height/35, opacity: .3}} />   
+          <Image source={{ uri: 'http://image005.flaticon.com/1/png/128/56/56805.png', width: windowSize.height/35, height: windowSize.height/35, opacity: .3}} />   
         </TouchableOpacity>
         {this.state.logoutConfirm && (<View style={styles.mapStyles.buttonContainer}>
           <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={() => this.logOut()}>
