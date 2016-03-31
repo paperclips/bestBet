@@ -40,17 +40,17 @@ var signupStyles = StyleSheet.create({
   topText:{
     marginTop: 40,
     fontSize: 20,
-    fontFamily: 'Palatino',
-    fontStyle: 'italic',
-    fontWeight: '900',
+    // fontFamily: 'Palatino',
+    // fontStyle: 'italic',
+    fontWeight: 'bold',
     color: '#FFF'
   },
   logoText: {
     fontSize: 100,
-    fontFamily: 'Palatino',
-    fontStyle: 'italic',
+    fontFamily: 'Bradley Hand',//'Chalkduster', //'Bradley Hand',
+    // fontStyle: 'italic',
     fontWeight: '900',
-    color: '#000'
+    color: '#000000'  //color for best bet
   },
   signin: {
     backgroundColor: '#5BA7C8', //theme color blue
@@ -63,17 +63,19 @@ var signupStyles = StyleSheet.create({
     flex: .15
   },
   traits: {
-    backgroundColor: '#5BA7C8', //theme color blue
+    borderColor: '#3986AC',
+    borderWidth: 2,
+    backgroundColor: '#5BA7C8', 
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 30,
+    padding: 20,
     marginLeft: 5,
     marginRight: 5,
-    borderRadius: 100,
-    flex: .2
+    borderRadius: 20,
+    flex: .14
   },
   pressed: {
-    backgroundColor: '#33ffcc',
+    backgroundColor: '#36A156',
   },
   inputs: {
     marginTop: 10,
@@ -112,7 +114,8 @@ var signupStyles = StyleSheet.create({
     color: '#D8D8D8'
   },
   whiteFont: {
-    color: '#FFF'
+    color: '#FFF',
+    fontSize: 16,
   },
   error: {
     marginTop: 15,
