@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react-native';
-import background from '../assets/background.jpg';
+import background from '../assets/background1.jpg';
 import logo from '../assets/directions-icon.png';
 var Dimensions = require('Dimensions');
 var windowSize = Dimensions.get('window');

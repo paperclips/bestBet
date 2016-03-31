@@ -85,13 +85,16 @@ export default class DetailModal extends Component {
     return (
       <View style={modalStyles.myVotes}
         onPress={this.toggleFull.bind(this)}>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'blue' }}> You visited on {this.props.allData.establishments[this.props.estab.id].userVotes[this.props.estab.userVotes.length-1].time}</Text>
+        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black', textAlign: 'right'}}> You visited this place on {new Date(this.props.allData.establishments[this.props.estab.id].userVotes[this.props.estab.userVotes.length-1].time).toDateString()}</Text>
+        <Text style={{ textAlign: 'right'}}>On that visit, you ... </Text>
           {_.map(this.props.allData.establishments[this.props.estab.id].userVotes, (vote) => {
             if(!traitTracker.hasOwnProperty(vote.traitId)) {
               traitTracker[vote.traitId] = true;
-              return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'purple' }}>{traitNames[vote.traitId]}: {vote.voteValue.toString()} on {vote.time} </Text>
+              return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'grey', textAlign: 'right' }}>Voted {vote.voteValue ? "good" : "bad"} for {traitNames[vote.traitId]} </Text>
             }
           })}
+          <View style={{height: 2, marginLeft: 30, backgroundColor: '#5BA7C8'}}></View>
+
       </View>
     )
   }
@@ -100,13 +103,15 @@ export default class DetailModal extends Component {
     return (
       <View style={modalStyles.info}
         onPress={this.toggleFull.bind(this)}>  
+
+        <Text style={{ fontSize: 13, fontWeight:'bold', paddingLeft: 5}}> Your Preferences </Text>
         {_.map(this.props.userTraits,(trait) => (
-          <Text key={count++} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
+          <Text key={count++} style={{ fontSize: 13, color: 'black', paddingLeft: 10 ,fontWeight:'bold'}}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
         ))}
-        <Text> Other </Text>
+        <Text style={{ fontSize: 12, fontWeight:'bold', paddingLeft: 5}}> Other Preferences </Text>
         {_.map(nums,(num) => (
           <View key={count++}>
-          {this.props.userTraits.indexOf(num) < 0 && <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}: NOW: {this.props.allData.allTraits[this.props.estab.id][num].lp} / {this.props.allData.allTraits[this.props.estab.id][num].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][num].hp} / {this.props.allData.allTraits[this.props.estab.id][num].ht} </Text>}
+          {this.props.userTraits.indexOf(num) < 0 && <Text style={{ fontSize: 12, color: 'black', paddingLeft: 10 }}>{traitNames[num]}: NOW: {this.props.allData.allTraits[this.props.estab.id][num].lp} / {this.props.allData.allTraits[this.props.estab.id][num].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][num].hp} / {this.props.allData.allTraits[this.props.estab.id][num].ht} </Text>}
           </View>
         ))}
       </View>
@@ -201,37 +206,40 @@ export default class DetailModal extends Component {
     </TouchableHighlight>
     )
   }
+
   renderVoteButton () {
     return(
-      <TouchableHighlight style={modalStyles.voteButton} onPress={this.toggleVoting.bind(this)}>
+      <TouchableHighlight style={modalStyles.submitVote} onPress={this.toggleVoting.bind(this)}>
         <View>
-          <Text style={modalStyles.voteButtonText}> Note How It Was </Text>
+          <Text style={modalStyles.subText}>Rate It Now</Text>
         </View>
       </TouchableHighlight>
     )
   }
+
   renderFullDetailHeader () {
     return (
+      <View>
       <View style={modalStyles.fullName}
         onPress={this.toggleFull.bind(this)}>  
           <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
-          <Text>{this.props.estab.address} ({this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : "No Phone"})</Text> 
+          <Text>{this.props.estab.address} </Text><Text>{this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : ""}</Text> 
           <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text>
+
+      </View>
+      <View style={{height: 2, marginLeft: 30, backgroundColor: '#5BA7C8'}}></View>
       </View>
     )
   }
 
-          //   <Image
-          // style={modalStyles.briefImage}
-          // source={{uri: this.props.estab.imageUrl}}/>  
   renderVoteHeader () {
     return (
-     <View style={modalStyles.briefModal}>
+      <View>
           <View style={modalStyles.voteHeader}> 
             <Text style={{ paddingTop: 20, flex:2, fontWeight:'bold', fontSize: 20, alignSelf: 'center', color: '#0F172E' }}> How was {this.props.estab.name}?</Text>
-            <View style={{height: 2, margin: 10, backgroundColor: 'grey'}}></View>
           </View>
-      </View>
+          <View style={{height: 2, marginLeft: 30, backgroundColor: 'grey'}}></View>
+          </View>
     )  
   }
   renderFull () {
@@ -247,17 +255,22 @@ export default class DetailModal extends Component {
               source={{uri: big}}/>}
             {this.state.voting ? this.renderVoteHeader() : this.renderFullDetailHeader()}
             
-            {this.state.voting ? this.renderVoteScreen() : this.renderVoteButton()}
+
 
             <View onPress={this.toggleFull.bind(this)}>
               {this.props.estab.userVotes.length&&!this.state.voting ? this.renderFullUserVotes() : null}
               {this.state.voting ? null : this.renderFullDetails()}
             </View>
+          
+
+            {this.state.voting ? this.renderVoteScreen() : this.renderVoteButton()}
+
           </View>
         </View>
       </TouchableHighlight>
     )
   }
+
   renderBrief () {
     return (
       <TouchableHighlight  onPress={this.toggleFull.bind(this)}>
@@ -275,6 +288,7 @@ export default class DetailModal extends Component {
       </TouchableHighlight>
     )
   }
+
   render () {
     return (
       <View>
@@ -283,7 +297,6 @@ export default class DetailModal extends Component {
     )
   }
 };
-
 
 var modalStyles = StyleSheet.create({
   ex: {
@@ -296,7 +309,7 @@ var modalStyles = StyleSheet.create({
     flexDirection:'row',
     width:width, 
     // height:height/8 , 
-    backgroundColor:'#F5F2E0', //left side of the box
+    backgroundColor:'#fbfbf0', //left side of the box
     borderTopColor: '#E4DFAF',
     borderTopWidth: 3,
   },
@@ -306,21 +319,21 @@ var modalStyles = StyleSheet.create({
     padding: 10,
     height: height/8,
     // width: width - (height/8)-20,
-    backgroundColor: '#F5F2E0', //right side of the box
+    backgroundColor: '#fbfbf0', //right side of the box
     // borderTopColor: 'grey',
     // borderTopWidth: 3,
     // borderColor: 'rgba(34, 224, 0, 0.4)',
     // borderWidth: 1
   },
   fullModal: {
-    backgroundColor: 'white',
+    backgroundColor: '#fbfbf0',
     width:width, 
     height:height, 
   },
-  info: {
-    padding: 5,
-    // backgroundColor:'white',
-    borderColor: 'rgba(34, 224, 0, 0.4)',
+  info: {  //all vote score summary
+    // padding: 5,
+    backgroundColor:'transparent',
+    borderColor: 'transparent',  //
     borderWidth: 5
   },
   briefImage: {
@@ -341,16 +354,17 @@ var modalStyles = StyleSheet.create({
     width:width,
     height: height/3
   },
-  fullName: {
-    padding: 5,
-    backgroundColor:'white',
-    borderColor: 'red',
+  fullName: {  //top box
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor:'transparent',
+    borderColor: 'transparent',
     borderWidth: 5
   },
-  myVotes: {
-    padding: 5,
-    backgroundColor:'white',
-    borderColor: 'blue',
+  myVotes: {   //votes on previous visit //middle box
+    paddingLeft: 10,
+    backgroundColor:'transparent',
+    borderColor: 'transparent',
     borderWidth: 5
   },
   voteScreen: {
@@ -368,13 +382,6 @@ var modalStyles = StyleSheet.create({
     margin: width/80,
     justifyContent: 'center',
   },
-  voteButtonText: {
-    fontSize: 24,
-    backgroundColor: 'transparent',
-    color: 'white',
-    textAlign: 'center',
-    fontWeight:'bold',
-  },
   voteHeader: {  //voteview top question area
     flex:2, 
     alignSelf: 'center',
@@ -383,7 +390,7 @@ var modalStyles = StyleSheet.create({
     paddingTop: 20,
     // height: height/8,
     width: width - (height/8)-20,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     // borderColor: 'rgba(34, 224, 0, 0.4)',
     // borderWidth: 5
   },
@@ -391,7 +398,7 @@ var modalStyles = StyleSheet.create({
     padding: 10,
     paddingLeft: 25,
     fontWeight:'bold',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     fontSize: 16,
     // fontWeight: 'bold',
     color: '#0F172E', //color for your preferences
@@ -400,23 +407,22 @@ var modalStyles = StyleSheet.create({
   voteHeaderText: {
     textAlign: 'center'
   },
-  submitVote: {
-    flex: 2,
+  submitVote: { 
+    height: 40,
     width: 384,
     padding: 20,
-    paddingTop: 20,
     // height: height/10,
-    backgroundColor: '#BAD1E8', //universalblue
+    backgroundColor: '#5BA7C8', //universalblue
     alignSelf: 'center',
     justifyContent: 'center',
-    borderColor: '#2F56E9',
+    borderColor: '#3986AC',
     borderWidth: 3,
     borderRadius: 6,
     margin: width/80,
     justifyContent: 'center',
   },
   subText: {
-    fontSize: 24,
+    fontSize: 20,
     backgroundColor: 'transparent',
     color: 'white',
     textAlign: 'center',
