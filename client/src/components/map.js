@@ -76,9 +76,6 @@ export default class Map extends Component {
     this.curInView = 0;
     region.longitudeDelta > .006 && this.setState({showNames: false, smallDots: true});
     region.longitudeDelta < .006 && this.setState({showNames: true, smallDots: false});
-
-    // console.log("DELTA long--->",region.longitudeDelta);
-
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
       this.setState({ region });
