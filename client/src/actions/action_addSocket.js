@@ -29,7 +29,7 @@ function addEstabToState(estabs,dispatch,socket) {
 };
 
 function saveVoteToState(voteData){
-  //voteData is an object {establishmentId, userId, time, zoneNumber, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
+  //voteData is an object {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
   var votesArray = Object.keys(voteData.votes).map(function(traitId){
     return {traitId: traitId,
             voteValue: Boolean(voteData.votes[traitId]),

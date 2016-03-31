@@ -61,7 +61,8 @@ export default class Map extends Component {
       showNames: true
     }
   }
-  
+  curInView = 0;
+
   toggle() {    
     this.setState({   
       isOpen: !this.state.isOpen,   
@@ -73,14 +74,14 @@ export default class Map extends Component {
   }
 
   onRegionChange(region) {
-    region.longitudeDelta > .005 && this.setState({showNames: false});
-    region.longitudeDelta < .005 && this.setState({showNames: true});
+    this.curInView = 0;
+    region.longitudeDelta > .006 && this.setState({showNames: false});
+    region.longitudeDelta < .006 && this.setState({showNames: true});
 
-    console.log("DELTA long--->",region.longitudeDelta);
+    // console.log("DELTA long--->",region.longitudeDelta);
 
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
     function getEstabs(){
-      console.log('Got into region change');
       this.setState({ region });
       var oldUserZone = this.props.user.userZone;
       var userId = this.props.user.id;
@@ -89,7 +90,7 @@ export default class Map extends Component {
     }
     //Run getEstabs one second after moving stopped;
     clearTimeout(timeout);
-    timeout = setTimeout(getEstabs.bind(this),1000);
+    timeout = setTimeout(getEstabs.bind(this),500);
   }
 
   changeTrait() {
@@ -113,12 +114,16 @@ export default class Map extends Component {
     var eastLimit = this.state.region.longitude + this.state.region.longitudeDelta/2;
     var southLimit = this.state.region.latitude - this.state.region.latitudeDelta/2;
     var northLimit = this.state.region.latitude + this.state.region.latitudeDelta/2;
-    return longitude > westLimit && longitude < eastLimit && latitude > southLimit && latitude < northLimit;
+
+    return longitude > westLimit && longitude < eastLimit && latitude > southLimit && latitude < northLimit
   }
 
   renderMarkers(){
+    this.curInView = 0;
     return _.map(this.props.allData.establishments, (est) => {
       if(this.inView(est.latitude,est.longitude)){
+        console.log(this.curInView);
+        this.curInView++;
         return (
           <MapView.Marker
             key={est.id}
@@ -130,9 +135,8 @@ export default class Map extends Component {
                 <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
               </View>
             </View>
-            {this.state.showNames && <View>
-              <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>{est.name}</Text>
-              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>LV:{this.props.allData.userComboScore[est.id].liveScore}/10, HS: {this.props.allData.userComboScore[est.id].histScore}/10</Text>
+            {(this.state.showNames || this.state.selectedEstab === est.id || this.curInView < 15) && <View>
+              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>{est.id}: {est.name}</Text>
             </View>}
           </MapView.Marker>
         )
@@ -141,7 +145,8 @@ export default class Map extends Component {
   }
 
   renderModal(){
-    console.log('RERENDER MODAL');
+
+    console.log('est', this.state.selectedEstab);
     return <DetailModal 
               userTraits={this.props.user.traitCombo} 
               estab = {this.props.allData.establishments[this.state.selectedEstab]}

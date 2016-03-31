@@ -54,8 +54,9 @@ io.on('connect', function(socket){
 
   // incoming vote
   socket.on('userVoted', function (voteDetails){
-    //voteDetails is an object {establishmentId, userId, time, zoneNumber, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
+    //voteDetails is an object {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
     //Immediately emit new vote to all users in the vote zone
+    // console.log('vote rec -->' , voteDetails);
     io.to(voteDetails.zoneNumber).emit('voteAdded', voteDetails);
     voteCtrl.addVotes(voteDetails);
   });
