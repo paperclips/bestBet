@@ -223,7 +223,7 @@ export default class DetailModal extends Component {
       <View style={modalStyles.fullName}
         onPress={this.toggleFull.bind(this)}>  
           <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
-          <Text>Address: {this.props.estab.address} </Text><Text>Phone: ({this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : "No Phone"})</Text> 
+          <Text>{this.props.estab.address} </Text><Text>{this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : ""}</Text> 
           <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text>
 
       </View>
