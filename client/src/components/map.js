@@ -229,12 +229,12 @@ export default class Map extends Component {
         <TouchableOpacity style={styles.mapStyles.logoutButton} onPress={this.toggleLogoutConfirm.bind(this)}>
           <Image source={{ uri: 'http://image005.flaticon.com/1/png/128/56/56805.png', width: windowSize.height/35, height: windowSize.height/35, opacity: .3}} />   
         </TouchableOpacity>
-        {this.state.logoutConfirm && (<View style={styles.mapStyles.buttonContainer}>
+        {this.state.logoutConfirm && (<View style={styles.mapStyles.menuContainer}>
           <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={() => this.logOut()}>
             <Text style={{ fontSize: 10, fontWeight: 'bold' }}>Logout</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={this.toggleLogoutConfirm.bind(this)}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>cancel</Text>
+            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>Cancel</Text>
           </TouchableOpacity> 
           </View>)
             }

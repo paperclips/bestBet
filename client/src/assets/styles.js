@@ -205,6 +205,13 @@ var mapStyles = StyleSheet.create({
     marginBottom: 30
     // backgroundColor: 'pink',
   },
+  menuContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    marginVertical: 20,
+    marginHorizontal: 100
+  },
   otherTraitContainer: {
     width: windowSize.width-50,
     alignItems: 'stretch',
