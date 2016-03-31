@@ -146,9 +146,11 @@ var mapStyles = StyleSheet.create({
     top: 10,
     padding: 10,
   },
-  sandwichButton: {
+  logoutButton: {
+    backgroundColor: 'transparent',
     marginTop: 20,
     marginLeft: 20,
+    right: windowSize.width/30,
     position: 'absolute'
   },
   map: {
@@ -188,6 +190,7 @@ var mapStyles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 20,
     backgroundColor: 'transparent',
+    alignItems: 'center'
   },
   otherTraitContainer: {
     width: windowSize.width-50,
