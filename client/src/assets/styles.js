@@ -252,7 +252,7 @@ var userDot = {
 
 var histHW = 25;
 
-var histStyles = {
+var liveStyles = {
   0:{
     alignSelf: 'center',
     justifyContent: 'center',
@@ -368,9 +368,9 @@ var histStyles = {
   
 };
 
-var liveHW = 40;
+var liveHW = 27;
 
-var liveStyles = {
+var histStyles = {
   0:{
     alignSelf: 'center',
     justifyContent: 'center',
@@ -379,7 +379,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor:'rgba(0, 0, 0, 0.3)'
+    borderColor:'rgba(0, 0, 0, 1)'
   },
   1:{
     alignSelf: 'center',
@@ -389,7 +389,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(255, 0, 0, 0.5)',
+    borderColor: 'rgba(255, 0, 0, 1)',
 
   },
   2:{
@@ -400,7 +400,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(255, 0, 0, 0.5)',
+    borderColor: 'rgba(255, 0, 0, 1)',
   },
   3:{
     alignSelf: 'center',
@@ -410,7 +410,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(209, 0, 0, 0.2)',
+    borderColor: 'rgba(209, 0, 0, 1)',
   },
   4:{
     alignSelf: 'center',
@@ -420,7 +420,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(209, 0, 0, 0.2)',
+    borderColor: 'rgba(209, 0, 0, 1)',
   
   },
   5:{
@@ -431,7 +431,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(245, 241, 0, 0.2)',
+    borderColor: 'rgba(245, 241, 0, 1)',
     
   },
   6:{
@@ -441,7 +441,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(163, 245, 0, 0.3)',
+    borderColor: 'rgba(163, 245, 0, 1)',
   },
   7:{
    justifyContent: 'center',
@@ -451,7 +451,7 @@ var liveStyles = {
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
     alignSelf:'center',
-    borderColor: 'rgba(34, 224, 0, 0.5)',
+    borderColor: 'rgba(34, 224, 0, 1)',
   },
   8:{
     justifyContent: 'center',
@@ -461,7 +461,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(34, 224, 0, 0.5)',
+    borderColor: 'rgba(34, 224, 0, 1)',
   },
   9:{
     justifyContent: 'center',
@@ -471,7 +471,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(34, 224, 0, 0.6)',
+    borderColor: 'rgba(34, 224, 0, 1)',
   },
   10:{
     justifyContent: 'center',
@@ -481,7 +481,7 @@ var liveStyles = {
     width:liveHW,
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
-    borderColor: 'rgba(34, 224, 0, 0.7)',
+    borderColor: 'rgba(34, 224, 0, 1)',
   }
   
 };

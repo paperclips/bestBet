@@ -9,7 +9,7 @@ var addVotes = function (voteDetails) {
                 userId: voteDetails.userId,
                 voteValue: voteDetails.votes[key],
                 time: voteDetails.time,
-                zoneNumber: voteDetails.zoneNumber};
+              };
 
     Votes.create(vote);
     addVoteToHistory(voteDetails.establishmentId,key,voteDetails.votes[key]);
