@@ -59,7 +59,9 @@ io.on('connect', function(socket){
 
     //Find zoneNumber for this vote:
     estabCtrl.getEstabZoneNumber(voteDetails.establishmentId).then(function(est){
-      io.to(est.zoneNumber).emit('voteAdded', voteDetails);
+      if(est){
+        io.to(est.zoneNumber).emit('voteAdded', voteDetails);
+      }
     });
     
     voteCtrl.addVotes(voteDetails);
