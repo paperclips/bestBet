@@ -210,11 +210,11 @@ export default class Map extends Component {
 
           <View style={styles.mapStyles.buttonContainer}>
             {this.props.user.traitCombo.length<3 && <TouchableHighlight key = {-1} onPress={this.toggleChangingTraits.bind(this, -1)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
-              <Text style={{ fontSize: 10, fontWeight: 'bold' }}>+</Text>
+              <Text style={{ fontSize: 13, fontWeight: 'bold' }}>+</Text>
             </TouchableHighlight>}
             {_.map(this.props.user.traitCombo, (trait) => (
               <TouchableHighlight key={trait} onPress={this.toggleChangingTraits.bind(this, trait)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
-                <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
+                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
               </TouchableHighlight>
             ))}
             <TouchableOpacity style={styles.mapStyles.goToUser} onPress={() => this.resetToUser()}>

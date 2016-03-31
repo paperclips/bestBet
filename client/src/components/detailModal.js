@@ -83,18 +83,19 @@ export default class DetailModal extends Component {
   renderFullUserVotes () {
     var traitTracker = {};
     return (
-      <View style={modalStyles.myVotes}
-        onPress={this.toggleFull.bind(this)}>
-        <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black', textAlign: 'right'}}> You visited this place on {new Date(this.props.allData.establishments[this.props.estab.id].userVotes[this.props.estab.userVotes.length-1].time).toDateString()}</Text>
-        <Text style={{ textAlign: 'right'}}>On that visit, you ... </Text>
-          {_.map(this.props.allData.establishments[this.props.estab.id].userVotes, (vote) => {
-            if(!traitTracker.hasOwnProperty(vote.traitId)) {
-              traitTracker[vote.traitId] = true;
-              return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'grey', textAlign: 'right' }}>Voted {vote.voteValue ? "good" : "bad"} for {traitNames[vote.traitId]} </Text>
-            }
-          })}
-          <View style={{height: 2, marginLeft: 30, backgroundColor: '#5BA7C8'}}></View>
-
+      <View>
+        <View style={modalStyles.myVotes}
+          onPress={this.toggleFull.bind(this)}>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black', textAlign: 'right'}}> You visited this place on {new Date(this.props.allData.establishments[this.props.estab.id].userVotes[this.props.estab.userVotes.length-1].time).toDateString()}</Text>
+          <Text style={{ textAlign: 'right'}}>On that visit, you ... </Text>
+            {_.map(this.props.allData.establishments[this.props.estab.id].userVotes, (vote) => {
+              if(!traitTracker.hasOwnProperty(vote.traitId)) {
+                traitTracker[vote.traitId] = true;
+                return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'grey', textAlign: 'right' }}>Voted {vote.voteValue ? "good" : "bad"} for {traitNames[vote.traitId]} </Text>
+              }
+            })}
+        </View>
+        <View style={{height: 2, marginLeft: 30, backgroundColor: '#5BA7C8', marginTop: 3}}></View>
       </View>
     )
   }
@@ -417,7 +418,7 @@ var modalStyles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: '#3986AC',
     borderWidth: 3,
-    borderRadius: 6,
+    borderRadius: 20,
     margin: width/80,
     justifyContent: 'center',
   },
