@@ -23,8 +23,8 @@ var signupStyles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   mark: {
-    width: 150,
-    height: 150
+    width: 200,
+    height: 275
   },
   signInHeader:{
     flexDirection: 'row',

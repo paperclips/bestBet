@@ -17,11 +17,13 @@ var addVotes = function (voteDetails) {
 };
 
 var addVoteToHistory = function (establishmentId, traitId, vote) {
-  Establishments.findOne({where: {id: establishmentId}})
-    .then(function(estab){
-      vote && estab.increment('trait' + traitId + 'Pos');
-      estab.increment('trait' + traitId + 'Tot');
-    });
+  if(establishmentId && traitId && vote){
+    Establishments.findOne({where: {id: establishmentId}})
+      .then(function(estab){
+        vote && estab.increment('trait' + traitId + 'Pos');
+        estab.increment('trait' + traitId + 'Tot');
+      });
+  }
 };
 
 module.exports = {
