@@ -5,6 +5,8 @@ var {
   Text,
   StyleSheet,
   View,
+  Image,
+  TouchableOpacity,
   TouchableHighlight,
   Dimensions
 } = React;
@@ -21,155 +23,107 @@ var traitNames = {
   9:'Veggie'
 };
 
-var { width, height } = Dimensions.get('window');
-
-
-// var styles = require('../assets/styles.js').voteStyles;
+var windowSize = Dimensions.get('window');
 
 var VoteView = React.createClass({
-  getInitialState() {
-    return {
-      
-    };
-  },
   render() {
     return (
       <View style={voteStyles.buttonContainer}>
         <TouchableHighlight 
           onPress={this.props.processVote.bind(null, this.props.traitNum, 0)}
           style={[voteStyles.preBad, this.props.vote.bad && voteStyles.bad]}>
-          <Text>Bad</Text>
+        <Text style={voteStyles.choiceBadText}>BAD</Text>
         </TouchableHighlight>
         <Text style={voteStyles.traitName}>{traitNames[this.props.traitNum]}</Text>
         <TouchableHighlight 
           onPress={this.props.processVote.bind(null, this.props.traitNum, 1)}
           style={[voteStyles.preGood, this.props.vote.good && voteStyles.good]}>
-          <Text>Good</Text>
+        <Text style={voteStyles.choiceGoodText}>GOOD</Text>
+
         </TouchableHighlight>        
       </View>
     );
   }
 });
 
+
+
+          // <Image source={require('../assets/upp.png')} style={{width: 31, height: 31}}/>   
+
 module.exports = VoteView;
 
 var voteStyles = StyleSheet.create({
-  container: {
-    flex:2,
-    height: height/2,
-    justifyContent: 'center',
-    paddingLeft: height/40,
-    paddingRight: height/40,
-    marginTop: height/45,
-    backgroundColor: '#f3f5f4',
-  },
   traitName: {
-    color: 'white',
-    fontWeight:'bold', 
-    fontSize: 14
+    color: 'black',
+    // fontWeight:'bold',
+    fontSize: 16,
   },
-  topSpace: {
-    marginTop: height/20,
-    backgroundColor: 'black',
+  choiceGoodText: {
+    color: '#36A156',//#36A156
+  },
+  choiceBadText: {
+    color: '#B8433d',
   },
   buttonContainer: {
-    backgroundColor: 'black',
+    flex:1,
     flexDirection: 'row',
-    height: height/14,
+    height: windowSize.height/14,
     alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  title: {
-    fontSize: 10,
-    alignSelf: 'center',
-    marginBottom: 3
-  },
-  button: {
-    position: 'absolute',
-    top: 10,
-    padding: 10,
-  },
-  buttonText: {
-    fontSize: 12,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  twoButtons: {
-    flexDirection: 'row',
-    height: height/15, 
-    paddingLeft: height/20,
-    paddingRight: height/20
-
+    justifyContent: 'space-between',
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   good: {
-    height: height/16,
-    width: width/3,
-    backgroundColor: 'green',
-    borderColor: '#48BBEC',
-    borderWidth:3,
-    borderRadius: 30,
-    margin: width/80,
+    height: windowSize.height/16,
+    width: windowSize.width/3,
+    borderColor: 'green',
+    borderWidth: 1,
+    borderRadius: 6,
+    margin: windowSize.width/80,
     justifyContent: 'center',
     flexWrap: 'wrap', 
     alignItems: 'center',
-    flexDirection:'row'
+    flexDirection:'row',
+    backgroundColor: '#B0E4AF',
   },
   bad: {
-    width: width/3,
-    height: height/16,
-    backgroundColor: 'red',
-    borderColor: '#007dc1',
-    borderWidth: 3,
-    borderRadius: 30,
-    margin: width/80,
+    width: windowSize.width/3,
+    height: windowSize.height/16,
+    borderColor: 'red',
+    borderWidth: 1,
+    borderRadius: 6,
+    margin: windowSize.width/80,
     justifyContent: 'center',
     flexWrap: 'wrap', 
     flexDirection:'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#EBC2D1',
   },
   preGood: {
-    height: height/16,
-    width: width/3,
-    backgroundColor: 'white',
-    borderColor: 'green',
-    borderWidth:3,
-    borderRadius: 30,
-    margin: width/80,
+    height: windowSize.height/16,
+    width: windowSize.width/3,
+    margin: windowSize.width/80,
+    borderColor: 'grey',
+    borderWidth: 1,
+    borderRadius: 6,
     justifyContent: 'center',
     flexWrap: 'wrap', 
     alignItems: 'center',
     flexDirection:'row'
   },
   preBad: {
-    width: width/3,
-    height: height/16,
-    backgroundColor: 'white',
-    borderColor: 'red',
-    borderWidth: 3,
-    borderRadius: 30,
-    margin: width/80,
+    width: windowSize.width/3,
+    height: windowSize.height/16,
+    // backgroundColor: 'white',
+    borderColor: 'grey',
+    borderWidth: 1,
+    borderRadius: 6,
+    // borderRadius: 30,
+    margin: windowSize.width/80,
     justifyContent: 'center',
     flexWrap: 'wrap', 
     flexDirection:'row',
     alignItems: 'center'
-  },
-  subContainer: {
-    backgroundColor: 'red',
-    flexDirection: 'row',
-    height: height/14,
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-  buttonContainer: {
-    backgroundColor: 'black',
-    flexDirection: 'row',
-    height: height/14,
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-    error: {
-    fontSize: 12,
-    color: 'red',
   }
 });
 

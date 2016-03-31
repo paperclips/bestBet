@@ -53,7 +53,7 @@ var signupStyles = StyleSheet.create({
     color: '#000'
   },
   signin: {
-    backgroundColor: '#FF3366',
+    backgroundColor: '#5BA7C8', //theme color blue
     padding: 20,
     alignItems: 'center'
   },
@@ -63,7 +63,7 @@ var signupStyles = StyleSheet.create({
     flex: .15
   },
   traits: {
-    backgroundColor: '#FF3366',
+    backgroundColor: '#5BA7C8', //theme color blue
     justifyContent: 'center',
     alignItems: 'center',
     padding: 30,
