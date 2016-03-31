@@ -123,6 +123,9 @@ var signupStyles = StyleSheet.create({
 });
 
 var mapStyles = StyleSheet.create({
+  goToUser: {
+    backgroundColor: 'transparent',
+  },
   container: {
     position: 'absolute',
     top: 0,
@@ -151,7 +154,7 @@ var mapStyles = StyleSheet.create({
     bottom: 0,
   },
   bubble: {
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(0, 121, 214, 0.4)',
     paddingHorizontal: 18,
     paddingVertical: 12,
     borderRadius: 20,
@@ -166,11 +169,31 @@ var mapStyles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 10,
   },
+  otherButton: {
+    backgroundColor: 'rgba(255, 207, 87, 0.58)',
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+    borderRadius: 20,
+    width: 80,
+    alignItems: 'center',
+    marginHorizontal: 5,
+    marginVertical: 5
+  },
   buttonContainer: {
     flexDirection: 'row',
     marginVertical: 20,
     backgroundColor: 'transparent',
   },
+  otherTraitContainer: {
+    width: windowSize.width-50,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 10,
+    backgroundColor: 'transparent',
+  }
+
 });
 
 var appStyles = StyleSheet.create({

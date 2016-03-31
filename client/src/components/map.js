@@ -52,14 +52,15 @@ export default class Map extends Component {
         latitude: this.props.user.latitude, 
         longitude: this.props.user.longitude,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
+        longitudeDelta: LONGITUDE_DELTA
+    }, 
       isOpen: false,
       selectedEstab: -1,
       showDetails: false,
-      modal:true,
+      changingTraits: false,
       showNames: true,
-      smallDots: false
+      smallDots: false,
+      oldTrait: -1
     }
   }
   curInView = 0;
@@ -93,21 +94,53 @@ export default class Map extends Component {
     clearTimeout(timeout);
     timeout = setTimeout(getEstabs.bind(this),500);
   }
-
-  changeTrait() {
-    console.log(this.state.region);
-    // console.log(this.props.user.traitCombo);
-    // var newTraits = [Math.floor(Math.random()*3+1),Math.floor(Math.random()*3+4),Math.floor(Math.random()*3+7)]
-    // this.props.resetTraits(null,null,newTraits);
-    // console.log(this.props.user.traitCombo);
+  toggleChangingTraits (old) {
+    this.setState({changingTraits: !this.state.changingTraits, oldTrait:Number(old)});
   }
-
-  displayDetails (id) {
-    this.setState({showDetails: true, selectedEstab:id});
+  renderOtherTraits() {
+    return(
+    _.map(traitNames, (trait, key) => (
+      (this.props.user.traitCombo.indexOf(Number(key)) < 0) && 
+        <TouchableHighlight key = {trait} onPress={this.sendNewTrait.bind(this, this.state.oldTrait, key)} style={styles.mapStyles.otherButton}>
+          <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{trait}</Text>
+        </TouchableHighlight>
+        )
+      )
+    )
   }
-
-  hideDetails () {
-    this.setState({showDetails: false, selectedEstab:-1});
+  sendNewTrait (oldTrait, newTrait) {
+    console.log(this.props.user.traitCombo);
+    var traits = this.props.user.traitCombo;
+    if (newTrait === -1) {
+      traits.splice(this.props.user.traitCombo.indexOf(oldTrait),1);
+    } else if(oldTrait === -1) {
+      traits.push(Number(newTrait));
+    } else {
+      traits.forEach(function (trait, key) {
+        console.log(trait, key);
+        if(trait === oldTrait) {
+          traits[key] = Number(newTrait);
+        } 
+      });  
+    }
+    this.props.resetTraits(this.props.user.id, this.props.socket, traits);
+    this.setState({changingTraits:false});
+    console.log(this.props.user.traitCombo);
+  }
+  resetToUser() {
+    this.refs.map.animateToCoordinate({
+      latitude: this.props.user.latitude, 
+      longitude: this.props.user.longitude},
+      200
+    );  
+  }
+  toggleDetails (id) {
+    (this.state.showDetails && id === this.state.selectedEstab) ? this.setState({showDetails: false, selectedEstab:-1}) : this.setState({showDetails: true, selectedEstab:id});
+  }
+  onMapPress (e) {
+    if (e.nativeEvent.coordinate && this.state.showDetails) {
+      this.setState({showDetails: false, selectedEstab:-1});
+    }
   }
 
   inView (latitude,longitude) {
@@ -128,7 +161,7 @@ export default class Map extends Component {
           <MapView.Marker
             key={est.id}
             coordinate={{latitude:est.latitude, longitude: est.longitude}}
-            onPress={this.displayDetails.bind(this, est.id)}
+            onPress={this.toggleDetails.bind(this, est.id)}
           >
             {this.state.smallDots ? (this.props.allData.userComboScore[est.id].liveScore ? <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].liveScore]}/> : (this.props.allData.userComboScore[est.id].userScore!==2 ? <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/> : <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].histScore]}/>)) : 
               <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
@@ -138,7 +171,7 @@ export default class Map extends Component {
               </View>
              }
             {(this.state.showNames || this.state.selectedEstab === est.id || this.curInView < 10) && <View>
-              <Text style={{fontSize: 11, color: 'black'}}>{est.id}: {est.name}</Text>
+              <Text style={{fontSize: 11, color: 'black'}}>{est.name}</Text>
             </View>}
           </MapView.Marker>
         )
@@ -173,28 +206,42 @@ export default class Map extends Component {
             showsPointsOfInterest={false}
             initialRegion = {this.state.region}
             onRegionChange={this.onRegionChange.bind(this)}
+            onPress={(e) => this.onMapPress(e)}
           >
 
           {this.props.allData.establishments && this.renderMarkers.call(this)}
 
           </MapView>
+          <View style={styles.mapStyles.otherTraitContainer}>
+          {this.state.changingTraits && this.renderOtherTraits.call(this)}
+          {this.state.changingTraits && this.props.user.traitCombo.length>1 && <TouchableHighlight key={-1} onPress={this.sendNewTrait.bind(this, this.state.oldTrait, -1)} style={styles.mapStyles.otherButton}>
+        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>-</Text>
+      </TouchableHighlight>}
+          </View>
 
           <View style={styles.mapStyles.buttonContainer}>
+            {this.props.user.traitCombo.length<3 && <TouchableHighlight key = {-1} onPress={this.toggleChangingTraits.bind(this, -1)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold' }}>+</Text>
+            </TouchableHighlight>}
             {_.map(this.props.user.traitCombo, (trait) => (
-              <TouchableHighlight key = {trait} onPress={this.changeTrait.bind(this)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
+              <TouchableHighlight key={trait} onPress={this.toggleChangingTraits.bind(this, trait)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
                 <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
               </TouchableHighlight>
             ))}
+            <TouchableOpacity style={styles.mapStyles.goToUser} onPress={() => this.resetToUser()}>
+              <Image source={{ uri: 'http://i.stack.imgur.com/SX0qW.png', width: windowSize.height/18, height: windowSize.height/18}} />   
+            </TouchableOpacity>   
           </View>
-
           <View >
             {this.state.showDetails && this.props.allData.establishments[this.state.selectedEstab] && this.renderModal.call(this)}
           </View>
         </View>
+    
         <TouchableOpacity style={styles.mapStyles.sandwichButton} onPress={() => this.toggle()}>
           <Image source={{ uri: 'http://i.imgur.com/vKRaKDX.png', width: windowSize.height/20, height: windowSize.height/20 }} />   
         </TouchableOpacity>
-      </View> 
+         
+        </View> 
       </SideMenu>
     );
   }
