@@ -121,7 +121,7 @@ var signupStyles = StyleSheet.create({
     marginTop: 15,
     paddingLeft: 10,
     fontSize: 16,
-    color: '#FFF'
+    color: 'red'
   }
 });
 
