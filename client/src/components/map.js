@@ -71,7 +71,7 @@ export default class Map extends Component {
 
   onRegionChange(region) {
     this.curInView = 0;
-    console.log(region.longitudeDelta);
+    // console.log(region.longitudeDelta);
     region.longitudeDelta > .006 && this.setState({smallDots: true});
     region.longitudeDelta < .006 && this.setState({smallDots: false});
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
