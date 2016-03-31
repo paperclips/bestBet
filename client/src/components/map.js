@@ -1,5 +1,4 @@
 import React, { Component } from 'react-native';
-import Menu from './menu';  
 
 var Dimensions = require('Dimensions');   
 var windowSize = Dimensions.get('window');    
