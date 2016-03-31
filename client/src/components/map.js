@@ -102,12 +102,11 @@ export default class Map extends Component {
     // console.log(this.props.user.traitCombo);
   }
   resetToUser() {
-    this.setState({region: {
+    this.refs.map.animateToCoordinate({
       latitude: this.props.user.latitude, 
-      longitude: this.props.user.longitude,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA}});
-    console.log(this.props.user.latitude);
+      longitude: this.props.user.longitude},
+      200
+    );  
   }
   toggleDetails (id) {
     (this.state.showDetails && id === this.state.selectedEstab) ? this.setState({showDetails: false, selectedEstab:-1}) : this.setState({showDetails: true, selectedEstab:id});
