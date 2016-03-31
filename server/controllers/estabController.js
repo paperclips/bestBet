@@ -17,6 +17,12 @@ var getEstabsInZones = function(userId, zones) {
                                           ]});
 };
 
+var getEstabZoneNumber = function(estId){
+  return Establishments.findOne({where: {id: estId}, attributes: ['zoneNumber'], raw: true});
+};
+
+
 module.exports = {
-  getEstabsInZones: getEstabsInZones
+  getEstabsInZones: getEstabsInZones,
+  getEstabZoneNumber: getEstabZoneNumber
 };

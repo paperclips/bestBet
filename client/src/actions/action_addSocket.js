@@ -45,10 +45,9 @@ function saveVoteToState(voteData){
   var estId = voteData.establishmentId;
   var estAllTraits = allData.allTraits[estId];
   var userTraitCombo = user.traitCombo;
-  var scoreObj = calcEstScores(user.id, estAllTraits,userTraitCombo, voteData);//{allTraits, userComboScore}
-
-  var updateObject = {estId: estId, votes: votesArray, userVotes: userVotes, allTraits: scoreObj.allTraits, userComboScore: scoreObj.userComboScore};
-
+  var scoreObj = calcEstScores(user.id, estAllTraits, userTraitCombo, voteData);//{estTraitScores, userComboScore}
+  var updateObject = {estId: estId, votes: votesArray, userVotes: userVotes, allTraits: scoreObj.estTraitScores, userComboScore: scoreObj.userComboScore};
+  
   return {
     type: ADD_VOTE,
     payload: updateObject

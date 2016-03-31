@@ -18,12 +18,12 @@ export default function (state = {}, action) {
       var newUserComboScore = action.payload.userComboScore;
 
       if(newState.establishments[estId]){
-        console.log('VOTES FOR ASIAN BOX:',newState.establishments[estId].Votes.length);
         newState.establishments[estId].Votes = newState.establishments[estId].Votes.concat(newVotesArr);
         newState.establishments[estId].userVotes = newState.establishments[estId].userVotes.concat(newUserVotesArr);
         newState.allTraits[estId] = newAllTraitsScores;
         newState.userComboScore[estId] = newUserComboScore;
       }
+      
       return newState;
     case REPLACE_ESTABS:
       return action.payload;
