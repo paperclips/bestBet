@@ -88,8 +88,8 @@ export function updateEstUserComboScores(userTraitCombo,estTraitScores){
     lt += estTraitScores[traitId].lt
     ut += estTraitScores[traitId].ut;
   });
-  let histScore = ht === 0 ? 0 : Math.round(hp/userTraitCombo.length*10);
-  let liveScore = lt === 0 ? 0 : Math.round(lp/userTraitCombo.length*10);
+  let histScore = ht === 0 ? 0 : Math.max(1,Math.round(hp/userTraitCombo.length*10));
+  let liveScore = lt === 0 ? 0 : Math.max(1,Math.round(lp/userTraitCombo.length*10));
   let userScore = ut === 0 ? 2 : Math.round(up/userTraitCombo.length);
 
   return {histScore, liveScore, userScore};

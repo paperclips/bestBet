@@ -137,8 +137,8 @@ export default class Map extends Component {
                 </View>
               </View>
              }
-            {(this.state.showNames || this.state.selectedEstab === est.id || this.curInView < 15) && <View>
-              <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>{est.id}: {est.name}</Text>
+            {(this.state.showNames || this.state.selectedEstab === est.id || this.curInView < 10) && <View>
+              <Text style={{fontSize: 11, color: 'black'}}>{est.id}: {est.name}</Text>
             </View>}
           </MapView.Marker>
         )
