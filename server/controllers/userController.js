@@ -34,6 +34,7 @@ var getUserTraits = function(userId){
 };
 
 var setUserTraits = function(data){
+  console.log(data.traitCombo);
   return Users_Traits.findOrCreate({where: {userId: data.userId}, raw: true, defaults:{traitCombo: data.traitCombo}})
               .spread(function(user, created) {
                 //If user already exists, update traits

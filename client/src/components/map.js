@@ -109,17 +109,21 @@ export default class Map extends Component {
     )
   }
   sendNewTrait (oldTrait, newTrait) {
-    console.log(oldTrait, newTrait);
     console.log(this.props.user.traitCombo);
     var traits = this.props.user.traitCombo;
-    traits.forEach(function (trait, key) {
-      console.log(trait, key);
-      if(trait === oldTrait) {
-        traits[key] = Number(newTrait)  ;
-      }
-    });
-    console.log(traits);
-    this.props.resetTraits(this.props.user, this.props.socket, traits);
+    if (newTrait === -1) {
+      traits.splice(this.props.user.traitCombo.indexOf(oldTrait),1);
+    } else if(oldTrait === -1) {
+      traits.push(Number(newTrait));
+    } else {
+      traits.forEach(function (trait, key) {
+        console.log(trait, key);
+        if(trait === oldTrait) {
+          traits[key] = Number(newTrait);
+        } 
+      });  
+    }
+    this.props.resetTraits(this.props.user.id, this.props.socket, traits);
     this.setState({changingTraits:false});
     console.log(this.props.user.traitCombo);
   }
@@ -210,9 +214,15 @@ export default class Map extends Component {
           </MapView>
           <View style={styles.mapStyles.otherTraitContainer}>
           {this.state.changingTraits && this.renderOtherTraits.call(this)}
+          {this.state.changingTraits && this.props.user.traitCombo.length>1 && <TouchableHighlight key={-1} onPress={this.sendNewTrait.bind(this, this.state.oldTrait, -1)} style={styles.mapStyles.otherButton}>
+        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>-</Text>
+      </TouchableHighlight>}
           </View>
 
           <View style={styles.mapStyles.buttonContainer}>
+            {this.props.user.traitCombo.length<3 && <TouchableHighlight key = {-1} onPress={this.toggleChangingTraits.bind(this, -1)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold' }}>+</Text>
+            </TouchableHighlight>}
             {_.map(this.props.user.traitCombo, (trait) => (
               <TouchableHighlight key={trait} onPress={this.toggleChangingTraits.bind(this, trait)} style={[styles.mapStyles.bubble, styles.mapStyles.button]}>
                 <Text style={{ fontSize: 9, fontWeight: 'bold' }}>{traitNames[trait]}</Text>
