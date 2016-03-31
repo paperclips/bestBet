@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react-native';
 import background from '../assets/background1.jpg';
-import logo from '../assets/directions-icon.png';
+import logo from '../assets/logo2.png';
 var Dimensions = require('Dimensions');
 var windowSize = Dimensions.get('window');
 var styles = require('../assets/styles.js').signupStyles;
@@ -45,7 +45,6 @@ export default class Login extends Component {
         <Image style={styles.bg} source={background} resizeMode='cover' />
         <View style={styles.header}>
           <Image style={styles.mark} source={logo} />
-          <Text style={styles.logoText}>Best Bet</Text>
         </View>
         <View style={styles.inputs}>
           <View style={styles.inputContainer}>
