@@ -58,7 +58,8 @@ export default class Map extends Component {
       selectedEstab: -1,
       showDetails: false,
       modal:true,
-      showNames: true
+      showNames: true,
+      smallDots: false
     }
   }
   curInView = 0;
@@ -75,8 +76,8 @@ export default class Map extends Component {
 
   onRegionChange(region) {
     this.curInView = 0;
-    region.longitudeDelta > .006 && this.setState({showNames: false});
-    region.longitudeDelta < .006 && this.setState({showNames: true});
+    region.longitudeDelta > .006 && this.setState({showNames: false, smallDots: true});
+    region.longitudeDelta < .006 && this.setState({showNames: true, smallDots: false});
 
     // console.log("DELTA long--->",region.longitudeDelta);
 
@@ -122,7 +123,6 @@ export default class Map extends Component {
     this.curInView = 0;
     return _.map(this.props.allData.establishments, (est) => {
       if(this.inView(est.latitude,est.longitude)){
-        console.log(this.curInView);
         this.curInView++;
         return (
           <MapView.Marker
@@ -130,11 +130,13 @@ export default class Map extends Component {
             coordinate={{latitude:est.latitude, longitude: est.longitude}}
             onPress={this.displayDetails.bind(this, est.id)}
           >
-            <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
-              <View style={styles.liveStyles[this.props.allData.userComboScore[est.id].liveScore]}>
-                <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
+            {this.state.smallDots ? (this.props.allData.userComboScore[est.id].liveScore ? <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].liveScore]}/> : (this.props.allData.userComboScore[est.id].userScore!==2 ? <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/> : <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].histScore]}/>)) : 
+              <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
+                <View style={styles.liveStyles[this.props.allData.userComboScore[est.id].liveScore]}>
+                  <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
+                </View>
               </View>
-            </View>
+             }
             {(this.state.showNames || this.state.selectedEstab === est.id || this.curInView < 15) && <View>
               <Text style={{ fontWeight:'bold', fontSize: 10, color: 'black' }}>{est.id}: {est.name}</Text>
             </View>}
@@ -145,8 +147,6 @@ export default class Map extends Component {
   }
 
   renderModal(){
-
-    console.log('est', this.state.selectedEstab);
     return <DetailModal 
               userTraits={this.props.user.traitCombo} 
               estab = {this.props.allData.establishments[this.state.selectedEstab]}
