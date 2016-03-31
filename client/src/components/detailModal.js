@@ -266,9 +266,9 @@ export default class DetailModal extends Component {
           style={modalStyles.briefImage}
           source={{uri: this.props.estab.imageUrl}}/>  
           <View style={modalStyles.briefInfo}> 
-            <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text></Text>
+            <Text style={{ flex: 1.3, textAlign: 'right', fontWeight:'bold', fontSize: 15, color: 'red' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text></Text>
             {_.map(this.props.userTraits,(trait) => (
-              <Text key={count++} style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
+              <Text key={count++} style={{flex: 1, textAlign: 'right', fontWeight:'bold', fontSize: 12, color: 'green' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
             ))}
           </View>
         </View>
@@ -291,17 +291,21 @@ var modalStyles = StyleSheet.create({
     flexDirection:'row',
     width:width, 
     // height:height/8 , 
-    backgroundColor:'white',
+    backgroundColor:'#F5F2E0', //left side of the box
+    borderTopColor: '#E4DFAF',
+    borderTopWidth: 3,
   },
   briefInfo: {
-    flex:3, 
-    alignSelf: 'flex-end',
-    padding: 5,
+    flex:5, 
+    // alignSelf: 'flex-end',
+    padding: 10,
     height: height/8,
-    width: width - (height/8)-20,
-    backgroundColor: 'white',
-    borderColor: 'rgba(34, 224, 0, 0.4)',
-    borderWidth: 5
+    // width: width - (height/8)-20,
+    backgroundColor: '#F5F2E0', //right side of the box
+    // borderTopColor: 'grey',
+    // borderTopWidth: 3,
+    // borderColor: 'rgba(34, 224, 0, 0.4)',
+    // borderWidth: 1
   },
   fullModal: {
     backgroundColor: 'white',
@@ -310,15 +314,21 @@ var modalStyles = StyleSheet.create({
   },
   info: {
     padding: 5,
-    backgroundColor:'white',
+    // backgroundColor:'white',
     borderColor: 'rgba(34, 224, 0, 0.4)',
     borderWidth: 5
   },
   briefImage: {
+    marginTop: -25,
+    borderWidth: 3,
+    borderColor: '#E4DFAF',
+    // paddingLeft: 30,
+    marginLeft: 30,
+    borderRadius: 50,
     alignSelf: 'flex-start',
     resizeMode: 'cover',
-    height: height/8,
-    width: height/8
+    height: 100,
+    width: 100,
   },
   fullImage: {
     alignSelf: 'flex-start',
@@ -391,7 +401,7 @@ var modalStyles = StyleSheet.create({
     padding: 20,
     paddingTop: 20,
     // height: height/10,
-    backgroundColor: '#5BA7C8', //universalblue
+    backgroundColor: '#BAD1E8', //universalblue
     alignSelf: 'center',
     justifyContent: 'center',
     borderColor: '#2F56E9',
