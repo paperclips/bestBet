@@ -152,7 +152,9 @@ var mapStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginTop: 20,
     marginLeft: 20,
-    right: windowSize.width/30,
+    left: windowSize.width/150,
+    top: windowSize.width/100,
+
     position: 'absolute'
   },
   map: {
