@@ -286,6 +286,11 @@ export default class DetailModal extends Component {
 
 
 var modalStyles = StyleSheet.create({
+  ex: {
+    backgroundColor: 'transparent',
+    width: 20,
+    height: 20
+  },
   briefModal: {
     flex: 2,
     flexDirection:'row',
