@@ -140,8 +140,8 @@ export default class DetailModal extends Component {
   }
   onVoteSubmit () {
     console.log('IN on vote SUBMIT, this will send out the vote');
-    //voteData is an object {establishmentId, userId, time, zoneNumber, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
-    var voteData = {establishmentId: this.props.estab.id, userId: this.props.user.id, time: new Date(), zoneNumber: this.props.user.userZone};
+    //voteData is an object {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
+    var voteData = {establishmentId: this.props.estab.id, userId: this.props.user.id, time: new Date()};
     voteData.votes = {};
     Object.keys(this.state.votes).forEach((traitId) => {
       if(this.state.votes[traitId].good){

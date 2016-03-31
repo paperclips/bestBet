@@ -25,81 +25,81 @@ export function updateZoneSubscription(socket, oldZones, newZones){
   socket.emit('joinRooms', newZones);
 };
 
+//Calculate scores for all establishments (for login and zone change events)
 export function calcAllScores(estabsObj,userCombo){
-  
   let allTraits = {};
   let userComboScore = {};
 
   _.each(estabsObj, (estab) => {
-
-    let traitScores = {1:{lp:0, lt:0, hp:estab.trait1Pos, ht:estab.trait1Tot, up:0, ut:0},
-                       2:{lp:0, lt:0, hp:estab.trait2Pos, ht:estab.trait2Tot, up:0, ut:0},
-                       3:{lp:0, lt:0, hp:estab.trait3Pos, ht:estab.trait3Tot, up:0, ut:0},
-                       4:{lp:0, lt:0, hp:estab.trait4Pos, ht:estab.trait4Tot, up:0, ut:0},
-                       5:{lp:0, lt:0, hp:estab.trait5Pos, ht:estab.trait5Tot, up:0, ut:0},
-                       6:{lp:0, lt:0, hp:estab.trait6Pos, ht:estab.trait6Tot, up:0, ut:0},
-                       7:{lp:0, lt:0, hp:estab.trait7Pos, ht:estab.trait7Tot, up:0, ut:0},
-                       8:{lp:0, lt:0, hp:estab.trait8Pos, ht:estab.trait8Tot, up:0, ut:0},
-                       9:{lp:0, lt:0, hp:estab.trait9Pos, ht:estab.trait9Tot, up:0, ut:0}};
+    let estTraitScores = {1:{lp:0, lt:0, hp:estab.trait1Pos, ht:estab.trait1Tot, up:0, ut:0},
+                          2:{lp:0, lt:0, hp:estab.trait2Pos, ht:estab.trait2Tot, up:0, ut:0},
+                          3:{lp:0, lt:0, hp:estab.trait3Pos, ht:estab.trait3Tot, up:0, ut:0},
+                          4:{lp:0, lt:0, hp:estab.trait4Pos, ht:estab.trait4Tot, up:0, ut:0},
+                          5:{lp:0, lt:0, hp:estab.trait5Pos, ht:estab.trait5Tot, up:0, ut:0},
+                          6:{lp:0, lt:0, hp:estab.trait6Pos, ht:estab.trait6Tot, up:0, ut:0},
+                          7:{lp:0, lt:0, hp:estab.trait7Pos, ht:estab.trait7Tot, up:0, ut:0},
+                          8:{lp:0, lt:0, hp:estab.trait8Pos, ht:estab.trait8Tot, up:0, ut:0},
+                          9:{lp:0, lt:0, hp:estab.trait9Pos, ht:estab.trait9Tot, up:0, ut:0}};
 
     estab.Votes.forEach((vote) => {
-      traitScores[vote.traitId].lp+=vote.voteValue;
-      traitScores[vote.traitId].lt++;
+      estTraitScores[vote.traitId].lp+=vote.voteValue;
+      estTraitScores[vote.traitId].lt++;
     });
     estab.userVotes.forEach((vote) => {
-      traitScores[vote.traitId].up+=vote.voteValue;
-      traitScores[vote.traitId].ut++;
+      estTraitScores[vote.traitId].up+=vote.voteValue;
+      estTraitScores[vote.traitId].ut++;
     });
-    allTraits[estab.id] = traitScores;
+    allTraits[estab.id] = estTraitScores;
 
     //Combined scores for user traits
-    let hp = 0, ht = 0, lp = 0, lt = 0, up = 0, ut = 0; 
-    userCombo.forEach((traitId) => {
-      traitScores[traitId].ht && (hp+=traitScores[traitId].hp/traitScores[traitId].ht);
-      traitScores[traitId].lt && (lp+=traitScores[traitId].lp/traitScores[traitId].lt);
-      traitScores[traitId].ut && (up+=traitScores[traitId].up/traitScores[traitId].ut);
-      ht += traitScores[traitId].ht
-      lt += traitScores[traitId].lt
-      ut += traitScores[traitId].ut;
-    });
-    let histScore = ht === 0 ? 0 : Math.round(hp/userCombo.length*10);
-    let liveScore = lt === 0 ? 0 : Math.round(lp/userCombo.length*10);
-    let userScore = ut === 0 ? 2 : Math.round(up/userCombo.length);
-    userComboScore[estab.id] = {histScore, liveScore, userScore};
+    userComboScore[estab.id] = updateEstUserComboScores(userCombo,estTraitScores);
   });
 
   return {allTraits, userComboScore};
 };
 
-
-export function updateScores(userId, allTraits, userTraitCombo, voteData){
-  if(allTraits){
+//Calculate scores for one establishments (for vote event)
+export function calcEstScores(userId, estTraitScores, userTraitCombo, voteData){
+  if(estTraitScores){
     Object.keys(voteData.votes).forEach((traitId) => {
-      allTraits[traitId].lp+= voteData.votes[traitId];
-      allTraits[traitId].lt++;
-      allTraits[traitId].hp+= voteData.votes[traitId];
-      allTraits[traitId].ht++;
+      estTraitScores[traitId].lp+= voteData.votes[traitId];
+      estTraitScores[traitId].lt++;
+      estTraitScores[traitId].hp+= voteData.votes[traitId];
+      estTraitScores[traitId].ht++;
       if(userId === voteData.userId){
-        allTraits[traitId].up+= voteData.votes[traitId];
-        allTraits[traitId].ut++;
+        estTraitScores[traitId].up+= voteData.votes[traitId];
+        estTraitScores[traitId].ut++;
       }
     });
   };
+  
+  let userComboScore = updateEstUserComboScores(userTraitCombo, estTraitScores);
+  return {estTraitScores, userComboScore}
+};
 
-  let hp = 0, ht = 0, lp = 0, lt = 0, up = 0, ut = 0; 
+//Calculate userComboScores for one establishment
+export function updateEstUserComboScores(userTraitCombo,estTraitScores){
+  let hp = 0, ht = 0, lp = 0, lt = 0, up = 0, ut = 0;
   userTraitCombo.forEach((traitId) => {
-    allTraits[traitId].ht && (hp+=allTraits[traitId].hp/allTraits[traitId].ht);
-    allTraits[traitId].lt && (lp+=allTraits[traitId].lp/allTraits[traitId].lt);
-    allTraits[traitId].ut && (up+=allTraits[traitId].up/allTraits[traitId].ut);
-    ht += allTraits[traitId].ht
-    lt += allTraits[traitId].lt
-    ut += allTraits[traitId].ut;
+    estTraitScores[traitId].ht && (hp+=estTraitScores[traitId].hp/estTraitScores[traitId].ht);
+    estTraitScores[traitId].lt && (lp+=estTraitScores[traitId].lp/estTraitScores[traitId].lt);
+    estTraitScores[traitId].ut && (up+=estTraitScores[traitId].up/estTraitScores[traitId].ut);
+    ht += estTraitScores[traitId].ht
+    lt += estTraitScores[traitId].lt
+    ut += estTraitScores[traitId].ut;
   });
   let histScore = ht === 0 ? 0 : Math.round(hp/userTraitCombo.length*10);
   let liveScore = lt === 0 ? 0 : Math.round(lp/userTraitCombo.length*10);
   let userScore = ut === 0 ? 2 : Math.round(up/userTraitCombo.length);
 
-  let userComboScore = {histScore, liveScore, userScore};
-  
-  return {allTraits, userComboScore}
+  return {histScore, liveScore, userScore};
+};
+
+//Calculate userComboScores for all establishments
+export function allEstUserComboScores(estabs,userTraitCombo,allTraits){
+  var userComboScores = {};
+  _.each(estabs, (estab) => {
+    userComboScores[estab.id] = updateEstUserComboScores(userTraitCombo,allTraits[estab.id]);
+  })
+  return userComboScores;
 };

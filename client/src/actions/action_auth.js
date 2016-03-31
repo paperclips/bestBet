@@ -21,8 +21,6 @@ export default (user, reactNavigator, route) => {
           dispatch(clearError()); //Remove any login errors from store
           let userZone = zoneHandler.zoneCalculator(position.coords.latitude, position.coords.longitude);
           let estabZones = zoneHandler.getSurroundingZones(userZone);
-          console.log('INITIAL USER ZONE:',userZone);
-          console.log('INITIAL SUR ZONE:',estabZones);
           body.userZone = userZone;
           body.latitude = position.coords.latitude;
           body.longitude = position.coords.longitude;

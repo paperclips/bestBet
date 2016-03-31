@@ -156,7 +156,7 @@ export default class Map extends Component {
   }
 
   render() {
-    const menu = <Menu user = {this.props.user.id} socket = {this.props.socket} reactNavigator = {this.props.navigator} logOut = {this.props.logOut.bind(this)} resetTraits = {this.props.resetTraits} toggle = {this.toggle.bind(this)}/>;
+    const menu = <Menu user = {this.props.user.id} socket = {this.props.socket} reactNavigator = {this.props.navigator} logOut = {this.props.logOut.bind(this)} resetTraits = {this.props.resetTraits.bind(this)} toggle = {this.toggle.bind(this)}/>;
     return (
       <SideMenu   
         menu={menu}   

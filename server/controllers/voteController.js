@@ -3,16 +3,16 @@ var Establishments = require('../config/db').Establishments;
 
 // adds votes to the votes table
 var addVotes = function (voteDetails) {
-  Object.keys(voteDetails.votes).forEach(function(key){
+  Object.keys(voteDetails.votes).forEach(function(traitId){
     var vote = {establishmentId: voteDetails.establishmentId,
-                traitId: key,
+                traitId: traitId,
                 userId: voteDetails.userId,
-                voteValue: voteDetails.votes[key],
+                voteValue: voteDetails.votes[traitId],
                 time: voteDetails.time,
-              };
+               };
 
     Votes.create(vote);
-    addVoteToHistory(voteDetails.establishmentId,key,voteDetails.votes[key]);
+    addVoteToHistory(voteDetails.establishmentId,traitId,voteDetails.votes[traitId]);
   });
 };
 

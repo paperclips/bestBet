@@ -56,8 +56,12 @@ io.on('connect', function(socket){
   socket.on('userVoted', function (voteDetails){
     //voteDetails is an object {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
     //Immediately emit new vote to all users in the vote zone
-    // console.log('vote rec -->' , voteDetails);
-    io.to(voteDetails.zoneNumber).emit('voteAdded', voteDetails);
+
+    //Find zoneNumber for this vote:
+    estabCtrl.getEstabZoneNumber(voteDetails.establishmentId).then(function(est){
+      io.to(est.zoneNumber).emit('voteAdded', voteDetails);
+    });
+    
     voteCtrl.addVotes(voteDetails);
   });
 

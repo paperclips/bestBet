@@ -1,4 +1,4 @@
-import { ADD_VOTE, REPLACE_ESTABS } from '../actions/constants';
+import { ADD_VOTE, REPLACE_ESTABS, REPLACE_USERCOMBOSCORE } from '../actions/constants';
 
 const INITIAL_STATE = {
   establishments: null, //{estId:{id, name, ...}}
@@ -7,9 +7,9 @@ const INITIAL_STATE = {
 };
 
 export default function (state = {}, action) {
-  //action.payload is {estId, votes, userVotes, allTraits, userComboScore};
   switch (action.type) {
     case ADD_VOTE:
+      //action.payload is {estId, votes, userVotes, allTraits, userComboScore};
       var newState = Object.assign({},state);
       var estId = action.payload.estId;
       var newVotesArr = action.payload.votes;
@@ -18,15 +18,18 @@ export default function (state = {}, action) {
       var newUserComboScore = action.payload.userComboScore;
 
       if(newState.establishments[estId]){
-        console.log('VOTES FOR ASIAN BOX:',newState.establishments[estId].Votes.length);
         newState.establishments[estId].Votes = newState.establishments[estId].Votes.concat(newVotesArr);
         newState.establishments[estId].userVotes = newState.establishments[estId].userVotes.concat(newUserVotesArr);
         newState.allTraits[estId] = newAllTraitsScores;
         newState.userComboScore[estId] = newUserComboScore;
       }
+      
       return newState;
     case REPLACE_ESTABS:
       return action.payload;
+    case REPLACE_USERCOMBOSCORE:
+      //action.payload is {estId: {liveScore,histScore,userScore}}
+      return {...state, userComboScore: action.payload}
     default:
       return state;
   }
