@@ -2,11 +2,11 @@
 var React = require('react-native');
 // import Drawer from 'react-native-drawer';
 // var drawer = require('react-native-drawer');
-var { 
+var {
   Alert,
-  Component, 
-  Text, 
-  View, 
+  Component,
+  Text,
+  View,
   TouchableHighlight,
   Animated,
   Dimensions,
@@ -18,21 +18,22 @@ var {
 
 var _ = require('underscore');
 var VoteView = require('./voteView.js');
-
+var modalStyles = require('../assets/styles.js').modalStyles;
+var scoreStyles = require('../assets/styles.js').scoreStyles;
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
 var _ = require('underscore');
 
 var traitNames = {
-  1:'Food', 
-  2:'Drinks', 
-  3:'Value', 
-  4:'Not Noisy', 
-  5:'Not Crowded', 
+  1:'Food',
+  2:'Drinks',
+  3:'Value',
+  4:'Not Noisy',
+  5:'Not Crowded',
   6:'No Wait',
   7:'Service',
-  8:'Upscale', 
+  8:'Upscale',
   9:'Veggie'
 };
 
@@ -79,19 +80,20 @@ export default class DetailModal extends Component {
   }
   toggleVoting () {
     this.setState({voting:!this.state.voting});
-  } 
+  }
   renderFullUserVotes () {
     var traitTracker = {};
     return (
       <View>
         <View style={modalStyles.myVotes}
           onPress={this.toggleFull.bind(this)}>
-          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black', textAlign: 'right'}}> You visited this place on {new Date(this.props.allData.establishments[this.props.estab.id].userVotes[this.props.estab.userVotes.length-1].time).toDateString()}</Text>
-          <Text style={{ textAlign: 'right'}}>On that visit, you ... </Text>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black', textAlign: 'right'}}> You visited on {new Date(this.props.allData.establishments[this.props.estab.id].userVotes[this.props.estab.userVotes.length-1].time).toDateString()}</Text>
+          <Text style={{ textAlign: 'right'}}>You said: </Text>
             {_.map(this.props.allData.establishments[this.props.estab.id].userVotes, (vote) => {
               if(!traitTracker.hasOwnProperty(vote.traitId)) {
                 traitTracker[vote.traitId] = true;
-                return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: 'grey', textAlign: 'right' }}>Voted {vote.voteValue ? "good" : "bad"} for {traitNames[vote.traitId]} </Text>
+                var col = vote.voteValue ? 'green' : 'red';
+                return <Text key={count++}  style={{fontWeight:'bold', fontSize: 12, color: col, textAlign: 'right' }}> {vote.voteValue ? "good" : "bad"} for {traitNames[vote.traitId]} </Text>
               }
             })}
         </View>
@@ -103,19 +105,49 @@ export default class DetailModal extends Component {
   renderFullDetails () {
     return (
       <View style={modalStyles.info}
-        onPress={this.toggleFull.bind(this)}>  
+        onPress={this.toggleFull.bind(this)}>
 
         <Text style={{ fontSize: 13, fontWeight:'bold', paddingLeft: 5}}> Your Preferences </Text>
         {_.map(this.props.userTraits,(trait) => (
-          <Text key={count++} style={{ fontSize: 13, color: 'black', paddingLeft: 10 ,fontWeight:'bold'}}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
-        ))}
+          <View key={count++} style={{flexDirection: 'row',alignItems: 'flex-start', justifyContent: 'flex-start', padding:1}}>
+
+            <Text style={{flex: 1, textAlign: 'left', fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[trait]}:</Text>
+
+            <View style={{flexDirection:'row'}}>
+              {this.props.allData.allTraits[this.props.estab.id][trait].lt!==0 ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> Now: </Text> : null}
+              <View style={scoreStyles[(10*this.props.allData.allTraits[this.props.estab.id][trait].lp === 0 && this.props.allData.allTraits[this.props.estab.id][trait].lt!==0) ? 1 :  Math.round(10*this.props.allData.allTraits[this.props.estab.id][trait].lp / this.props.allData.allTraits[this.props.estab.id][trait].lt)]}/>
+              {this.props.allData.allTraits[this.props.estab.id][trait].lt!==0 ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> ({this.props.allData.allTraits[this.props.estab.id][trait].lt})</Text> : null}
+            </View>
+
+            <View style={{flexDirection:'row'}}>
+              <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> Usual: </Text>
+              <View style={scoreStyles[Math.ceil(10*this.props.allData.allTraits[this.props.estab.id][trait].hp / this.props.allData.allTraits[this.props.estab.id][trait].ht)]}/>
+            </View>
+
+          </View>))}
         <Text style={{ fontSize: 12, fontWeight:'bold', paddingLeft: 5}}> Other Preferences </Text>
         {_.map(nums,(num) => (
-          <View key={count++}>
-          {this.props.userTraits.indexOf(num) < 0 && <Text style={{ fontSize: 12, color: 'black', paddingLeft: 10 }}>{traitNames[num]}: NOW: {this.props.allData.allTraits[this.props.estab.id][num].lp} / {this.props.allData.allTraits[this.props.estab.id][num].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][num].hp} / {this.props.allData.allTraits[this.props.estab.id][num].ht} </Text>}
-          </View>
+          <View key={count++} >
+          {this.props.userTraits.indexOf(num) < 0 &&
+            <View style={{flexDirection: 'row',alignItems: 'flex-start', justifyContent: 'flex-start', padding:1}}>
+            <Text style={{flex: 1, textAlign: 'left', fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[num]}:</Text>
+
+            <View style={{flexDirection:'row'}}>
+              {this.props.allData.allTraits[this.props.estab.id][num].lt!==0 ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> Now: </Text> : null}
+              <View style={scoreStyles[(10*this.props.allData.allTraits[this.props.estab.id][num].lp === 0 && this.props.allData.allTraits[this.props.estab.id][num].lt!==0) ? 1 :  Math.round(10*this.props.allData.allTraits[this.props.estab.id][num].lp / this.props.allData.allTraits[this.props.estab.id][num].lt)]}/>
+              {this.props.allData.allTraits[this.props.estab.id][num].lt!==0 ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> ({this.props.allData.allTraits[this.props.estab.id][num].lt})</Text> : null}
+            </View>
+
+            <View style={{flexDirection:'row'}}>
+              <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> Usual: </Text>
+              <View style={scoreStyles[Math.ceil(10*this.props.allData.allTraits[this.props.estab.id][num].hp / this.props.allData.allTraits[this.props.estab.id][num].ht)]}/>
+            </View>
+
+          </View>}
+        </View>
+
         ))}
-      </View>
+       </View>
     )
   }
   renderSubmitButton () {
@@ -145,7 +177,6 @@ export default class DetailModal extends Component {
     this.setState({votes: voteVals});
   }
   onVoteSubmit () {
-    console.log('IN on vote SUBMIT, this will send out the vote');
     //voteData is an object {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
     var voteData = {establishmentId: this.props.estab.id, userId: this.props.user.id, time: new Date()};
     voteData.votes = {};
@@ -159,13 +190,13 @@ export default class DetailModal extends Component {
 
     // Send votes thru socket
     this.props.sendVote(this.props.socket, voteData);
-    
+
     // give ALERT thanking user
-    Alert.alert('Thanks!','You votes has been counted!');
+    Alert.alert("Got it!","We'll remind you next time you go out.");
 
     // reset votes in state, turn off voting, turn off full
-    this.setState({voting:false, 
-                   full: false, 
+    this.setState({voting:false,
+                   full: false,
                    votes:{1: {bad: false, good: false},
                           2: {bad: false, good: false},
                           3: {bad: false, good: false},
@@ -179,9 +210,9 @@ export default class DetailModal extends Component {
 
   renderVoteScreen () {
     return (
-      <TouchableHighlight onPress={null}> 
-        <View style={modalStyles.voteScreen}> 
-          <View> 
+      <TouchableHighlight onPress={null}>
+        <View style={modalStyles.voteScreen}>
+          <View>
             <Text style={modalStyles.voteSectionHeader}> Your Preferences </Text>
             {_.map(this.props.userTraits,(trait) => (
               <VoteView key={count++}
@@ -193,7 +224,7 @@ export default class DetailModal extends Component {
             <Text style={modalStyles.voteSectionHeader}> Other Categories </Text>
             {_.map(nums,(num) => (
               <View key={count++}>
-                {this.props.userTraits.indexOf(num) >= 0 ? null : 
+                {this.props.userTraits.indexOf(num) >= 0 ? null :
                   <VoteView
                     traitNum={num}
                     estab={this.props.estab.id}
@@ -220,49 +251,61 @@ export default class DetailModal extends Component {
 
   renderFullDetailHeader () {
     return (
-      <View>
-      <View style={modalStyles.fullName}
-        onPress={this.toggleFull.bind(this)}>  
-          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text> 
-          <Text>{this.props.estab.address} </Text><Text>{this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : ""}</Text> 
-          <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text>
 
-      </View>
-      <View style={{height: 2, marginLeft: 30, backgroundColor: '#3366CC'}}></View>
-      </View>
+      <View style={modalStyles.fullName}
+        onPress={this.toggleFull.bind(this)}>
+          <Text style={{ fontWeight:'bold', fontSize: 14, color: 'black' }}>{this.props.estab.name} </Text>
+          <Text>{this.props.estab.address} </Text><Text>{this.props.estab.phoneNumber != null ? this.props.estab.phoneNumber.slice(3) : ""}</Text>
+
+          <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end'}}>
+
+            <View style={{flexDirection:'row'}}>
+              {this.props.allData.userComboScore[this.props.estab.id].liveScore ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}>    NOW:  </Text> : null}
+              <View style={scoreStyles[this.props.allData.userComboScore[this.props.estab.id].liveScore]}/>
+              </View>
+
+            <View style={{flexDirection:'row'}}>
+              <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}>    USUAL:  </Text>
+              <View style={scoreStyles[this.props.allData.userComboScore[this.props.estab.id].histScore]}/>
+            </View>
+          </View>
+
+          </View>
+
     )
   }
 
   renderVoteHeader () {
     return (
       <View>
-          <View style={modalStyles.voteHeader}> 
+          <View style={modalStyles.voteHeader}>
             <Text style={{ paddingTop: 20, flex:2, fontWeight:'bold', fontSize: 20, alignSelf: 'center', color: '#0F172E' }}> How was {this.props.estab.name}?</Text>
           </View>
           <View style={{height: 2, marginLeft: 30, backgroundColor: 'grey'}}></View>
           </View>
-    )  
+    )
   }
   renderFull () {
     var big = this.props.estab.imageUrl.replace('ms.','l.');
     return (
       <TouchableHighlight onPress={this.toggleFull.bind(this)}>
         <View style={modalStyles.fullModal}>
-          
-          <View> 
+
+          <View>
             {this.state.voting ? null : <Image
               onPress={this.toggleFull.bind(this)}
               style={modalStyles.fullImage}
               source={{uri: big}}/>}
             {this.state.voting ? this.renderVoteHeader() : this.renderFullDetailHeader()}
-            
+
+            <View style={{height: 2, marginLeft: 30, backgroundColor: '#3366CC'}}></View>
 
 
             <View onPress={this.toggleFull.bind(this)}>
               {this.props.estab.userVotes.length&&!this.state.voting ? this.renderFullUserVotes() : null}
               {this.state.voting ? null : this.renderFullDetails()}
             </View>
-          
+
 
             {this.state.voting ? this.renderVoteScreen() : this.renderVoteButton()}
 
@@ -278,11 +321,43 @@ export default class DetailModal extends Component {
         <View style={modalStyles.briefModal}>
           <Image
           style={modalStyles.briefImage}
-          source={{uri: this.props.estab.imageUrl}}/>  
-          <View style={modalStyles.briefInfo}> 
-            <Text style={{ flex: 1.3, textAlign: 'right', fontWeight:'bold', fontSize: 15, color: 'red' }}>{this.props.estab.name}   <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text></Text>
+          source={{uri: this.props.estab.imageUrl}}/>
+          <View style={modalStyles.briefInfo}>
+            <View style={{flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap',justifyContent: 'space-around'}}>
+              <View style={{flexDirection: 'row', alignSelf: 'center',alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                  <View>
+                    <Text style={{textAlign: 'left',fontWeight:'bold', fontSize: 16, color: 'black' }}>{this.props.estab.name}</Text>
+                  </View>
+
+                  <View style={{flexDirection:'row'}}>
+                    {this.props.allData.userComboScore[this.props.estab.id].liveScore ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}>    NOW:  </Text> : null}
+                    <View style={scoreStyles[this.props.allData.userComboScore[this.props.estab.id].liveScore]}/>
+                    </View>
+                  </View>
+
+                  <View style={{flexDirection:'row'}}>
+                    <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}>    USUAL:  </Text>
+                    <View style={scoreStyles[this.props.allData.userComboScore[this.props.estab.id].histScore]}/>
+                    </View>
+                  </View>
+
+            </View>
+
             {_.map(this.props.userTraits,(trait) => (
-              <Text key={count++} style={{flex: 1, textAlign: 'right', fontWeight:'bold', fontSize: 12, color: 'green' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
+              <View key={count++} style={{flexDirection: 'row',alignItems: 'flex-start', justifyContent: 'flex-start', padding:1}}>
+              <Text style={{flex: 1, textAlign: 'left', fontWeight:'bold', fontSize: 12, color: 'black' }}>{traitNames[trait]}:</Text>
+                <View style={{flexDirection:'row'}}>
+                  {this.props.allData.allTraits[this.props.estab.id][trait].lt!==0 ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> Now: </Text> : null}
+                  <View style={scoreStyles[(10*this.props.allData.allTraits[this.props.estab.id][trait].lp === 0 && this.props.allData.allTraits[this.props.estab.id][trait].lt!==0) ? 1 :  Math.round(10*this.props.allData.allTraits[this.props.estab.id][trait].lp / this.props.allData.allTraits[this.props.estab.id][trait].lt)]}/>
+                  {this.props.allData.allTraits[this.props.estab.id][trait].lt!==0 ? <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> ({this.props.allData.allTraits[this.props.estab.id][trait].lt})</Text> : null}
+                </View>
+
+                <View style={{flexDirection:'row'}}>
+                  <Text style={{textAlign: 'left', fontWeight:'bold', fontSize: 11, color: 'black' }}> Usual: </Text>
+                  <View style={scoreStyles[Math.ceil(10*this.props.allData.allTraits[this.props.estab.id][trait].hp / this.props.allData.allTraits[this.props.estab.id][trait].ht)]}/>
+                </View>
+              </View>
             ))}
           </View>
         </View>
@@ -294,141 +369,14 @@ export default class DetailModal extends Component {
     return (
       <View>
         {this.state.full ? this.renderFull() : this.renderBrief()}
-      </View>  
+      </View>
     )
   }
 };
 
-var modalStyles = StyleSheet.create({
-  ex: {
-    backgroundColor: 'transparent',
-    width: 20,
-    height: 20
-  },
-  briefModal: {
-    flex: 2,
-    flexDirection:'row',
-    width:width, 
-    // height:height/8 , 
-    backgroundColor:'rgba(251, 251, 240, 0.58)', //left side of the box
-    borderTopColor: '#E4DFAF',
-    borderTopWidth: 3,
-  },
-  briefInfo: {
-    flex:5, 
-    // alignSelf: 'flex-end',
-    padding: 10,
-    height: height/8,
-    // width: width - (height/8)-20,
-    backgroundColor: 'rgba(251, 251, 240, 0.58)', //right side of the box
-    // borderTopColor: 'grey',
-    // borderTopWidth: 3,
-    // borderColor: 'rgba(34, 224, 0, 0.4)',
-    // borderWidth: 1
-  },
-  fullModal: {
-    backgroundColor: '#fbfbf0',
-    width:width, 
-    height:height, 
-  },
-  info: {  //all vote score summary
-    // padding: 5,
-    backgroundColor:'transparent',
-    borderColor: 'transparent',  //
-    borderWidth: 5
-  },
-  briefImage: {
-    marginTop: -25,
-    borderWidth: 3,
-    borderColor: '#E4DFAF',
-    // paddingLeft: 30,
-    marginLeft: 30,
-    borderRadius: 50,
-    alignSelf: 'flex-start',
-    resizeMode: 'cover',
-    height: 100,
-    width: 100,
-  },
-  fullImage: {
-    alignSelf: 'flex-start',
-    resizeMode: 'cover',
-    width:width,
-    height: height/3
-  },
-  fullName: {  //top box
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor:'transparent',
-    borderColor: 'transparent',
-    borderWidth: 5
-  },
-  myVotes: {   //votes on previous visit //middle box
-    paddingLeft: 10,
-    backgroundColor:'transparent',
-    borderColor: 'transparent',
-    borderWidth: 5
-  },
-  voteScreen: {
-    // backgroundColor: 'grey',
-  },
-  voteButton: {
-    width: width-width/6,
-    height: height/10,
-    backgroundColor: 'blue',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderColor: 'blue',
-    borderWidth: 3,
-    borderRadius: 50,
-    margin: width/80,
-    justifyContent: 'center',
-  },
-  voteHeader: {  //voteview top question area
-    flex:2, 
-    alignSelf: 'center',
-    justifyContent: 'center',
-    padding: 5,
-    paddingTop: 20,
-    // height: height/8,
-    width: width - (height/8)-20,
-    backgroundColor: 'transparent',
-    // borderColor: 'rgba(34, 224, 0, 0.4)',
-    // borderWidth: 5
-  },
-  voteSectionHeader: {
-    padding: 10,
-    paddingLeft: 25,
-    fontWeight:'bold',
-    backgroundColor: 'transparent',
-    fontSize: 16,
-    // fontWeight: 'bold',
-    color: '#0F172E', //color for your preferences
-    alignItems: 'center'
-  },
-  voteHeaderText: {
-    textAlign: 'center'
-  },
-  submitVote: { 
-    height: 40,
-    width: 384,
-    padding: 20,
-    // height: height/10,
-    backgroundColor: '#3366CC', //universalblue
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderColor: '#3986AC',
-    borderWidth: 3,
-    borderRadius: 20,
-    margin: width/80,
-    justifyContent: 'center',
-  },
-  subText: {
-    fontSize: 20,
-    backgroundColor: 'transparent',
-    color: 'white',
-    textAlign: 'center',
-    fontWeight:'bold',
-  }
-});
-
 module.exports = DetailModal;
+
+/*
+//  <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW:</Text>
+//               <Text key={count++} style={{flex: 1, textAlign: 'right', fontWeight:'bold', fontSize: 12, color: 'green' }}>{traitNames[trait]}: NOW: {this.props.allData.allTraits[this.props.estab.id][trait].lp} / {this.props.allData.allTraits[this.props.estab.id][trait].lt} USUAL:{this.props.allData.allTraits[this.props.estab.id][trait].hp} / {this.props.allData.allTraits[this.props.estab.id][trait].ht} </Text>
+*/

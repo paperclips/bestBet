@@ -65,7 +65,7 @@ var signupStyles = StyleSheet.create({
   traits: {
     borderColor: '#3986AC',
     // borderWidth: 2,
-    backgroundColor: '#3366CC', 
+    backgroundColor: '#3366CC',
     borderColor: '#3986AC',
     borderWidth: 2,
     justifyContent: 'center',
@@ -129,10 +129,10 @@ var signupStyles = StyleSheet.create({
 
 var mapStyles = StyleSheet.create({
   restaurantName: {
-    fontSize: 11, 
-    backgroundColor: 'rgba(91, 167, 200, 0.58)', 
-    color: 'black', 
-    textAlign: 'right', 
+    fontSize: 11,
+    backgroundColor: 'rgba(91, 167, 200, 0.58)',
+    color: 'black',
+    textAlign: 'right',
     position: 'absolute'
   },
   goToUser: {
@@ -254,9 +254,9 @@ var appStyles = StyleSheet.create({
    borderRadius: 20,
  },
  buttonIntro: {
-  padding:10, 
-  height:45, 
-  overflow:'hidden', 
+  padding:10,
+  height:45,
+  overflow:'hidden',
   borderRadius:4,
   margin: 10,
   backgroundColor: 'white'
@@ -360,7 +360,7 @@ var zoomedOut = {
     backgroundColor: 'rgb(209, 0, 0)',
     borderWidth:1,
     borderColor: 'black'
-  
+
   },
   5:{
     alignSelf: 'center',
@@ -371,7 +371,7 @@ var zoomedOut = {
     backgroundColor: 'rgb(245, 241, 0)',
     borderWidth:1,
     borderColor: 'black'
-    
+
   },
   6:{
     alignSelf: 'center',
@@ -478,7 +478,7 @@ var liveStyles = {
     borderRadius: histHW/2,
     borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(209, 0, 0, 0.2)',
-  
+
   },
   5:{
     justifyContent: 'center',
@@ -489,7 +489,7 @@ var liveStyles = {
     borderRadius: histHW/2,
     borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(245, 241, 0, 0.2)',
-    
+
   },
   6:{
     justifyContent: 'center',
@@ -540,7 +540,7 @@ var liveStyles = {
     borderWidth:(histHW-userHW)/2,
     borderColor: 'rgba(34, 224, 0, 0.7)',
   }
-  
+
 };
 
 
@@ -598,7 +598,7 @@ var histStyles = {
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
     borderColor: 'rgba(209, 0, 0, 1)',
-  
+
   },
   5:{
     justifyContent: 'center',
@@ -609,7 +609,7 @@ var histStyles = {
     borderRadius: liveHW/2,
     borderWidth:(liveHW-histHW)/2,
     borderColor: 'rgba(245, 241, 0, 1)',
-    
+
   },
   6:{
     justifyContent: 'center',
@@ -660,7 +660,7 @@ var histStyles = {
     borderWidth:(liveHW-histHW)/2,
     borderColor: 'rgba(34, 224, 0, 1)',
   }
-  
+
 };
 
 var markerStyles = StyleSheet.create({
@@ -773,7 +773,7 @@ var calloutStyles = StyleSheet.create({
 var menuStyles = StyleSheet.create({
   nineButtons: {
     flexDirection: 'column',
-    height: window.height, 
+    height: window.height,
     paddingLeft: window.width/100,
     paddingRight: window.width/100,
     alignItems: 'flex-start',
@@ -818,7 +818,7 @@ var menuStyles = StyleSheet.create({
     margin: windowSize.width/80,
     alignSelf: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap', 
+    flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection:'row'
   },
@@ -832,7 +832,7 @@ var menuStyles = StyleSheet.create({
     margin: windowSize.width/80,
     alignSelf: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap', 
+    flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection:'row'
   },
@@ -846,12 +846,257 @@ var menuStyles = StyleSheet.create({
     margin: windowSize.width/80,
     alignSelf: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap', 
+    flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection:'row'
   }
 });
 
+var modalStyles = StyleSheet.create({
+  ex: {
+    backgroundColor: 'transparent',
+    width: 20,
+    height: 20
+  },
+  briefModal: {
+    flex: 2,
+    flexDirection:'row',
+    width:windowSize.width,
+    // height:height/8 ,
+    backgroundColor:'rgba(251, 251, 240, 0.58)', //left side of the box
+    borderTopColor: '#E4DFAF',
+    borderTopWidth: 3,
+  },
+  briefInfo: {
+    flex:5,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent:'flex-start',
+    // alignSelf: 'flex-end',
+    padding: 10,
+    height: windowSize.height/8,
+    // width: width - (height/8)-20,
+    backgroundColor: 'rgba(251, 251, 240, 0.58)', //right side of the box rgba(251, 251, 240, 0.58)
+    // borderTopColor: 'grey',
+    // borderTopWidth: 3,
+    // borderColor: 'rgba(34, 224, 0, 0.4)',
+    // borderWidth: 1,
+
+  },
+  fullModal: {
+    backgroundColor: '#fbfbf0',
+    width:windowSize.width,
+    height:windowSize.height,
+  },
+  info: {  //all vote score summary
+    // padding: 5,
+    backgroundColor:'transparent',
+    borderColor: 'transparent',  //
+    borderWidth: 5
+  },
+  briefImage: {
+    marginTop: -25,
+    borderWidth: 3,
+    borderColor: '#E4DFAF',
+    // paddingLeft: 30,
+    marginLeft: 30,
+    borderRadius: 50,
+    alignSelf: 'flex-start',
+    resizeMode: 'cover',
+    height: 100,
+    width: 100,
+  },
+  fullImage: {
+    alignSelf: 'flex-start',
+    resizeMode: 'cover',
+    width:windowSize.width,
+    height: windowSize.height/3
+  },
+  fullName: {  //top box
+    paddingLeft: 10,
+    paddingRight: 0,
+    backgroundColor:'transparent',
+    borderColor: 'transparent',
+    borderWidth: 5
+  },
+  myVotes: {   //votes on previous visit //middle box
+    paddingLeft: 10,
+    backgroundColor:'transparent',
+    borderColor: 'transparent',
+    borderWidth: 5
+  },
+  voteScreen: {
+    // backgroundColor: 'grey',
+  },
+  voteButton: {
+    width: windowSize.width-windowSize.width/6,
+    height: windowSize.height/10,
+    backgroundColor: 'blue',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderColor: 'blue',
+    borderWidth: 3,
+    borderRadius: 50,
+    margin: windowSize.width/80,
+    justifyContent: 'center',
+  },
+  voteHeader: {  //voteview top question area
+    flex:2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    paddingTop: 20,
+    // height: height/8,
+    width: windowSize.width - (windowSize.height/8)-20,
+    backgroundColor: 'transparent',
+    // borderColor: 'rgba(34, 224, 0, 0.4)',
+    // borderWidth: 5
+  },
+  voteSectionHeader: {
+    padding: 10,
+    paddingLeft: 25,
+    fontWeight:'bold',
+    backgroundColor: 'transparent',
+    fontSize: 16,
+    // fontWeight: 'bold',
+    color: '#0F172E', //color for your preferences
+    alignItems: 'center'
+  },
+  voteHeaderText: {
+    textAlign: 'center'
+  },
+  submitVote: {
+    height: 30,
+    width: 384,
+    padding: 15,
+    // height: height/10,
+    backgroundColor: '#3366CC', //universalblue
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderColor: '#3986AC',
+    borderWidth: 3,
+    borderRadius: 20,
+    margin: windowSize.width/80,
+    justifyContent: 'center',
+  },
+  subText: {
+    fontSize: 20,
+    backgroundColor: 'transparent',
+    color: 'white',
+    textAlign: 'center',
+    fontWeight:'bold',
+  }
+});
+
+var scoreWidth = windowSize.width/35;
+
+var scoreStyles = StyleSheet.create({
+  0:{},
+  1:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(255, 0, 0)',
+  },
+  2:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(209, 0, 0)'
+
+  },
+  3:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(255, 51, 51)',
+  },
+  4:{
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(255, 92, 92)',
+
+  },
+  5:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(245, 241, 0)',
+
+  },
+  6:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(163, 245, 0)',
+  },
+  7:{
+   justifyContent: 'center',
+   alignSelf: 'center',
+   height:scoreWidth,
+   width:scoreWidth,
+   borderRadius: scoreWidth/2,
+   borderColor: 'black',
+   borderWidth: 1,
+    backgroundColor: 'rgb(34, 224, 0)',
+  },
+  8:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(34, 224, 0)',
+  },
+  9:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(34, 224, 0)',
+  },
+  10:{
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height:scoreWidth,
+    width:scoreWidth,
+    borderRadius: scoreWidth/2,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'rgb(34, 224, 0)'
+  }
+
+});
 module.exports = {
   appStyles: appStyles,
   histStyles: histStyles,
@@ -862,6 +1107,8 @@ module.exports = {
   menuStyles: menuStyles,
   liveStyles: liveStyles,
   userDot: userDot,
-  zoomedOut: zoomedOut
+  zoomedOut: zoomedOut,
+  scoreStyles: scoreStyles,
+  modalStyles: modalStyles
 
 };
