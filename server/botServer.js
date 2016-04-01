@@ -274,7 +274,7 @@ var createNewVote = function(){
   2428,
   2431 ];
 
-  vote.establishmentId = estArray[Math.floor(Math.random()*estArray.length)];
+  vote.establishmentId = estArray[Math.floor(Math.random() * estArray.length)];
   vote.userId = Math.floor(Math.random()*40+1);
   vote.time = new Date();
   vote.votes = {};
