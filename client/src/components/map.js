@@ -16,7 +16,6 @@ var {
 var _ = require('underscore');
 
 var MapView = require('react-native-maps');
-var OutlineMarkerView = require('./outlineMarker.js');
 var DetailModal = require('./detailModal.js')
 var styles = require('../assets/styles.js');
 
@@ -61,17 +60,9 @@ export default class Map extends Component {
     }
   }
   curInView = 0;
-
-  // toggle() {    
-  //   this.setState({   
-  //     isOpen: !this.state.isOpen,   
-  //   });   
-  // }
-
-
+  nameTags ={};
   onRegionChange(region) {
     this.curInView = 0;
-    // console.log(region.longitudeDelta);
     region.longitudeDelta > .006 && this.setState({smallDots: true});
     region.longitudeDelta < .006 && this.setState({smallDots: false});
     //navigator.geolocation.getCurrentPosition(position => gotLocation.call(this,position), logError);
@@ -101,7 +92,6 @@ export default class Map extends Component {
     )
   }
   sendNewTrait (oldTrait, newTrait) {
-    console.log(this.props.user.traitCombo);
     var traits = this.props.user.traitCombo;
     if (newTrait === -1) {
       traits.splice(this.props.user.traitCombo.indexOf(oldTrait),1);
@@ -149,11 +139,17 @@ export default class Map extends Component {
   logOut() {
     this.props.logOut(this.props.navigator);
   }
+
   renderMarkers(){
     this.curInView = 0;
+    this.nameTags = {};
     return _.map(this.props.allData.establishments, (est) => {
       if(this.inView(est.latitude,est.longitude)){
-        this.curInView++;
+        // if the score is above a certain threshold, and we're below a number
+        if ((this.props.allData.userComboScore[est.id].liveScore > 6 || this.props.allData.userComboScore[est.id].histScore > 7 || this.props.allData.userComboScore[est.id].userScore === 1) && this.curInView < 7) {
+          this.nameTags[est.id]=1;
+          this.curInView++;
+        }
         return (
           <MapView.Marker
             key={est.id}
@@ -167,10 +163,11 @@ export default class Map extends Component {
                 </View>
               </View>
              }
-            {(this.state.selectedEstab === est.id || this.curInView < 10) && <View>
-              <Text style={{fontSize: 11, color: 'black'}}>{est.name}</Text>
+            {(this.state.selectedEstab === est.id || this.nameTags.hasOwnProperty(est.id)) && <View>
+              <Text style={{fontSize: 11, fontWeight: 'bold',color: 'black', position: 'absolute'}}>{est.name}</Text>
             </View>}
           </MapView.Marker>
+       
         )
       }
     })
