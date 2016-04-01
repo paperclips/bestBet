@@ -157,7 +157,7 @@ export default class Map extends Component {
             coordinate={{latitude:est.latitude, longitude: est.longitude}}
             onPress={this.toggleDetails.bind(this, est.id)}
           >
-            {(this.state.smallDots || (this.props.allData.userComboScore[est.id].histScore<=4))? (this.props.allData.userComboScore[est.id].liveScore ? <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].liveScore]}/> : (this.props.allData.userComboScore[est.id].userScore!==2 ? <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/> : <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].histScore]}/>)) :
+            {(this.state.smallDots || (this.props.allData.userComboScore[est.id].histScore<=4 && this.props.allData.userComboScore[est.id].liveScore<=4 && this.props.allData.userComboScore[est.id].userScore!==1))? (this.props.allData.userComboScore[est.id].liveScore ? <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].liveScore]}/> : (this.props.allData.userComboScore[est.id].userScore!==2 ? <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/> : <View style={styles.zoomedOut[this.props.allData.userComboScore[est.id].histScore]}/>)) :
               <View style={styles.histStyles[this.props.allData.userComboScore[est.id].histScore]}>
                 <View style={styles.liveStyles[this.props.allData.userComboScore[est.id].liveScore]}>
                   <View style={styles.userDot[this.props.allData.userComboScore[est.id].userScore]}/>
@@ -224,9 +224,9 @@ export default class Map extends Component {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.mapStyles.logoutButton} onPress={this.toggleLogoutConfirm.bind(this)}>
+        {!this.state.showDetails && <TouchableOpacity style={styles.mapStyles.logoutButton} onPress={this.toggleLogoutConfirm.bind(this)}>
           <Image source={{ uri: 'http://image005.flaticon.com/1/png/128/56/56805.png', width: windowSize.height/35, height: windowSize.height/35, opacity: .3}} />
-        </TouchableOpacity>
+        </TouchableOpacity>}
         {this.state.logoutConfirm && (<View style={styles.mapStyles.menuContainer}>
           <TouchableOpacity style={[styles.mapStyles.bubble, styles.mapStyles.button]} onPress={() => this.logOut()}>
             <Text style={{ fontSize: 10, fontWeight: 'bold' }}>Logout</Text>
