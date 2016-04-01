@@ -2,8 +2,11 @@
 import io from 'socket.io-client/socket.io';
 import zoneHandler from './zoneHandler.js';
 import _ from 'underscore';
+import saveVoteToStore from './action_saveVoteToStore';
+import {store} from '../../App.js';
 
-// const SERVER_URL = 'http://10.8.30.75:3000';
+
+// const SERVER_URL = 'http://10.8.4.184:3000';
 const SERVER_URL = 'http://localhost:3000';
 // const SERVER_URL = 'http://104.131.12.172:3000';
 
@@ -23,6 +26,31 @@ export function connectSocket(){
 export function updateZoneSubscription(socket, oldZones, newZones){
   socket.emit('leaveRooms', oldZones);
   socket.emit('joinRooms', newZones);
+};
+
+export function addVoteToStore(dispatch,voteData){
+  //voteData is an object {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
+  const {user, allData} = store.getState();
+  console.log('Vote Added for user in:',user.userZone,'at:', new Date());
+  if(allData.allTraits && allData.allTraits[voteData.establishmentId]){
+    //If user's own vote came back:
+    var userVotes = [];
+    if(user.id === voteData.userId){
+      userVotes = Object.keys(voteData.votes).map(function(traitId){
+        return {traitId: traitId,
+                voteValue: Boolean(voteData.votes[traitId]),
+                time: voteData.time}
+      });
+    };
+    //Update scores for relevant establishment
+    var estId = voteData.establishmentId;
+    var estAllTraits = allData.allTraits[estId];
+    var userTraitCombo = user.traitCombo;
+    
+    var scoreObj = calcEstScores(user.id, estAllTraits, userTraitCombo, voteData);//{estTraitScores, userComboScore}
+    var updateObject = {estId: estId, userVotes: userVotes, allTraits: scoreObj.estTraitScores, userComboScore: scoreObj.userComboScore};
+    dispatch(saveVoteToStore(updateObject));
+  }
 };
 
 //Calculate scores for all establishments (for login and zone change events)
@@ -84,8 +112,8 @@ export function updateEstUserComboScores(userTraitCombo,estTraitScores){
     estTraitScores[traitId].ht && (hp+=estTraitScores[traitId].hp/estTraitScores[traitId].ht);
     estTraitScores[traitId].lt && (lp+=estTraitScores[traitId].lp/estTraitScores[traitId].lt);
     estTraitScores[traitId].ut && (up+=estTraitScores[traitId].up/estTraitScores[traitId].ut);
-    ht += estTraitScores[traitId].ht
-    lt += estTraitScores[traitId].lt
+    ht += estTraitScores[traitId].ht;
+    lt += estTraitScores[traitId].lt;
     ut += estTraitScores[traitId].ut;
   });
   let histScore = ht === 0 ? 0 : Math.max(1,Math.round(hp/userTraitCombo.length*10));

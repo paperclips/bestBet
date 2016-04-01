@@ -62,6 +62,7 @@ export default class Map extends Component {
   curInView = 0;
   nameTags ={};
   onRegionChange(region) {
+    this.props.socket.removeListener('voteAdded');
     this.curInView = 0;
     region.longitudeDelta > .006 && this.setState({smallDots: true});
     region.longitudeDelta < .006 && this.setState({smallDots: false});

@@ -25,13 +25,12 @@ socket.on('New Establishments',function(estabs){
 var createNewVote = function(){
   //vote object is {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
   var vote = {};
-  vote.establishmentId = Math.floor(Math.random()*1500);
+  //zoneNumbers around Hack Reactor for live demo
+  vote.establishmentId = 1 + Math.floor(Math.random()*1500);
   vote.userId = Math.floor(Math.random()*40+1);
   vote.time = new Date();
   vote.votes = {};
 
-  // socket.emit('joinRooms', [vote.zoneNumber]);
-  
   for(var i=1;i<=9;i++){
     vote.votes[i] = Math.round(Math.random());
   }
@@ -63,5 +62,5 @@ var port = process.env.PORT || 8000;
 //Start the bot:
 http.listen(port);
 console.log('botServer listening on port ' + port);
-setInterval(createNewVote,1000);
+setInterval(createNewVote,500);
 //setInterval(requestEstabs,1000);

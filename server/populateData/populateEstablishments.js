@@ -41,16 +41,18 @@ var yelp = new Yelp({
 
 var zipcodes = [94102,94103, 94104, 94105, 94107, 94108, 94109, 94110, 94111, 94112, 94114, 94115, 94116, 94117, 94118, 94121, 94122, 94123, 94124, 94127, 94129, 94130, 94131, 94132, 94133, 94134, 94158];
 //94102,94103, 94104, 94105, 94107, 94108, 94109, 94110, 94111, 94112, 94114, 94115, 94116, 94117, 94118, 94121, 94122, 94123, 94124, 94127, 94129, 94130, 94131, 94132, 94133, 94134, 94158];
-var offsets = [0,20,40,60,80,100,120,140,160,180,200];
+var offsets = [0,20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,420,440,460,480,500,520,540,560,580,600,620,640,660,680,700,720,740,760,780,800,820,840,860,880,900,920,940,960,980];
 //0,20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,420,440,460,480,500,520,540,560,580,600,620,640,660,680,700,720,740,760,780,800,820,840,860,880,900,920,940,960,980];
 
 zipcodes.forEach(function(zipcode){
 
   offsets.forEach(function(offset){
+    
     yelp.search({ term: '', location: zipcode, category_filter: 'restaurants',offset: offset, limit: 20})
       .then(function (data) {
         data.businesses.forEach(function(item){
           var zoneNumber = zoneCalculator(item.location.coordinate.latitude, item.location.coordinate.longitude);
+          var address = (item.location.address[0] + ', ' + item.location.city + ', ' + item.location.state_code + ' ' + item.location.postal_code) || '';
           Establishments.findOrCreate({
             where: {yelpId: item.id},
             defaults:{
@@ -63,8 +65,8 @@ zipcodes.forEach(function(zipcode){
              yelpReviewCount: item.review_count,
              latitude: item.location.coordinate.latitude,
              longitude: item.location.coordinate.longitude,
-             address: item.location.address[0] + ', ' + item.location.city + ', ' + item.location.state_code + ' ' + item.location.postal_code,
-             phoneNumber: item.display_phone,
+             address: address,
+             phoneNumber: item.display_phone || '',
              zoneNumber: zoneNumber,
              trait1Pos: Math.floor(Math.random()*1000),
              trait1Tot: 1000,
@@ -94,4 +96,3 @@ zipcodes.forEach(function(zipcode){
       })
   })
 });
-
