@@ -53,7 +53,7 @@ var signupStyles = StyleSheet.create({
     color: '#000000'  //color for best bet
   },
   signin: {
-    backgroundColor: '#5BA7C8', //theme color blue
+    backgroundColor: '#3366CC', //theme color blue
     padding: 20,
     alignItems: 'center'
   },
@@ -65,7 +65,7 @@ var signupStyles = StyleSheet.create({
   traits: {
     borderColor: '#3986AC',
     // borderWidth: 2,
-    backgroundColor: '#5BA7C8', 
+    backgroundColor: '#3366CC', 
     borderColor: '#3986AC',
     borderWidth: 2,
     justifyContent: 'center',

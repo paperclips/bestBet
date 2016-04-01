@@ -95,7 +95,7 @@ export default class DetailModal extends Component {
               }
             })}
         </View>
-        <View style={{height: 2, marginLeft: 30, backgroundColor: '#5BA7C8', marginTop: 3}}></View>
+        <View style={{height: 2, marginLeft: 30, backgroundColor: '#3366CC', marginTop: 3}}></View>
       </View>
     )
   }
@@ -228,7 +228,7 @@ export default class DetailModal extends Component {
           <Text style={{ fontWeight:'bold', fontSize: 12, color: 'black' }}>NOW: {this.props.allData.userComboScore[this.props.estab.id].liveScore} / 10 USUAL: {this.props.allData.userComboScore[this.props.estab.id].histScore} / 10</Text>
 
       </View>
-      <View style={{height: 2, marginLeft: 30, backgroundColor: '#5BA7C8'}}></View>
+      <View style={{height: 2, marginLeft: 30, backgroundColor: '#3366CC'}}></View>
       </View>
     )
   }
@@ -310,7 +310,7 @@ var modalStyles = StyleSheet.create({
     flexDirection:'row',
     width:width, 
     // height:height/8 , 
-    backgroundColor:'#fbfbf0', //left side of the box
+    backgroundColor:'rgba(251, 251, 240, 0.58)', //left side of the box
     borderTopColor: '#E4DFAF',
     borderTopWidth: 3,
   },
@@ -320,7 +320,7 @@ var modalStyles = StyleSheet.create({
     padding: 10,
     height: height/8,
     // width: width - (height/8)-20,
-    backgroundColor: '#fbfbf0', //right side of the box
+    backgroundColor: 'rgba(251, 251, 240, 0.58)', //right side of the box
     // borderTopColor: 'grey',
     // borderTopWidth: 3,
     // borderColor: 'rgba(34, 224, 0, 0.4)',
@@ -413,7 +413,7 @@ var modalStyles = StyleSheet.create({
     width: 384,
     padding: 20,
     // height: height/10,
-    backgroundColor: '#5BA7C8', //universalblue
+    backgroundColor: '#3366CC', //universalblue
     alignSelf: 'center',
     justifyContent: 'center',
     borderColor: '#3986AC',
