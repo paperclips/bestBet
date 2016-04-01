@@ -128,6 +128,13 @@ var signupStyles = StyleSheet.create({
 });
 
 var mapStyles = StyleSheet.create({
+  restaurantName: {
+    fontSize: 11, 
+    backgroundColor: 'rgba(91, 167, 200, 0.58)', 
+    color: 'black', 
+    textAlign: 'right', 
+    position: 'absolute'
+  },
   goToUser: {
     backgroundColor: 'transparent',
     alignItems: 'center',
