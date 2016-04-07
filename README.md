@@ -14,9 +14,8 @@
 1. [FEATURES](#Features)
 1. [ARCHITECTURE](#architecture)
     1. [Tech Stack](#tech-stack)
-    1. [Client Architecture](#client-architecture)
-    1. [Server Architecture](#server-architecture)
-    1. [Database Design](#database-design)
+    1. [System Architecture](#system-architecture)
+    1. [Zone Based Pub/Sub](#zone-based-pub-sub)
 1. [REQUIREMENTS](#requirements)
 1. [DEVELOPMENT](#development)
     1. [Installing Dependencies](#installing-dependencies)
@@ -101,21 +100,9 @@ Thus, when searching a map for restaurants around me, I can see how every restau
 4) Deployment
 - Digital Ocean
 
-### System Overview
+### System Architecture
 
-> system (client, server, all that, in a pretty picture)
-
-### Client Architecture
-
-> Client
-
-### Server Architecture
-
-> The server is designed with Node.js using sockets.
-
-### Database Design
-
-> DB
+### Zone Based Sub/Pub
 
 
 ## Requirements
