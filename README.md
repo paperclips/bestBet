@@ -1,4 +1,4 @@
-# untitled restaurant app deal
+# Best Bet
 
 > **Find restaurants around you based on the criteria you care most about _right now._**
 
@@ -7,7 +7,7 @@
 
 - Product Owner: Pavel Parshakov
 - Scrum Master: Jackie Liu
-- Development Team Members: Pavel Parshakov, Jackie Liu, Brian Ronaghan
+- Development Team Members: Brian Ronaghan, Pavel Parshakov, Jackie Liu
 
 ## Table of Contents
 
@@ -17,16 +17,46 @@
     1. [Client Architecture](#client-architecture)
     1. [Server Architecture](#server-architecture)
     1. [Database Design](#database-design)
-1. [Requirements](#requirements)
-1. [Development](#development)
+1. [REQUIREMENTS](#requirements)
+1. [DEVELOPMENT](#development)
     1. [Installing Dependencies](#installing-dependencies)
     1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
+1. [TEAM](#team)
+1. [CONTRIBUTING](#contributing)
 
 ## Features
 
-> Some usage instructions
+### Summary:
+A mobile, map-based restaurant recommendation app that uses pattern recognition and real time user data to predict how much a specific user will enjoy a restaurant right now. (Pandora+Waze+Yelp)
+
+
+
+#### How do I know if I'll like a restaurant?
+
+###### It's Complicated:
+- One size (rating) doesn’t fit all
+  - Zagat/Yelp/Google’s opinions != to mine
+- Even if one does fit you, you don’t get that experience every time
+  - 3pm Tuesday != 10pm Saturday
+- Plus, at any given time, YOU are different
+  - Business Lunch != Date != Parents != Starving at 3am
+
+###### Current Options:
+1. Read ~100 reviews on the internet
+  - look for mentions of the thing you care about
+  - figure out what the reviewer’s opinion on that thing is
+  - guess if you’d have the same opinion
+  - calculate if the opinion applies right now
+2. Just go to the restaurant and take your chances
+
+### Basically: TRIAL & ERROR
+
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
+![ScreenShot](https://github.com/altercation/solarized/raw/master/img/screen-mutt-dark-th.png)
+
+
+
 
 ## Architecture
 
@@ -69,7 +99,7 @@
   2. In the terminal, run:
 
   ```
-    > initdb paperclipsdb 
+    > initdb paperclipsdb
     > pg_ctl -D paperclipsdb -l logfile start
     > createdb paperclipsdb
   ```
