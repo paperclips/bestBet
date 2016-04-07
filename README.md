@@ -29,7 +29,15 @@
 ### Summary:
 A mobile, map-based restaurant recommendation app that uses pattern recognition and real time user data to predict how much a specific user will enjoy a restaurant right now. (Pandora+Waze+Yelp)
 
+#### Our App Flow
 
+![Overview](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/bestBetMockScreens.png "Overview")
+
+- Sign In
+- Zoomed Out Map View
+- Zoomed In Map View With Brief Restaurant Details
+- Full Restaurant Detail View
+- Rate a Restaurant View
 
 #### How do I know if I'll like a restaurant?
 
@@ -51,15 +59,10 @@ A mobile, map-based restaurant recommendation app that uses pattern recognition 
 
 ### Basically: TRIAL & ERROR
 
-#### App Overview
+## Our Solution:
+Our app allows users to indicate their preferences and rate restaurants based on those preferences. The database tracks (in real time) the aggregated scores based on user preferences. (73% of users who care about loudness found this restaurant too loud).
 
-![Overview](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/bestBetMockScreens.png "Overview")
-
-- Sign In
-- Zoomed Out Map View
-- Zoomed In Map View With Brief Restaurant Details
-- Full Restaurant Detail View
-- Rate a Restaurant View
+Thus, when searching a map for restaurants around me, I can see how every restaurant scores on the specific criteria I care about.
 
 #### Sign In and Sign Up View
 
@@ -80,7 +83,23 @@ A mobile, map-based restaurant recommendation app that uses pattern recognition 
 
 ### Tech Stack
 
-> tech stack info
+1) Front-End
+- React-Native  
+- Redux with Thunk
+- Socket.io
+
+2) Back-End
+- Node/Express
+- Socket.io
+- Postgres
+- sequelize
+
+3) Testing
+- Mocha
+- Chai
+
+4) Deployment
+- Digital Ocean
 
 ### System Overview
 
