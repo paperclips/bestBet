@@ -53,7 +53,7 @@ A mobile, map-based restaurant recommendation app that uses pattern recognition 
 
 ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
 
-![ScreenShot](https://github.com/altercation/solarized/raw/master/img/screen-mutt-dark-th.png)
+![ScreenShot](https://github.com/paperclips/paperclips/screnshots)
 
 
 
