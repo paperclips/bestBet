@@ -102,8 +102,13 @@ Thus, when searching a map for restaurants around me, I can see how every restau
 
 ### System Architecture
 
+![Server/DB/Architecture](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/architecture.jpg "Architecture")
+
 ### Zone Based Sub/Pub
 
+![Zone Layout](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoneSystem.jpg "Zone Layout")
+
+![Render vs. Preload](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoneRendering.jpg "Render vs. Preload")
 
 ## Requirements
 
