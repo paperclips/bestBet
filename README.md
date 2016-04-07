@@ -51,9 +51,11 @@ A mobile, map-based restaurant recommendation app that uses pattern recognition 
 
 ### Basically: TRIAL & ERROR
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+#### Overview
 
-![ScreenShot](https://github.com/paperclips/paperclips/screnshots)
+![Overview]()
+
+![Login](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/login.jpg "Login Screen")
 
 
 
