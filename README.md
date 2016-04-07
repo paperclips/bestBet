@@ -51,14 +51,30 @@ A mobile, map-based restaurant recommendation app that uses pattern recognition 
 
 ### Basically: TRIAL & ERROR
 
-#### Overview
+#### App Overview
 
-![Overview]()
+![Overview](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/bestBetMockScreens.png "Overview")
 
-![Login](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/login.jpg "Login Screen")
+- Sign In
+- Zoomed Out Map View
+- Zoomed In Map View With Brief Restaurant Details
+- Full Restaurant Detail View
+- Rate a Restaurant View
 
+#### Sign In and Sign Up View
 
+![Login](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/login.jpg "Login Screen")![Sign Up](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/signup.jpg "Sign Up")
 
+#### Map Views
+
+ ![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoomedOut.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoomedIn.jpg "Zoomed In")
+
+#### Restaurant Info Views
+
+![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/briefDetails.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/fullDetails.jpg "Zoomed In")
+
+#### Rate a Restaurant Screen
+![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/rateScreen.jpg "Rating Screen")
 
 ## Architecture
 
