@@ -14,9 +14,8 @@
 1. [FEATURES](#Features)
 1. [ARCHITECTURE](#architecture)
     1. [Tech Stack](#tech-stack)
-    1. [Client Architecture](#client-architecture)
-    1. [Server Architecture](#server-architecture)
-    1. [Database Design](#database-design)
+    1. [System Architecture](#system-architecture)
+    1. [Zone Based Pub/Sub](#zone-based-pub-sub)
 1. [REQUIREMENTS](#requirements)
 1. [DEVELOPMENT](#development)
     1. [Installing Dependencies](#installing-dependencies)
@@ -29,7 +28,15 @@
 ### Summary:
 A mobile, map-based restaurant recommendation app that uses pattern recognition and real time user data to predict how much a specific user will enjoy a restaurant right now. (Pandora+Waze+Yelp)
 
+#### Our App Flow
 
+![Overview](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/bestBetMockScreens.png "Overview")
+
+- Sign In
+- Zoomed Out Map View
+- Zoomed In Map View With Brief Restaurant Details
+- Full Restaurant Detail View
+- Rate a Restaurant View
 
 #### How do I know if I'll like a restaurant?
 
@@ -51,36 +58,51 @@ A mobile, map-based restaurant recommendation app that uses pattern recognition 
 
 ### Basically: TRIAL & ERROR
 
-#### Overview
+## Our Solution:
+Our app allows users to indicate their preferences and rate restaurants based on those preferences. The database tracks (in real time) the aggregated scores based on user preferences. (73% of users who care about loudness found this restaurant too loud).
 
-![Overview]()
+Thus, when searching a map for restaurants around me, I can see how every restaurant scores on the specific criteria I care about.
 
-![Login](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/login.jpg "Login Screen")
+#### Sign In and Sign Up View
 
+![Login](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/login.jpg "Login Screen")![Sign Up](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/signup.jpg "Sign Up")
 
+#### Map Views
 
+ ![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoomedOut.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoomedIn.jpg "Zoomed In")
+
+#### Restaurant Info Views
+
+![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/briefDetails.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/fullDetails.jpg "Zoomed In")
+
+#### Rate a Restaurant Screen
+![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/rateScreen.jpg "Rating Screen")
 
 ## Architecture
 
 ### Tech Stack
 
-> tech stack info
+1) Front-End
+- React-Native  
+- Redux with Thunk
+- Socket.io
 
-### System Overview
+2) Back-End
+- Node/Express
+- Socket.io
+- Postgres
+- sequelize
 
-> system (client, server, all that, in a pretty picture)
+3) Testing
+- Mocha
+- Chai
 
-### Client Architecture
+4) Deployment
+- Digital Ocean
 
-> Client
+### System Architecture
 
-### Server Architecture
-
-> The server is designed with Node.js using sockets.
-
-### Database Design
-
-> DB
+### Zone Based Sub/Pub
 
 
 ## Requirements
