@@ -40,7 +40,7 @@ module.exports = function(Sequelize, db){
       trait8Tot: {type: Sequelize.INTEGER},
       trait9Pos: {type: Sequelize.INTEGER},
       trait9Tot: {type: Sequelize.INTEGER}
-    }, { timestamps: false });
+    }, { timestamps: false, indexes:[{fields:['zoneNumber']},{fields:['yelpId']}]});
 
   var Traits = db.define('Traits', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -56,7 +56,7 @@ module.exports = function(Sequelize, db){
       voteValue: {type: Sequelize.BOOLEAN, notNull: true},
       time: {type: Sequelize.DATE, notNull: true},
       //zoneNumber: {type: Sequelize.INTEGER, notNull: true}
-    }, { timestamps: false });
+    }, { timestamps: false, indexes:[{fields:['time']},{fields:['establishmentId']}] });
 
   var Users_Traits = db.define('Users_Traits', {
       id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
