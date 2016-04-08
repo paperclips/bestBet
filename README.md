@@ -7,6 +7,7 @@
 
 - Product Owner: Pavel Parshakov
 - Scrum Master: Jackie Liu
+- Lead Engineer: Brian Ronaghan
 - Development Team Members: Brian Ronaghan, Pavel Parshakov, Jackie Liu
 
 ## Table of Contents
@@ -38,7 +39,7 @@ A mobile, map-based restaurant recommendation app that uses pattern recognition 
 - Full Restaurant Detail View
 - Rate a Restaurant View
 
-#### How do I know if I'll like a restaurant?
+#### Problem: How do I know if I'll like a restaurant?
 
 ###### It's Complicated:
 - One size (rating) doesn’t fit all
