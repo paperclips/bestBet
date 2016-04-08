@@ -7,7 +7,7 @@ import rootReducer from './src/reducers/rootReducer';
 import Router from './src/components/router';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-const store = createStoreWithMiddleware(rootReducer);
+export const store = createStoreWithMiddleware(rootReducer);
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value

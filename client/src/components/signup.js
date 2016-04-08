@@ -1,68 +1,47 @@
 'use strict';
-var React = require('react-native');
+import React, { Component } from 'react-native';
+import background from '../assets/background1.jpg';
+import logo from '../assets/directions-icon.png';
 var Dimensions = require('Dimensions');
 var windowSize = Dimensions.get('window');
-var t = require('tcomb-form-native');
-var { 
-  AppRegistry,
-  Component, 
-  Text, 
-  View, 
+var styles = require('../assets/styles.js').signupStyles;
+
+var {
   TouchableHighlight,
-  Image,
-  StyleSheet
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Image
 } = React;
 
 //Socket.io expects window.navigator.userAgent to be a string, need to set
 window.navigator.userAgent = "react-native"; //or any other string value
 
-var Form = t.form.Form;
-var styles = require('../assets/styles.js').signupStyles;
-var User   = t.struct({
-  name: t.String,
-  userName: t.String,
-  password: t.String,
-  comparePassword: t.String
-});
-
-var options = {
-  fields: {
-    password: {
-      password: true,
-      secureTextEntry: true
-    },
-    comparePassword: {
-      password: true,
-      secureTextEntry: true
-    }
-  }
-};
-
-export default class Signup extends Component {
+export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', userName: '', password: '', traitCombo: null, buttonPress: [0,0,0,0,0,0,0,0,0], error: ''};
+    this.state = {name: '', userName: '', password: '', confirmPassword: '', traitCombo: null, buttonPress: [0,0,0,0,0,0,0,0,0], error: ''};
     this.traitCombo = [];
   }
 
   onPress(){
-    var value = this.refs.form.getValue();
-    if(value){
-      if(value.password !== value.comparePassword){
-        this.setState({error: "Passwords don't match"});
-      } else if(this.traitCombo.length === 0){
-        this.setState({error: "Please set your preferences"});
-      } else {
-        this.setState({error: ""});
-        var comboInteger = 1 * this.traitCombo.join('');
-        this.setState({name: value.name, userName: value.userName, password: value.password, traitCombo: comboInteger});
-        this.props.authUser(this.state, this.props.navigator, '/signup');
-      }
+    if(!this.state.name){
+      this.setState({error: "Please enter your name"});
+    } else if(!this.state.userName){
+      this.setState({error: "Please pick a username"});
+    } else if(!this.state.password){
+      this.setState({error: "Please pick a password"});
+    } else if(this.state.password !== this.state.confirmPassword){
+      this.setState({error: "Passwords don't match"});
+    } else if(this.traitCombo.length === 0){
+      this.setState({error: "Please set your preferences"});
+    } else {
+      this.setState({error: ''});
+      var comboInteger = 1 * this.traitCombo.join('');
+      this.setState({traitCombo: comboInteger});
+      this.props.authUser(this.state, this.props.navigator, '/signup');
     }
-  }
-
-  backToSignin(){
-    this.props.navigator.pop();
   }
 
   traitsClicked (traitChoice) {
@@ -70,84 +49,113 @@ export default class Signup extends Component {
     var choices = this.state.buttonPress;
     if(index > -1){
       this.traitCombo.splice(index,1)
-      choices[traitChoice-1] = false;
+      choices[traitChoice] = false;
     } else if(this.traitCombo.length < 3){
       this.traitCombo.push(traitChoice);
-      choices[traitChoice-1] = true;
+      choices[traitChoice] = true;
     }
     this.setState({buttonPress: choices});
+  }
+
+  backToSignin(){
+    this.props.clearError();
+    this.props.navigator.pop();
   }
 
   onError(){
     return this.props.user.error || this.state.error;
   }
-
+  
   render() {
     return (
-      <View style={{backgroundColor: '#f7f6f3'}}>
-      <View style={styles.topSpace}>
-      </View>
-
-      <View style={styles.buttonContainer}>
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[0] && styles.button2]} onPress={this.traitsClicked.bind(this, 1)} underlayColor={'black'} onPressIn={this.togglePressIn} onPressOut={this.togglePressIn}>
-        <Text style={styles.buttonText}>Good Food</Text>
-      </TouchableHighlight>
-
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[1] && styles.button2]} onPress={this.traitsClicked.bind(this, 2)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Good Drinks</Text>
-      </TouchableHighlight>        
-
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[2] && styles.button2]} onPress={this.traitsClicked.bind(this, 3)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Good Deal</Text>
-      </TouchableHighlight>
-      </View>
-
-      <View style={styles.buttonContainer}>
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[3] && styles.button2]} onPress={this.traitsClicked.bind(this, 4)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Not Noisy</Text>
-      </TouchableHighlight>
-
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[4] && styles.button2]} onPress={this.traitsClicked.bind(this, 5)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Not Crowded</Text>
-      </TouchableHighlight>
-
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[5] && styles.button2]} onPress={this.traitsClicked.bind(this, 6)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>No Wait</Text>
-      </TouchableHighlight> 
-      </View>
-
-      <View style={styles.buttonContainer}>
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[6] && styles.button2]} onPress={this.traitsClicked.bind(this, 7)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Good Service</Text>
-      </TouchableHighlight> 
-
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[7] && styles.button2]} onPress={this.traitsClicked.bind(this, 8)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Upscale</Text>
-      </TouchableHighlight> 
-
-      <TouchableHighlight style={[styles.button1, this.state.buttonPress[8] && styles.button2]} onPress={this.traitsClicked.bind(this, 9)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Veggie Friendly</Text>
-      </TouchableHighlight> 
-      </View>
-
       <View style={styles.container}>
-        <Form
-          ref="form"
-          type={User}
-          options={options}
-        />
-      </View> 
-
-      <View style={styles.twoButtons}>
-      <TouchableHighlight style={styles.button1} onPress={this.backToSignin.bind(this)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Back to Login</Text>
-      </TouchableHighlight>
-      <TouchableHighlight style={styles.button1} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
-        <Text style={styles.buttonText}>Signup</Text>
-      </TouchableHighlight>
+        <Image style={styles.bg} source={background} resizeMode='cover' />
+        <Text style={styles.topText}> Pick your preferences</Text>
+        <View style={styles.signInHeader}>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[0] && styles.pressed]} onPress={this.traitsClicked.bind(this, 0)}>
+            <Text style={styles.whiteFont}>Good Food</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[1] && styles.pressed]} onPress={this.traitsClicked.bind(this, 1)}>
+            <Text style={styles.whiteFont}>Good Drinks</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[2] && styles.pressed]} onPress={this.traitsClicked.bind(this, 2)}>
+            <Text style={styles.whiteFont}>Good Deal</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.signInHeader}>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[3] && styles.pressed]} onPress={this.traitsClicked.bind(this, 3)}>
+            <Text style={styles.whiteFont}>Not Noisy</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[4] && styles.pressed]} onPress={this.traitsClicked.bind(this, 4)}>
+            <Text style={styles.whiteFont}>Not Crowded</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[5] && styles.pressed]} onPress={this.traitsClicked.bind(this, 5)}>
+            <Text style={styles.whiteFont}>No Wait</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.signInHeader}>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[6] && styles.pressed]} onPress={this.traitsClicked.bind(this, 6)}>
+            <Text style={styles.whiteFont}>Good Service</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[7] && styles.pressed]} onPress={this.traitsClicked.bind(this, 7)}>
+            <Text style={styles.whiteFont}>Upscale</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={[styles.traits, this.state.buttonPress[8] && styles.pressed]} onPress={this.traitsClicked.bind(this, 8)}>
+            <Text style={styles.whiteFont}>Veggie Friendly</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.signInInputs}>
+          <View style={styles.inputContainer}>
+            <Image style={styles.inputUsername} source={{uri: 'http://i.imgur.com/iVVVMRX.png'}}/>
+            <TextInput
+              style={[styles.input, styles.whiteFont]}
+              placeholder="Name"
+              placeholderTextColor="#FFF"
+              onChangeText={(name) => this.setState({name})}
+              value={this.state.name}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image style={styles.inputUsername} source={{uri: 'http://i.imgur.com/iVVVMRX.png'}}/>
+            <TextInput
+              style={[styles.input, styles.whiteFont]}
+              placeholder="Username"
+              placeholderTextColor="#FFF"
+              onChangeText={(userName) => this.setState({userName})}
+              value={this.state.userName}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image style={styles.inputPassword} source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+            <TextInput
+              password={true}
+              style={[styles.input, styles.whiteFont]}
+              placeholder="Password"
+              placeholderTextColor="#FFF"
+              onChangeText={(password) => this.setState({password})}
+              value={this.state.password}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Image style={styles.inputPassword} source={{uri: 'http://i.imgur.com/ON58SIG.png'}}/>
+            <TextInput
+              password={true}
+              style={[styles.input, styles.whiteFont]}
+              placeholder="Confirm password"
+              placeholderTextColor="#FFF"
+              onChangeText={(confirmPassword) => this.setState({confirmPassword})}
+              value={this.state.confirmPassword}
+            />
+          </View>
+          <Text style={styles.error}>{this.onError.call(this)}</Text>          
+        </View>
+        <TouchableHighlight style={styles.signin} onPress={this.onPress.bind(this)}>
+          <Text style={styles.whiteFont}>Sign Up</Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.signup} onPress={this.backToSignin.bind(this)}>
+          <Text style={styles.greyFont}>Already have an account?<Text style={styles.whiteFont}>  Sign In</Text></Text>
+        </TouchableHighlight>
       </View>
-      <Text style={styles.error}>{this.onError.call(this)}</Text>
-      </View>
-    )
-  }
+    );
+  };
 };

@@ -25,13 +25,11 @@ io.on('connect', function(socket){
   socket.on('Get Establishments',function(data){
     //data is an object {userId, zones: [array of zones]}
     estabCtrl.getEstabsInZones(data.userId,data.zones).then(function(estabs){
-      console.log('ZONE', data.zones);
-      // console.log('ESTABS0:', estabs[0]);
       var estabObject = {};
       for(var i = 0; i<estabs.length;i++){
         estabObject[estabs[i].id] = estabs[i];
         if(i === estabs.length-1){
-          socket.emit('New Establishments', {establishments:estabObject});
+          socket.emit('New Establishments', estabObject);
         }
       }
     })
@@ -56,9 +54,16 @@ io.on('connect', function(socket){
 
   // incoming vote
   socket.on('userVoted', function (voteDetails){
-    //voteDetails is an object {establishmentId, userId, time, zoneNumber, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
+    //voteDetails is an object {establishmentId, userId, time, votes:{1: 0 or 1, 2: 0 or 1, 3: 0 or 1...}}
     //Immediately emit new vote to all users in the vote zone
-    io.to(voteDetails.zoneNumber).emit('voteAdded', voteDetails);
+
+    //Find zoneNumber for this vote:
+    estabCtrl.getEstabZoneNumber(voteDetails.establishmentId).then(function(est){
+      if(est){
+        io.to(est.zoneNumber).emit('voteAdded', voteDetails);
+      }
+    });
+
     voteCtrl.addVotes(voteDetails);
   });
 
