@@ -65,18 +65,18 @@ Thus, when searching a map for restaurants around me, I can see how every restau
 
 #### Sign In and Sign Up View
 
-![Login](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/login.jpg "Login Screen")![Sign Up](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/signup.jpg "Sign Up")
+![Login](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/login.jpg "Login Screen")![Sign Up](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/signup.jpg "Sign Up")
 
 #### Map Views
 
- ![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoomedOut.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoomedIn.jpg "Zoomed In")
+ ![Zoomed Out](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/zoomedOut.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/zoomedIn.jpg "Zoomed In")
 
 #### Restaurant Info Views
 
-![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/briefDetails.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/fullDetails.jpg "Zoomed In")
+![Zoomed Out](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/briefDetails.jpg "Zoomed Out") ![Zoomed In](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/fullDetails.jpg "Zoomed In")
 
 #### Rate a Restaurant Screen
-![Zoomed Out](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/rateScreen.jpg "Rating Screen")
+![Zoomed Out](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/rateScreen.jpg "Rating Screen")
 
 ## Architecture
 
@@ -102,13 +102,13 @@ Thus, when searching a map for restaurants around me, I can see how every restau
 
 ### System Architecture
 
-![Server/DB/Architecture](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/architecture.jpg "Architecture")
+![Server/DB/Architecture](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/architecture.jpg "Architecture")
 
 ### Zone Based Sub/Pub
 
-![Zone Layout](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoneSystem.jpg "Zone Layout")
+![Zone Layout](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/zoneSystem.jpg "Zone Layout")
 
-![Render vs. Preload](https://raw.githubusercontent.com/paperclips/paperclips/master/screenshots/zoneRendering.jpg "Render vs. Preload")
+![Render vs. Preload](https://raw.githubusercontent.com/paperclips/bestBet/master/screenshots/zoneRendering.jpg "Render vs. Preload")
 
 ## Requirements
 
